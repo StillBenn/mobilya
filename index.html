@@ -14,7 +14,7 @@
 
 <link rel="preload" href="fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/style.css?v=5">
+<link rel="stylesheet" href="css/style.css?v=7">
 
 </head>
 <body>
@@ -73,6 +73,14 @@
 
       <section class="group">
         <div class="group-head">
+          <h2 data-t="g.pairs"></h2>
+          <span class="group-value" data-t="pairs.note"></span>
+        </div>
+        <div id="pairs" class="pairs"></div>
+      </section>
+
+      <section class="group">
+        <div class="group-head">
           <h2 data-t="g.fabric"></h2>
           <span id="v-fabric" class="group-value"></span>
         </div>
@@ -84,7 +92,7 @@
           <h2 data-t="g.frame"></h2>
           <span id="v-frame" class="group-value"></span>
         </div>
-        <div id="frames" class="swatches"></div>
+        <div id="frames" class="swatches swatches--4"></div>
       </section>
 
       <section class="group">
@@ -165,6 +173,9 @@ const T = {
     'g.size': 'Size',
     'g.extras': 'Extras',
     'g.cushion': 'Cushion fabric',
+    'g.pairs': 'Pairings',
+    'pairs.note': 'chair · cushion · frame',
+    'pairs.cushion': 'cushion',
     pillow: 'Scatter cushion',
     total: 'Total',
     lead: 'Made to order · %d days',
@@ -186,6 +197,9 @@ const T = {
     'g.size': 'Ölçü',
     'g.extras': 'Ek seçenekler',
     'g.cushion': 'Yastık kumaşı',
+    'g.pairs': 'Kombinler',
+    'pairs.note': 'koltuk · yastık · gövde',
+    'pairs.cushion': 'yastık',
     pillow: 'Dekoratif yastık',
     total: 'Toplam',
     lead: 'Siparişe özel üretim · %d gün',
@@ -207,6 +221,9 @@ const T = {
     'g.size': 'Размер',
     'g.extras': 'Дополнительно',
     'g.cushion': 'Ткань подушки',
+    'g.pairs': 'Сочетания',
+    'pairs.note': 'кресло · подушка · каркас',
+    'pairs.cushion': 'подушка',
     pillow: 'Декоративная подушка',
     total: 'Итого',
     lead: 'Срок изготовления · %d дней',
@@ -242,23 +259,40 @@ const PRICE_BASE = 1290;
 const LEAD_TIME = 14;   // days
 
 const FABRICS = [
-  { id: 'sand',       hex: '#d8c3a5', price: 0,    name: { en: 'Sand',       tr: 'Kum',       ru: 'Песочный' } },
-  { id: 'cream',      hex: '#e9e2d6', price: 0,    name: { en: 'Cream',      tr: 'Krem',      ru: 'Сливочный' } },
-  { id: 'graphite',   hex: '#3c4045', price: 70, name: { en: 'Graphite',   tr: 'Grafit',    ru: 'Графит' } },
-  { id: 'olive',      hex: '#5f6b4a', price: 70, name: { en: 'Olive',      tr: 'Zeytin',    ru: 'Олива' } },
-  { id: 'terracotta', hex: '#a8553c', price: 95, name: { en: 'Terracotta', tr: 'Terakota',  ru: 'Терракота' } },
-  { id: 'indigo',     hex: '#2f3f5c', price: 95, name: { en: 'Indigo',     tr: 'İndigo',    ru: 'Индиго' } },
+  /* in families, so the two rows read as a palette: light neutrals, greens,
+     warm earth, then the deep ones. Every one also dresses the cushion. */
+  { id: 'cream',      hex: '#e9e2d6', price: 0,  name: { en: 'Cream',      tr: 'Krem',         ru: 'Сливочный' } },
+  { id: 'sand',       hex: '#d8c3a5', price: 0,  name: { en: 'Sand',       tr: 'Kum',          ru: 'Песочный' } },
+  { id: 'stone',      hex: '#b8b0a3', price: 0,  name: { en: 'Stone',      tr: 'Taş',          ru: 'Камень' } },
+  { id: 'sage',       hex: '#9aa38b', price: 70, name: { en: 'Sage',       tr: 'Adaçayı',      ru: 'Шалфей' } },
+  { id: 'olive',      hex: '#5f6b4a', price: 70, name: { en: 'Olive',      tr: 'Zeytin',       ru: 'Олива' } },
+  { id: 'forest',     hex: '#2e4638', price: 95, name: { en: 'Forest',     tr: 'Orman yeşili', ru: 'Хвоя' } },
+  { id: 'ochre',      hex: '#c0913f', price: 95, name: { en: 'Ochre',      tr: 'Hardal',       ru: 'Охра' } },
+  { id: 'terracotta', hex: '#a8553c', price: 95, name: { en: 'Terracotta', tr: 'Terakota',     ru: 'Терракота' } },
+  { id: 'rose',       hex: '#c4968a', price: 95, name: { en: 'Dusty rose', tr: 'Gül kurusu',   ru: 'Пыльная роза' } },
+  { id: 'bordeaux',   hex: '#6a2c34', price: 95, name: { en: 'Bordeaux',   tr: 'Bordo',        ru: 'Бордо' } },
+  { id: 'indigo',     hex: '#2f3f5c', price: 95, name: { en: 'Indigo',     tr: 'İndigo',       ru: 'Индиго' } },
+  { id: 'graphite',   hex: '#3c4045', price: 70, name: { en: 'Graphite',   tr: 'Grafit',       ru: 'Графит' } },
 ];
 
 const FRAMES = [
-  { id: 'oak',    hex: '#b98b52', metalness: 0.00, roughness: 0.58, price: 0,
-    name: { en: 'Oak',         tr: 'Meşe',        ru: 'Дуб' } },
-  { id: 'walnut', hex: '#5b3a24', metalness: 0.00, roughness: 0.50, price: 110,
-    name: { en: 'Walnut',      tr: 'Ceviz',       ru: 'Орех' } },
-  { id: 'black',  hex: '#2a2c30', metalness: 0.70, roughness: 0.40, price: 160,
-    name: { en: 'Black steel', tr: 'Siyah metal', ru: 'Чёрный металл' } },
-  { id: 'brass',  hex: '#d4af37', metalness: 0.88, roughness: 0.30, price: 280,
-    name: { en: 'Brass',       tr: 'Pirinç',      ru: 'Латунь' } },
+  /* four woods from light to dark, then four metals: one row each */
+  { id: 'bleached', hex: '#d9c4a0', price: 60,
+    name: { en: 'Bleached oak', tr: 'Ağartılmış meşe', ru: 'Беленый дуб' } },
+  { id: 'oak',      hex: '#b98b52', price: 0,
+    name: { en: 'Oak',          tr: 'Meşe',            ru: 'Дуб' } },
+  { id: 'smoked',   hex: '#8a7866', price: 140,
+    name: { en: 'Smoked oak',   tr: 'Füme meşe',       ru: 'Дымчатый дуб' } },
+  { id: 'walnut',   hex: '#5b3a24', price: 110,
+    name: { en: 'Walnut',       tr: 'Ceviz',           ru: 'Орех' } },
+  { id: 'nickel',   hex: '#c4c2bd', price: 220,
+    name: { en: 'Brushed nickel', tr: 'Nikel',         ru: 'Никель' } },
+  { id: 'brass',    hex: '#c8a46a', price: 280,
+    name: { en: 'Brass',        tr: 'Pirinç',          ru: 'Латунь' } },
+  { id: 'bronze',   hex: '#8f7656', price: 260,
+    name: { en: 'Bronze',       tr: 'Bronz',           ru: 'Бронза' } },
+  { id: 'black',    hex: '#2a2c30', price: 160,
+    name: { en: 'Black steel',  tr: 'Siyah metal',     ru: 'Чёрный металл' } },
 ];
 
 /* XL changes the PROPORTIONS, not the overall scale: the chair gets visibly
@@ -274,6 +308,22 @@ const SIZES = [
 ];
 
 const PILLOW = { price: 90 };
+
+/* Pairings: a chair, a cushion and a frame chosen together — one tap sets all
+   three, and every one of them stays editable afterwards. */
+const PAIRS = [
+  { fabric: 'sand',     frame: 'walnut',   pillow: 'terracotta', name: { en: 'Earth',    tr: 'Toprak', ru: 'Земля' } },
+  { fabric: 'forest',   frame: 'brass',    pillow: 'ochre',      name: { en: 'Club',     tr: 'Kulüp',  ru: 'Клуб' } },
+  { fabric: 'sage',     frame: 'bleached', pillow: 'rose',       name: { en: 'Garden',   tr: 'Bahçe',  ru: 'Сад' } },
+  { fabric: 'cream',    frame: 'black',    pillow: 'indigo',     name: { en: 'Gallery',  tr: 'Galeri', ru: 'Галерея' } },
+  { fabric: 'bordeaux', frame: 'bronze',   pillow: 'sand',       name: { en: 'Opera',    tr: 'Opera',  ru: 'Опера' } },
+  { fabric: 'indigo',   frame: 'nickel',   pillow: 'stone',      name: { en: 'Midnight', tr: 'Gece',   ru: 'Полночь' } },
+];
+/* every swatch is a rendered sample of the material (swatch_config.py), and
+   every pairing a small render of the chair dressed in it (pair_thumbs.py) */
+const swatchSrc = (kind, item) => 'renders/swatch/' + (kind === 'frame' ? 'frm' : 'fab') + '-' + item.id + '.webp';
+const pairSrc = (pr) => 'renders/pairs/' + pr.fabric + '-' + pr.frame + '-' + pr.pillow + '.webp';
+const byId = (items, id) => items.find(it => it.id === id);
 
 const nameOf = (item) => item.name[lang];
 
@@ -437,8 +487,8 @@ function compose(tier, sel, i, into) {
 
 /* ── state ─────────────────────────────────────────────────────────────── */
 const state = {
-  fabric: FABRICS[0], frame: FRAMES[0], size: SIZES[0],
-  pillow: false, pillowFabric: FABRICS[4]
+  fabric: byId(FABRICS, 'sand'), frame: byId(FRAMES, 'oak'), size: SIZES[0],
+  pillow: false, pillowFabric: byId(FABRICS, 'terracotta')
 };
 const selOf = () => ({ size: state.size.id, fabric: state.fabric.id, frame: state.frame.id,
                        pillow: state.pillow, pillowFabric: state.pillowFabric.id });
@@ -462,6 +512,7 @@ const els = {
   toast: document.getElementById('toast'),
   pillowFabrics: document.getElementById('pillow-fabrics'),
   pillowOptions: document.getElementById('pillow-options'),
+  pairs: document.getElementById('pairs'),
 };
 
 function makeSwatch(item, kind, isActive) {
@@ -469,11 +520,8 @@ function makeSwatch(item, kind, isActive) {
   b.type = 'button';
   b.className = 'swatch' + (isActive ? ' is-active' : '');
   b.dataset.id = item.id;
-  const dot = document.createElement('span');
-  dot.className = 'swatch-dot';
-  b.style.background = item.hex;
-  if (kind === 'frame' && item.metalness > 0.5) dot.classList.add('is-metal');
-  b.appendChild(dot);
+  b.style.backgroundColor = item.hex;           // until the sample arrives, and if it never does
+  b.style.backgroundImage = 'url(' + swatchSrc(kind, item) + ')';
   return b;
 }
 
@@ -491,18 +539,60 @@ function labelSwatches(container, items) {
   });
 }
 
-function buildSwatchRow(container, items, kind, onPick, activeIndex = 0) {
+function buildSwatchRow(container, items, kind, onPick) {
   container.innerHTML = '';
-  items.forEach((item, i) => {
-    const b = makeSwatch(item, kind, i === activeIndex);
-    b.addEventListener('click', () => {
-      container.querySelectorAll('.swatch').forEach(s => s.classList.remove('is-active'));
-      b.classList.add('is-active');
-      onPick(item);
-    });
+  items.forEach((item) => {
+    const b = makeSwatch(item, kind, false);
+    b.addEventListener('click', () => onPick(item));
     container.appendChild(b);
   });
 }
+
+/* the chosen one in a row, by id: written from the state, never from the click */
+function markRow(container, selector, id) {
+  container.querySelectorAll(selector).forEach((b) => {
+    const on = b.dataset.id === id;
+    b.classList.toggle('is-active', on);
+    b.setAttribute('aria-pressed', String(on));
+  });
+}
+
+const pairOn = (pr) => state.pillow && state.fabric.id === pr.fabric
+  && state.pillowFabric.id === pr.pillow && state.frame.id === pr.frame;
+
+PAIRS.forEach((pr, i) => {
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'pair';
+  b.dataset.id = String(i);
+  const img = document.createElement('img');
+  img.className = 'pair-thumb';
+  img.src = pairSrc(pr); img.alt = ''; img.width = img.height = 56; img.decoding = 'async';
+  img.addEventListener('error', () => { img.style.visibility = 'hidden'; });   // the card's ground, not a broken-image icon
+  const text = document.createElement('span');
+  text.className = 'pair-text';
+  const name = document.createElement('span');
+  name.className = 'pair-name';
+  const dots = document.createElement('span');
+  dots.className = 'pair-dots';
+  dots.setAttribute('aria-hidden', 'true');
+  [['fabric', byId(FABRICS, pr.fabric)], ['fabric', byId(FABRICS, pr.pillow)], ['frame', byId(FRAMES, pr.frame)]].forEach(([kind, item]) => {
+    const d = document.createElement('i');
+    d.style.backgroundColor = item.hex;
+    d.style.backgroundImage = 'url(' + swatchSrc(kind, item) + ')';
+    dots.appendChild(d);
+  });
+  text.append(name, dots);
+  b.append(img, text);
+  b.addEventListener('click', () => {
+    state.fabric = byId(FABRICS, pr.fabric);
+    state.pillowFabric = byId(FABRICS, pr.pillow);
+    state.frame = byId(FRAMES, pr.frame);
+    state.pillow = true;
+    refresh(); changed();
+  });
+  els.pairs.appendChild(b);
+});
 
 buildSwatchRow(els.fabrics, FABRICS, 'fabric', item => {
   state.fabric = item;
@@ -517,16 +607,14 @@ buildSwatchRow(els.frames, FRAMES, 'frame', item => {
 buildSwatchRow(els.pillowFabrics, FABRICS, 'fabric', item => {
   state.pillowFabric = item;
   refresh(); changed();
-}, 4);
+});
 
-SIZES.forEach((item, i) => {
+SIZES.forEach((item) => {
   const b = document.createElement('button');
   b.type = 'button';
-  b.className = 'pill' + (i === 0 ? ' is-active' : '');
+  b.className = 'pill';
   b.dataset.id = item.id;
   b.addEventListener('click', () => {
-    els.sizes.querySelectorAll('.pill').forEach(p => p.classList.remove('is-active'));
-    b.classList.add('is-active');
     state.size = item;
     refresh(); changed();
   });
@@ -535,7 +623,6 @@ SIZES.forEach((item, i) => {
 
 els.pillow.addEventListener('change', () => {
   state.pillow = els.pillow.checked;
-  els.pillowOptions.hidden = !state.pillow;
   refresh(); changed();
 });
 
@@ -555,6 +642,25 @@ function refresh() {
   labelSwatches(els.fabrics, FABRICS);
   labelSwatches(els.frames, FRAMES);
   labelSwatches(els.pillowFabrics, FABRICS);
+
+  markRow(els.fabrics, '.swatch', state.fabric.id);
+  markRow(els.frames, '.swatch', state.frame.id);
+  markRow(els.pillowFabrics, '.swatch', state.pillowFabric.id);
+  markRow(els.sizes, '.pill', state.size.id);
+  els.pillow.checked = state.pillow;
+  els.pillowOptions.hidden = !state.pillow;
+
+  els.pairs.querySelectorAll('.pair').forEach((b) => {
+    const pr = PAIRS[+b.dataset.id];
+    const on = pairOn(pr);
+    b.classList.toggle('is-active', on);
+    b.setAttribute('aria-pressed', String(on));
+    b.querySelector('.pair-name').textContent = nameOf(pr);
+    const label = nameOf(pr) + ': ' + nameOf(byId(FABRICS, pr.fabric)) + ', '
+      + t('pairs.cushion') + ' ' + nameOf(byId(FABRICS, pr.pillow)).toLocaleLowerCase(lang) + ', ' + nameOf(byId(FRAMES, pr.frame));
+    b.setAttribute('aria-label', label);
+    b.title = label;
+  });
 
   els.sizes.querySelectorAll('.pill').forEach((b) => {
     const item = SIZES.find(s => s.id === b.dataset.id);

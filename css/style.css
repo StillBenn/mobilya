@@ -448,41 +448,35 @@ body.is-turned .hint { opacity: 0; }
 }
 
 /* --- Swatches -------------------------------------------------------------
-   The colour itself is the label; the name appears on hover. Six named
-   buttons would not fit the column, and six unnamed dots are a guessing
-   game — the tooltip is the cheapest way out of that trade. */
+   The colour itself is the label; the name appears on hover. Twelve named
+   buttons would not fit the column, and twelve unnamed dots are a guessing
+   game — the tooltip is the cheapest way out of that trade.
+   Six to a row at every width, so twelve colours are two even rows (a
+   wrapping row broke them 5 + 5 + 2 in a 360px panel): the columns give
+   up a few pixels before a swatch moves down. */
 
-.swatches { display: flex; flex-wrap: wrap; gap: 11px; }
+.swatches { display: grid; grid-template-columns: repeat(6, minmax(0, 44px)); gap: 11px; }
+/* the frames: four woods over four metals */
+.swatches--4 { grid-template-columns: repeat(4, minmax(0, 44px)); }
 
 .swatch {
   position: relative;
-  width: 44px;
-  height: 44px;
+  width: 100%;
+  aspect-ratio: 1;
   border-radius: 50%;
-  box-shadow: inset 0 0 0 1px rgba(25, 20, 16, 0.15),
-              0 1px 2px rgba(25, 20, 16, 0.12);
+  /* a rendered ball of the material itself (renders/swatch/): the boucle's
+     loops, the oak's rings, the metal's softbox — the colour underneath is
+     only there until it arrives */
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 1px 2px rgba(25, 20, 16, 0.14);
   transition: transform var(--d-fast) var(--e-out),
               box-shadow var(--d-fast) var(--e-out);
 }
 .swatch:hover { transform: translateY(-2px) scale(1.06); }
 .swatch.is-active {
-  box-shadow: inset 0 0 0 1px rgba(25, 20, 16, 0.15),
-              0 0 0 2px var(--panel),
+  box-shadow: 0 0 0 2px var(--panel),
               0 0 0 3px var(--ink);
-}
-
-.swatch-dot {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  /* A single specular sweep: a flat disc reads as a colour value, a lit one
-     reads as a material. */
-  background-image: radial-gradient(circle at 34% 28%,
-                    rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0) 58%);
-}
-.swatch-dot.is-metal {
-  background-image: linear-gradient(135deg,
-    rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0) 44%, rgba(0, 0, 0, 0.32));
 }
 
 .swatch::after {
@@ -506,6 +500,59 @@ body.is-turned .hint { opacity: 0; }
 }
 .swatch:hover::after,
 .swatch:focus-visible::after { opacity: 1; }
+
+/* --- Pairings --------------------------------------------------------------
+   A chair, a cushion and a frame chosen together: a small render of the
+   chair dressed in them, the name, and the three materials. One tap sets all
+   three; the rows below stay in charge. */
+
+.pairs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+
+.pair {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 6px 10px 6px 6px;
+  background: var(--panel-2);
+  border: 1px solid var(--line-hair);
+  border-radius: var(--r-md);
+  text-align: left;
+  transition: border-color var(--d-fast) var(--e-out), box-shadow var(--d-fast) var(--e-out);
+}
+.pair:hover { border-color: var(--line); }
+.pair.is-active { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+
+.pair-thumb {
+  flex: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
+  background: var(--bg-deep);
+  object-fit: cover;
+  transition: transform var(--d-base) var(--e-out);
+}
+.pair:hover .pair-thumb { transform: scale(1.04); }
+
+.pair-text { display: grid; gap: 7px; min-width: 0; }
+
+.pair-name {
+  font-size: var(--t-fine);
+  color: var(--ink-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pair:hover .pair-name, .pair.is-active .pair-name { color: var(--ink); }
+
+.pair-dots { display: flex; }
+.pair-dots i {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-size: cover;
+  box-shadow: 0 0 0 1.5px var(--panel-2);
+}
+.pair-dots i + i { margin-left: -3px; }
 
 /* --- Segmented control ---------------------------------------------------- */
 
@@ -684,8 +731,8 @@ body.is-turned .hint { opacity: 0; }
   .tool span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .tool svg { width: 17px; height: 17px; }
 
-  .swatches { gap: 10px; }
-  .swatch { width: 40px; height: 40px; }
+  .swatches { gap: 10px; grid-template-columns: repeat(6, minmax(0, 40px)); }
+  .swatches--4 { grid-template-columns: repeat(4, minmax(0, 40px)); }
   /* A tooltip that needs hover is dead weight on a touch screen, and it
      covers the swatch above it. */
   .swatch::after { display: none; }

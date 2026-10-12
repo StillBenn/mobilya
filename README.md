@@ -18,8 +18,8 @@ and the price updates as they go.
 - **A 72-step turntable.** The chair turns under a fixed studio light, the way
   a product turns on a real turntable. Drag to turn it, throw it, pinch or
   scroll to come closer, double-click to zoom.
-- **Layers, not combinations.** Six fabrics × four frames × two sizes × seven
-  cushion choices would be 336 renders per angle. Instead each option is its
+- **Layers, not combinations.** Twelve fabrics × eight frames × two sizes × thirteen
+  cushion choices would be 2,496 renders per angle. Instead each option is its
   own layer, and the page stacks the chosen ones:
   - the empty studio, multiplied by the chair's shadow on its floor;
   - upholstery + frame, added — each was rendered holding the other out, so
@@ -29,6 +29,12 @@ and the price updates as they go.
   chair moves, the full 1600 px frame once it rests. Frames are cropped to
   what they cover and decoded on demand within a memory budget, so a phone
   holds the chair's size, not 72 stage-sized images.
+- **Swatches are the materials.** Each fabric and frame button is a small
+  render of the material itself — the boucle's loops, the oak's rings, the
+  metal's softbox — not a flat colour.
+- **Pairings.** Six chair, cushion and frame combinations chosen to go
+  together, each with a picture of the chair dressed in it; one tap sets all
+  three, and every option stays editable.
 - **Live price**, with an animated counter.
 - **Snapshot** — saves the full render of the angle on screen as a PNG.
 - **Three languages**, English by default; the choice is remembered, and a
@@ -55,6 +61,7 @@ and the price updates as they go.
 - `renders/<size>/` — the layers: `manifest.json`, the empty studio
   (`bg0-*.webp`), and per layer a light pack (`lite.bin`) and one full frame
   per angle (`hd/NN.webp`)
+- `renders/swatch/` — the material samples; `renders/pairs/` — the pairings' pictures
 
 ## Running it locally
 
