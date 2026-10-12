@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>NORD armchair — 3D product configurator</title>
+<title>Larisel armchair — 3D product configurator</title>
 <meta name="description" content="An interactive furniture configurator built with Three.js: choose the upholstery, the frame and the size, and watch the price recalculate in real time.">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="NORD armchair — 3D product configurator">
+<meta property="og:title" content="Larisel armchair — 3D product configurator">
 <meta property="og:description" content="Build the chair for your room in real-time 3D. Upholstery, frame, size — live price.">
 
 <meta name="theme-color" content="#ece7de">
@@ -34,7 +34,7 @@
 
     <div class="stage-top">
       <div class="mark">
-        <span class="mark__name">NORD</span>
+        <span class="mark__name">LARISEL</span>
         <span class="mark__sub" data-t="badge"></span>
       </div>
 
@@ -159,18 +159,18 @@ import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.j
 
 const LANGS = ['en', 'tr', 'ru'];
 const LOCALE = { en: 'en-US', tr: 'tr-TR', ru: 'ru-RU' };
-const STORE = 'nord-lang';
+const STORE = 'larisel-lang';
 
 const T = {
   en: {
-    title: 'NORD armchair — 3D product configurator',
+    title: 'Larisel armchair — 3D product configurator',
     desc: 'An interactive furniture configurator built with Three.js: choose the upholstery, the frame and the size, and watch the price recalculate in real time.',
     badge: 'Demo project',
     hint: 'Drag to turn it',
     reset: 'Reset view',
     snapshot: 'Snapshot',
     eyebrow: '3D product configurator',
-    h1: 'NORD armchair',
+    h1: 'Larisel armchair',
     lede: 'Build the chair for your own room — the model and the price change as you go.',
     'g.fabric': 'Upholstery',
     'g.frame': 'Frame',
@@ -184,14 +184,14 @@ const T = {
     saved: 'Image saved'
   },
   tr: {
-    title: 'NORD koltuk — 3B ürün yapılandırıcı',
+    title: 'Larisel koltuk — 3B ürün yapılandırıcı',
     desc: 'Three.js ile yazılmış interaktif mobilya yapılandırıcı: kumaşı, gövdeyi ve ölçüyü seçin, fiyat anında yeniden hesaplansın.',
     badge: 'Demo proje',
     hint: 'Döndürmek için sürükleyin',
     reset: 'Görünümü sıfırla',
     snapshot: 'Görüntü al',
     eyebrow: '3B ürün yapılandırıcı',
-    h1: 'NORD koltuk',
+    h1: 'Larisel koltuk',
     lede: 'Koltuğu kendi odanıza göre kurun — model ve fiyat anında değişir.',
     'g.fabric': 'Kumaş',
     'g.frame': 'Gövde',
@@ -205,14 +205,14 @@ const T = {
     saved: 'Görüntü kaydedildi'
   },
   ru: {
-    title: 'Кресло NORD — 3D-конфигуратор',
+    title: 'Кресло Larisel — 3D-конфигуратор',
     desc: 'Интерактивный 3D-конфигуратор мебели на Three.js: выбор ткани, каркаса и размера с пересчётом цены в реальном времени.',
     badge: 'Демо-проект',
     hint: 'Зажмите и потяните',
     reset: 'Сбросить вид',
     snapshot: 'Снимок',
     eyebrow: '3D-конфигуратор товара',
-    h1: 'Кресло NORD',
+    h1: 'Кресло Larisel',
     lede: 'Соберите кресло под свой интерьер — модель и цена меняются сразу.',
     'g.fabric': 'Ткань',
     'g.frame': 'Каркас',
@@ -681,7 +681,7 @@ document.getElementById('reset').addEventListener('click', () => {
 document.getElementById('snapshot').addEventListener('click', () => {
   renderer.render(scene, camera);
   const a = document.createElement('a');
-  a.download = 'nord-' + state.fabric.id + '-' + state.frame.id + '.png';
+  a.download = 'larisel-' + state.fabric.id + '-' + state.frame.id + '.png';
   a.href = canvas.toDataURL('image/png');
   a.click();
   toast(t('saved'));

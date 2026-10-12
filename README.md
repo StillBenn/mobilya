@@ -1,4 +1,4 @@
-# NORD armchair — 3D product configurator
+# Larisel armchair — 3D product configurator
 
 An interactive furniture configurator built with Three.js / WebGL. The
 customer picks the upholstery, the frame and the size; the model and the
