@@ -4,26 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Larisel armchair — 3D product configurator</title>
-<meta name="description" content="An interactive furniture configurator built with Three.js: choose the upholstery, the frame and the size, and watch the price recalculate in real time.">
+<meta name="description" content="A furniture configurator rendered like a photograph: choose the upholstery, the frame and the size, turn the chair by hand, and watch the price recalculate.">
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="Larisel armchair — 3D product configurator">
-<meta property="og:description" content="Build the chair for your room in real-time 3D. Upholstery, frame, size — live price.">
+<meta property="og:description" content="Build the chair for your room — rendered like a photograph, turned by hand, priced as you go.">
 
 <meta name="theme-color" content="#ece7de">
 
 <link rel="preload" href="fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/style.css?v=3">
+<link rel="stylesheet" href="css/style.css?v=5">
 
-<script type="importmap">
-{
-  "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
-  }
-}
-</script>
 </head>
 <body>
 
@@ -140,10 +132,6 @@
 </div>
 
 <script type="module">
-import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 
 /* ══════════════════════════════════════════════════════════════════════════
    LANGUAGE
@@ -164,7 +152,7 @@ const STORE = 'larisel-lang';
 const T = {
   en: {
     title: 'Larisel armchair — 3D product configurator',
-    desc: 'An interactive furniture configurator built with Three.js: choose the upholstery, the frame and the size, and watch the price recalculate in real time.',
+    desc: 'A furniture configurator rendered like a photograph: choose the upholstery, the frame and the size, turn the chair by hand, and watch the price recalculate.',
     badge: 'Demo project',
     hint: 'Drag to turn it',
     reset: 'Reset view',
@@ -185,7 +173,7 @@ const T = {
   },
   tr: {
     title: 'Larisel koltuk — 3B ürün yapılandırıcı',
-    desc: 'Three.js ile yazılmış interaktif mobilya yapılandırıcı: kumaşı, gövdeyi ve ölçüyü seçin, fiyat anında yeniden hesaplansın.',
+    desc: 'Fotoğraf gibi render edilmiş mobilya yapılandırıcı: kumaşı, gövdeyi ve ölçüyü seçin, koltuğu elinizle döndürün, fiyat anında yeniden hesaplansın.',
     badge: 'Demo proje',
     hint: 'Döndürmek için sürükleyin',
     reset: 'Görünümü sıfırla',
@@ -206,7 +194,7 @@ const T = {
   },
   ru: {
     title: 'Кресло Larisel — 3D-конфигуратор',
-    desc: 'Интерактивный 3D-конфигуратор мебели на Three.js: выбор ткани, каркаса и размера с пересчётом цены в реальном времени.',
+    desc: 'Конфигуратор мебели с фотореалистичной визуализацией: выберите ткань, каркас и размер, поверните кресло рукой — цена пересчитывается сразу.',
     badge: 'Демо-проект',
     hint: 'Зажмите и потяните',
     reset: 'Сбросить вид',
@@ -302,222 +290,160 @@ function formatPrice(value) {
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
-   THE CHAIR
+   THE CHAIR, RENDERED
    ══════════════════════════════════════════════════════════════════════════
-   Built procedurally: no external 3D files, so the page opens instantly.
-   All dimensions in metres. Seat height 46 cm, overall height ~78 cm.      */
+   Every option is a photograph-grade render (Blender, Cycles), not a live
+   model: the chair turns on a 72-step turntable under a fixed studio light,
+   so the window's light slides over it as it would on a real one. Each option
+   is its own layer, and the page stacks the ones chosen:
+     empty studio × shadow   (multiply: the chair's shadow on that floor)
+     upholstery + frame      (added: each was rendered holding the other out,
+                              so together they cover exactly the chair)
+     × cushion's shadow      (multiply: what the cushion does to the chair,
+                              measured as the chair with it / without it)
+     cushion                 (over: lit with the chair there)
+   Two sets: light frames (800 px, one pack per layer) while the chair moves,
+   the full 1600 px frame once it rests. Frames are cropped to what they cover
+   and decoded on demand within a memory budget, so a phone holds the chair's
+   size, not 72 stage-sized images.
+   The renders and the tooling that makes them: _film/config (build, render,
+   pack).                                                                   */
 
-const W = 0.74;         // width
-const D = 0.72;         // depth
-const LEG_H = 0.30;
-const RAIL_Y = 0.315;   // rail under the seat cushion
-const SEAT_Y = 0.400;   // centre of the seat cushion
-const SEAT_H = 0.130;
-const ARM_Y = 0.625;
+const STEPS = 72;
+const RENDERS = './renders/';
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const small = Math.min(screen.width, screen.height) < 700;
+const saveData = !!(navigator.connection && navigator.connection.saveData);
+const BUDGET = (small ? 56 : 160) * 1048576;      // bytes of decoded frames kept
 
-function shadowed(mesh) {
-  mesh.castShadow = true;
-  mesh.receiveShadow = true;
-  return mesh;
+const manifests = {}, manifestSync = {};
+function manifestOf(size) {
+  return manifests[size] || (manifests[size] = fetch(RENDERS + size + '/manifest.json')
+    .then((r) => { if (!r.ok) throw new Error('manifest ' + size); return r.json(); })
+    .then((m) => (manifestSync[size] = m))
+    .catch((e) => { delete manifests[size]; throw e; }));
 }
 
-function buildChair() {
-  const root = new THREE.Group();
-
-  const fabric = new THREE.MeshPhysicalMaterial({
-    color: 0xd8c3a5,
-    roughness: 0.95,
-    metalness: 0.0,
-    sheen: 0.30,
-    sheenRoughness: 0.9,
-    sheenColor: new THREE.Color(0xf4f0ea),
-    envMapIntensity: 0.42,
-  });
-
-  const frame = new THREE.MeshStandardMaterial({
-    color: 0xb98b52,
-    roughness: 0.58,
-    metalness: 0.0,
-    envMapIntensity: 1.4,
-  });
-
-  const pillowMat = new THREE.MeshPhysicalMaterial({
-    color: 0xa8553c,
-    roughness: 0.9,
-    metalness: 0.0,
-    sheen: 0.35,
-    sheenRoughness: 0.85,
-    envMapIntensity: 0.55,
-    transparent: true,
-    opacity: 0,
-  });
-
-  // --- rail: the wooden base under the cushion -----------------------------
-  const rail = shadowed(new THREE.Mesh(
-    new RoundedBoxGeometry(W + 0.02, 0.055, D + 0.02, 4, 0.018),
-    frame
-  ));
-  rail.position.y = RAIL_Y;
-  root.add(rail);
-
-  // --- seat cushion --------------------------------------------------------
-  const seat = shadowed(new THREE.Mesh(
-    new RoundedBoxGeometry(W - 0.02, SEAT_H, D - 0.03, 7, 0.05),
-    fabric
-  ));
-  seat.position.y = SEAT_Y;
-  root.add(seat);
-
-  // --- back: sunk into the cushion, raked ~11° ------------------------------
-  const backPivot = new THREE.Group();
-  backPivot.position.set(0, SEAT_Y - 0.02, -D / 2 + 0.10);
-  backPivot.rotation.x = -0.20;
-  const back = shadowed(new THREE.Mesh(
-    new RoundedBoxGeometry(W - 0.02, 0.42, 0.14, 7, 0.048),
-    fabric
-  ));
-  back.position.y = 0.20;
-  backPivot.add(back);
-  root.add(backPivot);
-
-  // --- arms: a soft pad on wooden posts -------------------------------------
-  const postGeo = new THREE.CylinderGeometry(0.023, 0.021, ARM_Y - RAIL_Y, 16);
-  for (const sx of [-1, 1]) {
-    for (const sz of [-1, 1]) {
-      const post = shadowed(new THREE.Mesh(postGeo, frame));
-      post.position.set(
-        sx * (W / 2 + 0.015),
-        RAIL_Y + (ARM_Y - RAIL_Y) / 2,
-        sz * (D / 2 - 0.17)
-      );
-      root.add(post);
-    }
-
-    const pad = shadowed(new THREE.Mesh(
-      new RoundedBoxGeometry(0.095, 0.085, D - 0.18, 5, 0.038),
-      fabric
-    ));
-    pad.position.set(sx * (W / 2 + 0.015), ARM_Y + 0.015, 0.01);
-    root.add(pad);
+/* decoded frames: the least recently used go first once over the budget */
+const cache = new Map();
+let cacheBytes = 0;
+function remember(key, bmp) {
+  const bytes = bmp.width * bmp.height * 4;
+  cache.set(key, { bmp, bytes }); cacheBytes += bytes;
+  for (const [k, v] of cache) {
+    if (cacheBytes <= BUDGET) break;
+    if (k === key) continue;
+    cache.delete(k); cacheBytes -= v.bytes;
+    if (v.bmp.close) v.bmp.close();
   }
-
-  // --- legs: tapered, splayed slightly outwards -----------------------------
-  const legGeo = new THREE.CylinderGeometry(0.028, 0.016, LEG_H, 20);
-  for (const sx of [-1, 1]) {
-    for (const sz of [-1, 1]) {
-      const leg = shadowed(new THREE.Mesh(legGeo, frame));
-      leg.position.set(sx * (W / 2 - 0.09), LEG_H / 2 + 0.004, sz * (D / 2 - 0.10));
-      leg.rotation.z = -sx * 0.11;
-      leg.rotation.x = sz * 0.10;
-      root.add(leg);
-    }
-  }
-
-  // --- scatter cushion ------------------------------------------------------
-  // A child of the back, so it inherits the rake and always sits propped
-  // against it rather than lying flat in the middle of the seat.
-  const pillow = shadowed(new THREE.Mesh(
-    new RoundedBoxGeometry(0.34, 0.115, 0.34, 7, 0.052),
-    pillowMat
-  ));
-  pillow.position.set(0.15, 0.21, 0.13);
-  pillow.rotation.set(Math.PI / 2 - 0.30, 0.12, 0.14);
-  pillow.visible = false;
-  backPivot.add(pillow);
-
-  return { root, fabric, frame, pillowMat, pillow };
+}
+function recall(key) {
+  const hit = cache.get(key);
+  if (!hit) return null;
+  cache.delete(key); cache.set(key, hit);           // touched: the newest again
+  return hit.bmp;
 }
 
-/* ══════════════════════════════════════════════════════════════════════════
-   SCENE, LIGHT, CONTROLS
-   ══════════════════════════════════════════════════════════════════════════ */
-const canvas = document.getElementById('scene');
-const stage = document.getElementById('stage');
+/* a layer's light frames come in one pack: one request, then sliced */
+const packs = new Map();
+function packOf(size, name) {
+  const id = size + '/' + name;
+  if (!packs.has(id)) {
+    const p = manifestOf(size).then((m) => {
+      const L = m.layers[name].lite;
+      return fetch(RENDERS + size + '/' + L.pack)
+        .then((r) => { if (!r.ok) throw new Error(L.pack); return r.arrayBuffer(); })
+        .then((buf) => {
+          const out = []; let at = 0;
+          for (const n of L.sizes) { out.push(new Blob([new Uint8Array(buf, at, n)], { type: 'image/webp' })); at += n; }
+          return out;
+        });
+    });
+    p.catch(() => packs.delete(id));                // a failed download may be tried again
+    packs.set(id, p);
+  }
+  return packs.get(id);
+}
 
-const renderer = new THREE.WebGLRenderer({
-  canvas, antialias: true, alpha: true, preserveDrawingBuffer: true
-});
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-renderer.outputColorSpace = THREE.SRGBColorSpace;
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 0.92;
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+const pending = new Map();
+function decode(tier, size, name, i) {
+  const key = tier + '/' + size + '/' + name + '/' + i;
+  const have = recall(key);
+  if (have) return Promise.resolve(have);
+  if (pending.has(key)) return pending.get(key);
+  const blob = tier === 'lite'
+    ? packOf(size, name).then((blobs) => blobs[i])
+    : manifestOf(size).then((m) => fetch(RENDERS + size + '/' + m.layers[name].hd.dir + String(i + 1).padStart(2, '0') + '.webp'))
+        .then((r) => { if (!r.ok) throw new Error(name + ' ' + i); return r.blob(); });
+  const p = blob.then((b) => createImageBitmap(b)).then(
+    (bmp) => { pending.delete(key); remember(key, bmp); return bmp; },
+    (err) => { pending.delete(key); throw err; });
+  pending.set(key, p);
+  return p;
+}
 
-const scene = new THREE.Scene();
+/* the empty studio: once per size and set */
+const grounds = new Map();
+function groundOf(tier, size) {
+  const id = tier + '/' + size;
+  if (!grounds.has(id)) {
+    const p = manifestOf(size)
+      .then((m) => fetch(RENDERS + size + '/' + m.bg0[tier]))
+      .then((r) => { if (!r.ok) throw new Error('ground'); return r.blob(); })
+      .then((b) => createImageBitmap(b))
+      .then((bmp) => { grounds.set(id + '!', bmp); return bmp; });
+    p.catch(() => grounds.delete(id));
+    grounds.set(id, p);
+  }
+  return grounds.get(id);
+}
 
-const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
-camera.position.set(1.58, 1.05, 2.05);
+/* the layers a choice needs, and a key that names it */
+const layersOf = (sel) => ['shadow', 'fab-' + sel.fabric, 'frm-' + sel.frame].concat(sel.pillow ? ['pilsh', 'pil-' + sel.pillowFabric] : []);
+const keyOf = (sel) => [sel.size, sel.fabric, sel.frame, sel.pillow ? sel.pillowFabric : '-'].join('|');
+const want = (tier, sel, i) => Promise.all([groundOf(tier, sel.size)].concat(layersOf(sel).map((n) => decode(tier, sel.size, n, i))));
+const canCompose = (tier, sel, i) => grounds.has(tier + '/' + sel.size + '!') && !!manifestSync[sel.size]
+  && layersOf(sel).every((n) => cache.has(tier + '/' + sel.size + '/' + n + '/' + i));
 
-const controls = new OrbitControls(camera, canvas);
-controls.target.set(0, 0.48, 0);
-controls.enableDamping = true;
-controls.dampingFactor = 0.07;
-controls.enablePan = false;
-controls.minDistance = 1.5;
-controls.maxDistance = 4.2;
-controls.minPolarAngle = 0.35;
-controls.maxPolarAngle = 1.50;
-controls.autoRotate = true;
-controls.autoRotateSpeed = 0.9;
-controls.addEventListener('start', () => {
-  controls.autoRotate = false;
-  document.body.classList.add('is-turned');   // the prompt has been followed
-});
-
-const pmrem = new THREE.PMREMGenerator(renderer);
-scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-
-const key = new THREE.DirectionalLight(0xfffaf4, 1.65);
-key.position.set(2.6, 4.2, 2.4);
-key.castShadow = true;
-key.shadow.mapSize.set(2048, 2048);
-key.shadow.radius = 4;
-key.shadow.bias = -0.0006;
-const shadowCam = key.shadow.camera;
-shadowCam.near = 0.5;
-shadowCam.far = 12;
-shadowCam.left = -2.2;
-shadowCam.right = 2.2;
-shadowCam.top = 2.2;
-shadowCam.bottom = -2.2;
-scene.add(key);
-
-const rim = new THREE.DirectionalLight(0xeef2ff, 0.45);
-rim.position.set(-3, 2.2, -2.4);
-scene.add(rim);
-
-const ground = new THREE.Mesh(
-  new THREE.PlaneGeometry(14, 14),
-  new THREE.ShadowMaterial({ opacity: 0.30 })
-);
-ground.rotation.x = -Math.PI / 2;
-ground.receiveShadow = true;
-scene.add(ground);
-
-const chair = buildChair();
-scene.add(chair.root);
+/* stack one angle of a choice into a frame-sized canvas */
+const frameCv = { lite: document.createElement('canvas'), hd: document.createElement('canvas') };
+const chairCv = { lite: document.createElement('canvas'), hd: document.createElement('canvas') };
+function compose(tier, sel, i, into) {
+  if (!canCompose(tier, sel, i)) return null;
+  const m = manifestSync[sel.size];
+  const [fw, fh] = m.tiers[tier];
+  const c = into || frameCv[tier], b = chairCv[tier];
+  if (c.width !== fw || c.height !== fh) { c.width = fw; c.height = fh; }
+  if (b.width !== fw || b.height !== fh) { b.width = fw; b.height = fh; }
+  const names = layersOf(sel);
+  const put = (ctx, n) => {
+    const k = m.layers[n][tier].boxes[i];
+    ctx.drawImage(recall(tier + '/' + sel.size + '/' + n + '/' + i), k[0], k[1], k[2], k[3]);
+  };
+  const g = c.getContext('2d'), h = b.getContext('2d');
+  g.globalCompositeOperation = 'source-over'; g.globalAlpha = 1;
+  g.drawImage(grounds.get(tier + '/' + sel.size + '!'), 0, 0, fw, fh);
+  g.globalCompositeOperation = 'multiply'; put(g, names[0]);
+  h.globalCompositeOperation = 'source-over'; h.clearRect(0, 0, fw, fh);
+  h.globalCompositeOperation = 'lighter'; put(h, names[1]); put(h, names[2]);
+  h.globalCompositeOperation = 'source-over';
+  g.globalCompositeOperation = 'source-over'; g.drawImage(b, 0, 0);
+  if (names[3]) {
+    g.globalCompositeOperation = 'multiply'; put(g, names[3]);     // the cushion's shadow on the chair
+    g.globalCompositeOperation = 'source-over'; put(g, names[4]);  // the cushion
+  }
+  return c;
+}
 
 /* ── state ─────────────────────────────────────────────────────────────── */
 const state = {
   fabric: FABRICS[0], frame: FRAMES[0], size: SIZES[0],
   pillow: false, pillowFabric: FABRICS[4]
 };
-
-const target = {
-  fabric: new THREE.Color(FABRICS[0].hex),
-  frame: new THREE.Color(FRAMES[0].hex),
-  pillow: new THREE.Color(FABRICS[4].hex),
-  metalness: FRAMES[0].metalness,
-  roughness: FRAMES[0].roughness,
-  scale: new THREE.Vector3(1, 1, 1),
-  opacity: 0,
-  price: totalPrice(state),
-};
-let shownPrice = target.price;
-
-chair.fabric.color.copy(target.fabric);
-chair.frame.color.copy(target.frame);
+const selOf = () => ({ size: state.size.id, fabric: state.fabric.id, frame: state.frame.id,
+                       pillow: state.pillow, pillowFabric: state.pillowFabric.id });
+let targetPrice = totalPrice(state);
+let shownPrice = targetPrice;
 
 /* ── interface ─────────────────────────────────────────────────────────── */
 const els = {
@@ -580,22 +506,17 @@ function buildSwatchRow(container, items, kind, onPick, activeIndex = 0) {
 
 buildSwatchRow(els.fabrics, FABRICS, 'fabric', item => {
   state.fabric = item;
-  target.fabric.set(item.hex);
-  refresh();
+  refresh(); changed();
 });
 
 buildSwatchRow(els.frames, FRAMES, 'frame', item => {
   state.frame = item;
-  target.frame.set(item.hex);
-  target.metalness = item.metalness;
-  target.roughness = item.roughness;
-  refresh();
+  refresh(); changed();
 });
 
 buildSwatchRow(els.pillowFabrics, FABRICS, 'fabric', item => {
   state.pillowFabric = item;
-  target.pillow.set(item.hex);
-  refresh();
+  refresh(); changed();
 }, 4);
 
 SIZES.forEach((item, i) => {
@@ -607,24 +528,21 @@ SIZES.forEach((item, i) => {
     els.sizes.querySelectorAll('.pill').forEach(p => p.classList.remove('is-active'));
     b.classList.add('is-active');
     state.size = item;
-    target.scale.set(item.scale.x, item.scale.y, item.scale.z);
-    refresh();
+    refresh(); changed();
   });
   els.sizes.appendChild(b);
 });
 
 els.pillow.addEventListener('change', () => {
   state.pillow = els.pillow.checked;
-  target.opacity = state.pillow ? 1 : 0;
-  if (state.pillow) chair.pillow.visible = true;
   els.pillowOptions.hidden = !state.pillow;
-  refresh();
+  refresh(); changed();
 });
 
 /* One function writes every piece of text that depends on either the state
    or the language, so the two can never disagree. */
 function refresh() {
-  target.price = totalPrice(state);
+  targetPrice = totalPrice(state);
 
   els.vFabric.textContent = nameOf(state.fabric);
   els.vFrame.textContent = nameOf(state.frame);
@@ -672,24 +590,37 @@ document.querySelectorAll('[data-lang]').forEach((b) => {
   b.addEventListener('click', () => applyLang(b.dataset.lang));
 });
 
+/* back to the first view: the shorter way round, and out of any zoom */
 document.getElementById('reset').addEventListener('click', () => {
-  controls.autoRotate = true;
-  camera.position.set(1.58, 1.05, 2.05);
-  controls.target.set(0, 0.48, 0);
+  const a = ((view.angle % STEPS) + STEPS) % STEPS;
+  const to = view.angle - a + (a > STEPS / 2 ? STEPS : 0);
+  view.vel = 0;
+  if (Math.abs(to - view.angle) > 0.01) view.play = { from: view.angle, to, t0: performance.now(), dur: reducedMotion ? 1 : 900 };
+  view.zoomTo = 1;
+  wake();
 });
 
+/* the snapshot is the full render of the angle on screen, not the screen */
 document.getElementById('snapshot').addEventListener('click', () => {
-  renderer.render(scene, camera);
-  const a = document.createElement('a');
-  a.download = 'larisel-' + state.fabric.id + '-' + state.frame.id + '.png';
-  a.href = canvas.toDataURL('image/png');
-  a.click();
-  toast(t('saved'));
+  const sel = selOf(), i = idx(view.angle);
+  want('hd', sel, i).then(() => {
+    const c = document.createElement('canvas');
+    if (!compose('hd', sel, i, c)) return;
+    c.toBlob((blob) => {
+      if (!blob) return;
+      const a = document.createElement('a');
+      a.download = 'larisel-' + state.fabric.id + '-' + state.frame.id + '.png';
+      a.href = URL.createObjectURL(blob);
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+      toast(t('saved'));
+    }, 'image/png');
+  }, () => {});
 });
 
 document.getElementById('order').addEventListener('click', () => {
   toast([nameOf(state.size), nameOf(state.fabric), nameOf(state.frame)].join(' · ')
-        + ' — ' + formatPrice(target.price));
+        + ' — ' + formatPrice(totalPrice(state)));
 });
 
 let toastTimer;
@@ -702,25 +633,27 @@ function toast(text) {
 
 applyLang(lang);
 
+const canvas = document.getElementById('scene');
+const stage = document.getElementById('stage');
+
 /* ══════════════════════════════════════════════════════════════════════════
    RENDER
    ══════════════════════════════════════════════════════════════════════════ */
+const ctx = canvas.getContext('2d');
+let dpr = 1;
 function resize() {
-  const w = stage.clientWidth;
-  const h = stage.clientHeight;
+  const w = stage.clientWidth, h = stage.clientHeight;
   if (!w || !h) return;
-  renderer.setSize(w, h, false);
-  camera.aspect = w / h;
-  camera.updateProjectionMatrix();
+  dpr = Math.min(devicePixelRatio || 1, 2);
+  const W = Math.round(w * dpr), H = Math.round(h * dpr);
+  if (canvas.width !== W || canvas.height !== H) { canvas.width = W; canvas.height = H; shown.key = ''; }
+  wake();
 }
 addEventListener('resize', resize);
 /* The stage can change size without the window ever resizing — a stylesheet
    arriving late, a mobile URL bar sliding away. Watching the element itself
    is the only reliable signal. */
 if ('ResizeObserver' in window) new ResizeObserver(resize).observe(stage);
-resize();
-
-const clock = new THREE.Clock();
 
 /* Smoothing is tied to time, not to frames: the transition takes the same
    wall-clock time at 60 Hz, at 144 Hz, and on a laptop that is dropping
@@ -728,39 +661,220 @@ const clock = new THREE.Clock();
 function smooth(rate, dt) {
   return 1 - Math.exp(-rate * dt);
 }
+const ease = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+const idx = (a) => ((Math.round(a) % STEPS) + STEPS) % STEPS;
 
-function tick() {
+/* the turntable: angle in steps (5 degrees each), dragged, thrown, or played */
+const view = { angle: 0, vel: 0, dragging: false, play: null, zoom: 1, zoomTo: 1, quietSince: 0 };
+const PX_PER_STEP = small ? 5 : 6;                  // a full turn is ~430 px of drag
+/* where the chair sits in the frame (fractions): zoom closes in on it */
+const CX = 0.5, CY = 0.56;
+
+const pointers = new Map();
+let lastX = 0, lastT = 0, pinch0 = 0, zoom0 = 1;
+canvas.addEventListener('pointerdown', (e) => {
+  pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  canvas.setPointerCapture(e.pointerId);
+  if (pointers.size === 2) {
+    const [a, b] = [...pointers.values()];
+    pinch0 = Math.hypot(a.x - b.x, a.y - b.y); zoom0 = view.zoomTo; view.dragging = false;
+    return;
+  }
+  view.dragging = true; view.play = null; view.vel = 0;
+  lastX = e.clientX; lastT = performance.now();
+  document.body.classList.add('is-turned');         // the prompt has been followed
+  wake();
+});
+canvas.addEventListener('pointermove', (e) => {
+  if (!pointers.has(e.pointerId)) return;
+  pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  if (pointers.size === 2) {
+    const [a, b] = [...pointers.values()];
+    const d = Math.hypot(a.x - b.x, a.y - b.y);
+    if (pinch0) view.zoomTo = Math.min(1.8, Math.max(1, zoom0 * d / pinch0));
+    wake();
+    return;
+  }
+  if (!view.dragging) return;
+  const now = performance.now(), dx = e.clientX - lastX;
+  /* the surface follows the finger: a step turns the chair's front towards the
+     camera's right (the chair turns counter-clockwise seen from above), so a
+     drag to the right is a step forward */
+  const ds = dx / PX_PER_STEP;
+  view.angle += ds;
+  const dt = Math.max(0.008, (now - lastT) / 1000);
+  view.vel = view.vel * 0.6 + (ds / dt) * 0.4;
+  lastX = e.clientX; lastT = now;
+  wake();
+});
+const release = (e) => {
+  pointers.delete(e.pointerId);
+  if (pointers.size < 2) pinch0 = 0;
+  if (pointers.size === 0 && view.dragging) {
+    view.dragging = false;
+    if (performance.now() - lastT > 90) view.vel = 0;   // held still before letting go: no throw
+    wake();
+  }
+};
+canvas.addEventListener('pointerup', release);
+canvas.addEventListener('pointercancel', release);
+canvas.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  view.zoomTo = Math.min(1.8, Math.max(1, view.zoomTo * Math.exp(-e.deltaY * 0.0015)));
+  wake();
+}, { passive: false });
+canvas.addEventListener('dblclick', () => { view.zoomTo = view.zoomTo > 1.2 ? 1 : 1.6; wake(); });
+
+/* what is on the screen, and a fade from what was there before */
+const shown = { key: '', sel: '', tier: '' };
+const fadeCv = document.createElement('canvas');
+let fade = null;                                     // { t0, dur }
+
+function paint(frame) {
+  const W = canvas.width, H = canvas.height, fw = frame.width, fh = frame.height;
+  const s0 = Math.max(W / fw, H / fh), s = s0 * view.zoom;
+  /* zoom keeps the chair where it stood, as far as the frame still covers the stage */
+  const px = W / 2 + (CX - 0.5) * fw * s0, py = H / 2 + (CY - 0.5) * fh * s0;
+  let dx = px - CX * fw * s, dy = py - CY * fh * s;
+  dx = Math.min(0, Math.max(W - fw * s, dx)); dy = Math.min(0, Math.max(H - fh * s, dy));
+  ctx.imageSmoothingQuality = 'high';
+  ctx.drawImage(frame, dx, dy, fw * s, fh * s);
+}
+
+function startFade(dur) {
+  if (reducedMotion || !shown.key) return;
+  if (fadeCv.width !== canvas.width || fadeCv.height !== canvas.height) { fadeCv.width = canvas.width; fadeCv.height = canvas.height; }
+  const f = fadeCv.getContext('2d');
+  f.clearRect(0, 0, fadeCv.width, fadeCv.height); f.drawImage(canvas, 0, 0);
+  fade = { t0: performance.now(), dur };
+}
+
+let running = false, lastFrameT = 0, started = false;
+function wake() {
+  if (running) return;
+  running = true; lastFrameT = performance.now();
   requestAnimationFrame(tick);
+}
 
-  const dt = Math.min(clock.getDelta(), 0.1);
-  const k = smooth(9, dt);
+function tick(now) {
+  const dt = Math.min((now - lastFrameT) / 1000, 0.1);
+  lastFrameT = now;
+  let busy = false;
 
-  chair.fabric.color.lerp(target.fabric, k);
-  chair.frame.color.lerp(target.frame, k);
-  chair.pillowMat.color.lerp(target.pillow, k);
-  chair.frame.metalness += (target.metalness - chair.frame.metalness) * k;
-  chair.frame.roughness += (target.roughness - chair.frame.roughness) * k;
+  /* motion: a played turn (the opening, a reset), a throw, or the hand */
+  if (view.play) {
+    const p = Math.min(1, (now - view.play.t0) / view.play.dur);
+    view.angle = view.play.from + (view.play.to - view.play.from) * ease(p);
+    if (p >= 1) { view.angle = view.play.to % STEPS; view.play = null; }
+    busy = true;
+  } else if (!view.dragging) {
+    if (Math.abs(view.vel) > 0.6) {
+      view.angle += view.vel * dt;
+      view.vel *= Math.exp(-3.2 * dt);
+      busy = true;
+    } else {
+      view.vel = 0;
+      const to = Math.round(view.angle);
+      if (Math.abs(to - view.angle) > 0.01) { view.angle += (to - view.angle) * smooth(14, dt); busy = true; }
+      else view.angle = to;
+    }
+  } else busy = true;
+  const moving = busy;
+  if (moving) view.quietSince = now;
 
-  chair.pillowMat.opacity += (target.opacity - chair.pillowMat.opacity) * smooth(11, dt);
-  if (chair.pillowMat.opacity < 0.01 && target.opacity === 0) chair.pillow.visible = false;
-  chair.pillow.scale.setScalar(0.62 + chair.pillowMat.opacity * 0.38);
+  view.zoom += (view.zoomTo - view.zoom) * smooth(10, dt);
+  if (Math.abs(view.zoomTo - view.zoom) > 0.0005) busy = true; else view.zoom = view.zoomTo;
 
-  chair.root.scale.lerp(target.scale, smooth(8, dt));
-
-  if (Math.abs(shownPrice - target.price) > 1) {
-    shownPrice += (target.price - shownPrice) * smooth(10, dt);
+  /* the price counts its way to the new total */
+  if (Math.abs(shownPrice - targetPrice) > 1) {
+    shownPrice += (targetPrice - shownPrice) * smooth(10, dt);
     els.price.textContent = formatPrice(shownPrice);
-  } else if (shownPrice !== target.price) {
-    shownPrice = target.price;
+    busy = true;
+  } else if (shownPrice !== targetPrice) {
+    shownPrice = targetPrice;
     els.price.textContent = formatPrice(shownPrice);
   }
 
-  controls.update();
-  renderer.render(scene, camera);
-}
-tick();
+  /* the frame: sharp once the chair has rested for a moment, light while it moves */
+  const sel = selOf(), sk = keyOf(sel), i = idx(view.angle);
+  const rest = !moving && now - view.quietSince > 120;
+  /* ask only for what is missing: a resolved request wakes the loop, so asking
+     for what is already here would keep an idle page drawing forever */
+  if (!canCompose('lite', sel, i)) want('lite', sel, i).then(wake, () => {});
+  if (rest && !canCompose('hd', sel, i)) want('hd', sel, i).then(wake, () => {});
+  /* ahead of the turn: the next frames in its direction, light */
+  const dir = view.vel < 0 || (view.play && view.play.to < view.play.from) ? -1 : 1;
+  if (moving) {
+    for (let k = 1; k <= 6; k++) {
+      const j = idx(i + dir * k);
+      for (const n of layersOf(sel)) decode('lite', sel.size, n, j).catch(() => {});
+    }
+  }
 
-document.body.classList.add('is-ready');
+  let tier = rest && canCompose('hd', sel, i) ? 'hd' : canCompose('lite', sel, i) ? 'lite' : (canCompose('hd', sel, i) ? 'hd' : null);
+  if (tier) {
+    const key = sk + '#' + i + '#' + tier;
+    const zoomed = Math.abs(view.zoom - (shown.zoom || 1)) > 0.0005;
+    if (key !== shown.key || fade || zoomed || shown.w !== canvas.width) {
+      if (shown.sel && shown.sel !== sk) startFade(reducedMotion ? 0 : 380);           // a new choice dissolves in
+      else if (shown.sel === sk && shown.tier === 'lite' && tier === 'hd' && shown.i === i) startFade(220);   // sharpening, no pop
+      const frame = compose(tier, sel, i);
+      ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
+      paint(frame);
+      if (fade) {
+        const p = Math.min(1, (now - fade.t0) / fade.dur);
+        ctx.globalAlpha = 1 - ease(p); ctx.drawImage(fadeCv, 0, 0); ctx.globalAlpha = 1;
+        if (p >= 1) fade = null; else busy = true;
+      }
+      Object.assign(shown, { key, sel: sk, tier, i, zoom: view.zoom, w: canvas.width });
+      if (!started) {
+        started = true;
+        document.body.classList.add('is-ready');
+        intro();
+      }
+    }
+  }
+  /* keep drawing while something moves, or until the chair has rested long
+     enough to ask for its sharp frame; a missing frame wakes the loop itself */
+  if (busy || (!moving && !rest)) requestAnimationFrame(tick);
+  else running = false;
+}
+
+/* the opening: once the light frames are here, the chair turns once on its own */
+function intro() {
+  const sel = selOf();
+  Promise.all(layersOf(sel).map((n) => packOf(sel.size, n))).then(() => {
+    if (reducedMotion || document.body.classList.contains('is-turned')) return;
+    view.play = { from: view.angle, to: view.angle + STEPS, t0: performance.now(), dur: 3600 };
+    wake();
+    later(preload);
+  }, () => {});
+}
+const later = (fn) => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 2500 }) : setTimeout(fn, 1200));
+
+/* Afterwards, quietly: the light packs of every other option of this size, so
+   a choice turns at once. Not on a phone or a saver connection — there a
+   choice loads when it is made (~0.3-1 MB). */
+function preload() {
+  if (small || saveData) return;
+  const size = state.size.id;
+  const names = FABRICS.map((f) => 'fab-' + f.id).concat(FRAMES.map((f) => 'frm-' + f.id), FABRICS.map((f) => 'pil-' + f.id));
+  let k = 0;
+  const next = () => {
+    if (k >= names.length) return;
+    packOf(size, names[k++]).then(() => later(next), () => later(next));
+  };
+  next();
+}
+
+function changed() {
+  targetPrice = totalPrice(state);
+  wake();
+}
+
+/* the first frame: the sharp one, before anything else */
+manifestOf(state.size.id).then(() => want('hd', selOf(), 0)).then(wake, () => wake());
+resize();
 </script>
 </body>
 </html>

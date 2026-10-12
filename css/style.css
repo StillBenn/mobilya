@@ -224,18 +224,21 @@ body.is-ready .stage canvas { opacity: 1; }
   gap: 2px;
   pointer-events: none;
 }
+/* light type: the studio's sweep rises into shadow behind it in every frame */
 .mark__name {
   font-family: var(--f-display);
   font-size: 1.25rem;
   letter-spacing: 0.01em;
   line-height: 1;
+  color: #f7f2e9;
+  text-shadow: 0 1px 12px rgba(40, 30, 20, 0.35);
 }
 .mark__sub {
   font-family: var(--f-mono);
   font-size: var(--t-label);
   letter-spacing: var(--ls-label);
   text-transform: uppercase;
-  color: var(--muted);
+  color: rgba(247, 242, 233, 0.72);
 }
 
 .chip {
@@ -670,8 +673,16 @@ body.is-turned .hint { opacity: 0; }
 
   .stage-top, .stage-bottom { inset-inline: 16px; }
   .stage-top { top: 16px; }
-  .stage-bottom { bottom: 16px; flex-direction: column; align-items: flex-start; }
   .hint { display: none; }
+  /* The chair fills the stage on a phone: the measurements go up under the mark
+     and the two tools become round icons in the corner, clear of the legs
+     (they used to sit over them). The words stay for screen readers. */
+  .stage-bottom { position: static; }
+  .stage-bottom__left { position: absolute; z-index: 2; top: 62px; right: 16px; justify-items: end; }
+  .tools { position: absolute; z-index: 2; right: 14px; bottom: 14px; }
+  .tool { width: 42px; height: 42px; padding: 0; justify-content: center; border-radius: 50%; }
+  .tool span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .tool svg { width: 17px; height: 17px; }
 
   .swatches { gap: 10px; }
   .swatch { width: 40px; height: 40px; }

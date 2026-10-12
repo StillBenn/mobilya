@@ -1,8 +1,8 @@
-# Larisel armchair — 3D product configurator
+# Larisel armchair — product configurator
 
-An interactive furniture configurator built with Three.js / WebGL. The
-customer picks the upholstery, the frame and the size; the model and the
-price update in real time.
+A furniture configurator rendered like a photograph. The customer picks the
+upholstery, the frame, the size and a scatter cushion, turns the chair by hand,
+and the price updates as they go.
 
 **A portfolio demo.** The product, the brand and the prices are invented.
 
@@ -12,12 +12,25 @@ price update in real time.
 
 ## What is inside
 
-- **The model is built in code** — no external `.glb` / `.fbx` files, so the
-  page opens instantly and weighs under 30 KB excluding the library.
-- **PBR materials and soft shadows**, environment from `RoomEnvironment`, so
-  there is no HDRI file to download either.
+- **Every option is a path-traced render** (Blender, Cycles): real light, a
+  window's shadow sliding over the chair, wood grain, a boucle weave. Nothing
+  is drawn live in WebGL.
+- **A 72-step turntable.** The chair turns under a fixed studio light, the way
+  a product turns on a real turntable. Drag to turn it, throw it, pinch or
+  scroll to come closer, double-click to zoom.
+- **Layers, not combinations.** Six fabrics × four frames × two sizes × seven
+  cushion choices would be 336 renders per angle. Instead each option is its
+  own layer, and the page stacks the chosen ones:
+  - the empty studio, multiplied by the chair's shadow on its floor;
+  - upholstery + frame, added — each was rendered holding the other out, so
+    together they cover exactly the chair;
+  - the cushion over them, rendered with the chair catching its shadow.
+- **Two sets of frames**: light ones (800 px, one pack per layer) while the
+  chair moves, the full 1600 px frame once it rests. Frames are cropped to
+  what they cover and decoded on demand within a memory budget, so a phone
+  holds the chair's size, not 72 stage-sized images.
 - **Live price**, with an animated counter.
-- **Snapshot** — one button saves a PNG of the configuration on screen.
+- **Snapshot** — saves the full render of the angle on screen as a PNG.
 - **Three languages**, English by default; the choice is remembered, and a
   `?lang=` link wins over it.
 - **Responsive** — on a phone the stage takes the top of the screen and the
@@ -29,17 +42,23 @@ price update in real time.
 
 - **XL changes the proportions, not the overall scale.** In an empty scene a
   uniform enlargement is indistinguishable from the camera moving closer.
-- **One file.** All of the JavaScript lives in `index.html`: ES modules are
-  blocked by CORS over `file://`, so a separate `js/` folder stopped the page
-  from opening on a double-click. One source of truth instead of two.
+- **One file.** All of the JavaScript lives in `index.html`.
 - **Names live on the catalogue item, not in a parallel list** — a colour and
   its three names cannot drift apart if they are one object.
 - **Fonts are self-hosted and split by script.** The Cyrillic slice only
   downloads when the page is switched to Russian.
 
+## Files
+
+- `index.html` — the page and its script
+- `css/style.css` — the page's styles
+- `renders/<size>/` — the layers: `manifest.json`, the empty studio
+  (`bg0-*.webp`), and per layer a light pack (`lite.bin`) and one full frame
+  per angle (`hd/NN.webp`)
+
 ## Running it locally
 
-Open `index.html`, or serve the folder:
+The renders are fetched, so the page needs a server:
 
 ```bash
 python -m http.server 8000
