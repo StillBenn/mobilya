@@ -14,7 +14,7 @@
 
 <link rel="preload" href="fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/style.css?v=7">
+<link rel="stylesheet" href="css/style.css?v=8">
 
 </head>
 <body>
@@ -364,7 +364,10 @@ const RENDERS = './renders/';
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const small = Math.min(screen.width, screen.height) < 700;
 const saveData = !!(navigator.connection && navigator.connection.saveData);
-const BUDGET = (small ? 56 : 160) * 1048576;      // bytes of decoded frames kept
+/* bytes of decoded frames kept, per set: the light frames hold a whole turn of
+   the chosen dress (~90 MB, ~125 with the cushion), the sharp ones a few rests —
+   in one pool the sharp frames (10 MB an angle) pushed the warmed turn out */
+const BUDGET = { lite: (small ? 84 : 150) * 1048576, hd: (small ? 24 : 48) * 1048576 };
 
 const manifests = {}, manifestSync = {};
 function manifestOf(size) {
@@ -376,14 +379,15 @@ function manifestOf(size) {
 
 /* decoded frames: the least recently used go first once over the budget */
 const cache = new Map();
-let cacheBytes = 0;
+const cacheBytes = { lite: 0, hd: 0 };
+const tierOf = (key) => key.slice(0, key.indexOf('/'));
 function remember(key, bmp) {
-  const bytes = bmp.width * bmp.height * 4;
-  cache.set(key, { bmp, bytes }); cacheBytes += bytes;
+  const bytes = bmp.width * bmp.height * 4, tier = tierOf(key);
+  cache.set(key, { bmp, bytes }); cacheBytes[tier] += bytes;
   for (const [k, v] of cache) {
-    if (cacheBytes <= BUDGET) break;
-    if (k === key) continue;
-    cache.delete(k); cacheBytes -= v.bytes;
+    if (cacheBytes[tier] <= BUDGET[tier]) break;
+    if (k === key || tierOf(k) !== tier) continue;
+    cache.delete(k); cacheBytes[tier] -= v.bytes;
     if (v.bmp.close) v.bmp.close();
   }
 }
@@ -924,6 +928,13 @@ function tick(now) {
     if (key !== shown.key || fade || zoomed || shown.w !== canvas.width) {
       if (shown.sel && shown.sel !== sk) startFade(reducedMotion ? 0 : 380);           // a new choice dissolves in
       else if (shown.sel === sk && shown.tier === 'lite' && tier === 'hd' && shown.i === i) startFade(220);   // sharpening, no pop
+      else if (shown.sel === sk && shown.i !== i && !reducedMotion) {
+        /* a step of the turn: as slow steps come (the end of a throw, the
+           opening easing out) each 5-degree step ticked; a dissolve as long as
+           the step itself smooths it, and at speed it is too short to see */
+        const d = Math.min(110, (now - (shown.stepT || now)) * 0.9);
+        if (d >= 16) startFade(d);                    // under a frame: nothing to dissolve (and 0 ms divided by zero)
+      }
       const frame = compose(tier, sel, i);
       ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
       paint(frame);
@@ -932,6 +943,7 @@ function tick(now) {
         ctx.globalAlpha = 1 - ease(p); ctx.drawImage(fadeCv, 0, 0); ctx.globalAlpha = 1;
         if (p >= 1) fade = null; else busy = true;
       }
+      if (shown.i !== i) shown.stepT = now;
       Object.assign(shown, { key, sel: sk, tier, i, zoom: view.zoom, w: canvas.width });
       if (!started) {
         started = true;
@@ -947,13 +959,42 @@ function tick(now) {
 }
 
 /* the opening: once the light frames are here, the chair turns once on its own */
+/* Warm the turn: the light frames of the chosen dress decoded ahead, nearest
+   angles first, three at a time, as many as the budget holds (all 72 on a
+   desk). Decoding on demand was the turn's stutter: a 5-degree step asked for
+   three to five fresh decodes, and a throw outran them. A new choice starts
+   over from the angle on screen. */
+let warmGen = 0;
+function warm(sel, from) {
+  const gen = ++warmGen;
+  return manifestOf(sel.size).then((m) => {
+    const names = layersOf(sel);
+    const perAngle = names.reduce((sum, n) => sum + m.layers[n].lite.boxes.reduce((a, b) => a + b[2] * b[3] * 4, 0) / STEPS, 0);
+    const fit = Math.max(1, Math.min(STEPS, Math.floor(BUDGET.lite * 0.85 / perAngle)));
+    const order = [idx(from)];
+    for (let d = 1; order.length < fit; d++) {
+      order.push(idx(from + d));
+      if (order.length < fit) order.push(idx(from - d));
+    }
+    let k = 0;
+    const next = () => {
+      if (gen !== warmGen || k >= order.length) return null;
+      const i = order[k++];
+      return Promise.all(names.map((n) => decode('lite', sel.size, n, i))).then(next, next);
+    };
+    return Promise.all([next(), next(), next()]);
+  });
+}
+
 function intro() {
   const sel = selOf();
-  Promise.all(layersOf(sel).map((n) => packOf(sel.size, n))).then(() => {
+  /* the turn plays once every angle of it is decoded: started on the downloads
+     alone, it outran the decodes and stuttered on a first visit */
+  warm(sel, idx(view.angle)).then(() => {
+    later(preload);
     if (reducedMotion || document.body.classList.contains('is-turned')) return;
     view.play = { from: view.angle, to: view.angle + STEPS, t0: performance.now(), dur: 3600 };
     wake();
-    later(preload);
   }, () => {});
 }
 const later = (fn) => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 2500 }) : setTimeout(fn, 1200));
@@ -975,6 +1016,7 @@ function preload() {
 
 function changed() {
   targetPrice = totalPrice(state);
+  if (started) warm(selOf(), idx(view.angle));     // the new dress, from the angle on screen
   wake();
 }
 

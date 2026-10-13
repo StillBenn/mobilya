@@ -500,6 +500,12 @@ body.is-turned .hint { opacity: 0; }
 }
 .swatch:hover::after,
 .swatch:focus-visible::after { opacity: 1; }
+/* the outer columns' names lean inwards: centred, "Brushed nickel · +$220"
+   ran out of the panel's left edge and was cut by it */
+.swatches:not(.swatches--4) .swatch:nth-child(6n + 1)::after,
+.swatches--4 .swatch:nth-child(4n + 1)::after { left: 0; transform: none; }
+.swatches:not(.swatches--4) .swatch:nth-child(6n)::after,
+.swatches--4 .swatch:nth-child(4n)::after { left: auto; right: 0; transform: none; }
 
 /* --- Pairings --------------------------------------------------------------
    A chair, a cushion and a frame chosen together: a small render of the
