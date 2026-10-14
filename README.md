@@ -6,7 +6,7 @@ and the price updates as they go.
 
 **A portfolio demo.** The product, the brand and the prices are invented.
 
-**Live:** https://larisel.com/threejs-chair-configurator/
+**Live:** https://larisel.com/mobilya/
 · English (default) · Türkçe · Русский — or link a language directly with
 `?lang=tr`, `?lang=ru`.
 
