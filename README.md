@@ -7,8 +7,8 @@ cloth or the stone up close, measures it, compares two designs and shares a
 link — then puts it in the cart, orders it and follows the order.
 
 **A portfolio demo.** The products, the brand and the prices are invented;
-orders and sample requests stay in the visitor's browser and no payment is
-taken. Only the contact form is real: it writes to the studio by e-mail.
+orders stay in the visitor's browser and no payment is taken. Only the
+contact form is real: it writes to the studio by e-mail.
 
 **Live:** https://larisel.com/mobilya/
 · English (default) · Türkçe · Русский — or link a language directly with
@@ -38,7 +38,8 @@ The three share their finishes, so they make a set.
   in the workshop, finishing, ready, on its way, delivered), dated from the
   day it was placed; look one up by its number.
 - **Materials** (`materials/`) — every cloth, stone, wood and finish of the
-  three pieces in one library, each up close; a sample box of up to six.
+  three pieces in one library, each up close, and a tap away from the
+  configurator dressed in it.
 - **The atelier** (`about/`), **help** (`help/` — delivery, returns,
   warranty, care, payment, questions), **contact** (`contact/`, attach a saved
   design to the message) and **privacy** (`privacy/` — what the shop keeps in

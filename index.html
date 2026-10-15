@@ -23,7 +23,7 @@
 <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/base.css?v=1">
 <link rel="stylesheet" href="css/style.css?v=11">
-<link rel="stylesheet" href="css/store.css?v=2">
+<link rel="stylesheet" href="css/store.css?v=3">
 
 </head>
 <body>
@@ -249,7 +249,7 @@
         <a data-s-aria="mat.tableLink" href="materials/#table"><img src="renders/table/macro/nero.webp" alt="" loading="lazy" decoding="async" width="1400" height="900"></a>
         <a data-s-aria="mat.tableLink" href="materials/#table"><img src="renders/table/macro/oak.webp" alt="" loading="lazy" decoding="async" width="1400" height="900"></a>
       </div>
-      <div class="row-links"><a class="btn btn--line" href="materials/" data-s="mat.cta"></a><a class="btn btn--line" href="materials/#samples" data-s="mat.samples"></a></div>
+      <div class="row-links"><a class="btn btn--line" href="materials/" data-s="mat.cta"></a></div>
     </div>
   </section>
 
@@ -342,7 +342,7 @@
 
 <script type="module">
 import { TYPES, PRODUCTS, frameSwatch, DETAILS } from './js/catalog.js?v=2';
-import * as store from './js/store.js?v=2';
+import * as store from './js/store.js?v=3';
 
 /* the shop's words on this page (under the configurator); the shop's own are in js/store.js */
 store.words({
@@ -364,11 +364,11 @@ store.words({
     'st.3': 'We make it', 'st.3p': 'Frame, upholstery and finish, by hand in the atelier: 14 to 21 days.',
     'st.4': 'It arrives', 'st.4p': 'Our crew delivers it, assembles it and sets it where you want it.',
     'mat.eyebrow': 'Materials', 'mat.title': 'Every material, seen up close.',
-    'mat.lead': 'Bouclé, velvet and linen in all their tones, five marbles, travertine, solid oak and walnut — and up to six samples, free, to your door.',
-    'mat.sofaLink': 'Sofa cloths in the library', 'mat.tableLink': 'Table tops in the library', 'mat.cta': 'Explore the library', 'mat.samples': 'Order free samples',
+    'mat.lead': 'Bouclé, velvet and linen in all their tones, five marbles, travertine, solid oak and walnut — each seen up close, on the piece itself.',
+    'mat.sofaLink': 'Sofa cloths in the library', 'mat.tableLink': 'Table tops in the library', 'mat.cta': 'Explore the library',
     'faq.eyebrow': 'Questions', 'faq.title': 'Before you order', 'faq.all': 'All questions',
     'q.1': 'How long does it take?', 'a.1': 'Every piece is made to order: armchairs in about 14 days, coffee tables in 18, sofas in 21 — then delivered within a week.',
-    'q.2': 'Can I see the fabric before I order?', 'a.2': 'Yes. Order up to six free samples from the material library; they reach you in a few days.',
+    'q.2': 'Can I see the fabric before I order?', 'a.2': 'Yes. Every cloth, stone and wood is in the material library, close up on the piece itself — and on a video call a designer can show it to you in daylight.',
     'q.3': 'What if it will not go through my door?', 'a.3': 'Check it above before you order. Sofa legs come off, the corner sofa arrives in two modules, and we can build a frame in sections.',
     'q.4': 'Can I return a made-to-order piece?', 'a.4': 'You have 14 days from delivery. If anything is not as you ordered it, we collect it and remake it at our cost.',
     'q.5': 'Can I pay in instalments?', 'a.5': 'Yes: up to 12 months without interest, or pay on delivery.',
@@ -393,11 +393,11 @@ store.words({
     'st.3': 'Üretiyoruz', 'st.3p': 'İskelet, döşeme ve son kat atölyede elde yapılır: 14 ila 21 gün.',
     'st.4': 'Teslim ediyoruz', 'st.4p': 'Ekibimiz getirir, kurar ve istediğiniz yere yerleştirir.',
     'mat.eyebrow': 'Malzemeler', 'mat.title': 'Her malzeme, yakından.',
-    'mat.lead': 'Bütün tonlarıyla bukle, kadife ve keten; beş mermer, traverten, masif meşe ve ceviz — ve kapınıza kadar ücretsiz altı numune.',
-    'mat.sofaLink': 'Kütüphanede kanepe kumaşları', 'mat.tableLink': 'Kütüphanede sehpa tablaları', 'mat.cta': 'Kütüphaneyi incele', 'mat.samples': 'Ücretsiz numune iste',
+    'mat.lead': 'Bütün tonlarıyla bukle, kadife ve keten; beş mermer, traverten, masif meşe ve ceviz — her biri yakından, mobilyanın üzerinde.',
+    'mat.sofaLink': 'Kütüphanede kanepe kumaşları', 'mat.tableLink': 'Kütüphanede sehpa tablaları', 'mat.cta': 'Kütüphaneyi incele',
     'faq.eyebrow': 'Sorular', 'faq.title': 'Sipariş vermeden önce', 'faq.all': 'Tüm sorular',
     'q.1': 'Ne kadar sürede gelir?', 'a.1': 'Her parça siparişe özel üretilir: koltuklar yaklaşık 14, sehpalar 18, kanepeler 21 günde hazırlanır; ardından bir hafta içinde teslim edilir.',
-    'q.2': 'Sipariş vermeden kumaşı görebilir miyim?', 'a.2': 'Evet. Malzeme kütüphanesinden altı adede kadar ücretsiz numune isteyin; birkaç gün içinde elinizde olur.',
+    'q.2': 'Sipariş vermeden kumaşı görebilir miyim?', 'a.2': 'Evet. Her kumaş, taş ve ahşap malzeme kütüphanesinde, mobilyanın üzerinde yakından görünür — görüntülü görüşmede bir tasarımcı da size gün ışığında gösterebilir.',
     'q.3': 'Kapımdan geçmezse ne olur?', 'a.3': 'Sipariş vermeden önce yukarıdan kontrol edin. Kanepe ayakları sökülür, köşe kanepe iki modül hâlinde gelir; iskeleti parçalı da üretebiliriz.',
     'q.4': 'Siparişe özel bir ürünü iade edebilir miyim?', 'a.4': 'Teslimattan sonra 14 gününüz var. Sipariş ettiğiniz gibi olmayan her şeyi geri alır, masrafı bize ait olmak üzere yeniden üretiriz.',
     'q.5': 'Taksitle ödeyebilir miyim?', 'a.5': 'Evet: 12 aya kadar faizsiz taksit ya da teslimatta ödeme.',
@@ -422,11 +422,11 @@ store.words({
     'st.3': 'Мы изготавливаем', 'st.3p': 'Каркас, обивка и отделка — вручную в мастерской: от 14 до 21 дня.',
     'st.4': 'Доставляем', 'st.4p': 'Наша команда привезёт, соберёт и поставит туда, куда вы скажете.',
     'mat.eyebrow': 'Материалы', 'mat.title': 'Каждый материал — крупным планом.',
-    'mat.lead': 'Букле, бархат и лён во всех оттенках, пять мраморов, травертин, массив дуба и ореха — и до шести образцов бесплатно, до двери.',
-    'mat.sofaLink': 'Ткани для дивана в библиотеке', 'mat.tableLink': 'Столешницы в библиотеке', 'mat.cta': 'Открыть библиотеку', 'mat.samples': 'Заказать образцы',
+    'mat.lead': 'Букле, бархат и лён во всех оттенках, пять мраморов, травертин, массив дуба и ореха — каждый крупным планом, прямо на мебели.',
+    'mat.sofaLink': 'Ткани для дивана в библиотеке', 'mat.tableLink': 'Столешницы в библиотеке', 'mat.cta': 'Открыть библиотеку',
     'faq.eyebrow': 'Вопросы', 'faq.title': 'Перед заказом', 'faq.all': 'Все вопросы',
     'q.1': 'Сколько ждать?', 'a.1': 'Каждая вещь делается на заказ: кресла — около 14 дней, столики — 18, диваны — 21, затем доставка в течение недели.',
-    'q.2': 'Можно ли увидеть ткань до заказа?', 'a.2': 'Да. Закажите до шести бесплатных образцов в библиотеке материалов — они придут за несколько дней.',
+    'q.2': 'Можно ли увидеть ткань до заказа?', 'a.2': 'Да. Все ткани, камни и дерево — в библиотеке материалов, крупным планом прямо на мебели; а по видеосвязи дизайнер покажет их вам при дневном свете.',
     'q.3': 'А если не пройдёт в дверь?', 'a.3': 'Проверьте выше до заказа. Ножки дивана снимаются, угловой диван приезжает двумя модулями, а каркас мы можем сделать разборным.',
     'q.4': 'Можно ли вернуть вещь, сделанную на заказ?', 'a.4': 'У вас 14 дней после доставки. Если что-то не соответствует заказу, мы заберём и переделаем за свой счёт.',
     'q.5': 'Можно ли в рассрочку?', 'a.5': 'Да: до 12 месяцев без переплаты или оплата при доставке.',

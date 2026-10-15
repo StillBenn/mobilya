@@ -44,7 +44,7 @@ const DICT = {
     'fav.title': 'Saved designs', 'fav.empty': 'Nothing saved yet. Tap the heart on a design to keep it here.',
     'fav.open': 'Open', 'fav.toCart': 'Add to cart', 'fav.saved': 'Saved to your designs', 'fav.removed': 'Removed from your saved designs',
     'foot.tag': 'Furniture made to order, designed by you.', 'foot.shop': 'Shop', 'foot.help': 'Help', 'foot.atelier': 'Atelier',
-    'p.armchair': 'Armchair', 'p.sofa': 'Sofa', 'p.table': 'Coffee table', 'foot.samples': 'Free samples',
+    'p.armchair': 'Armchair', 'p.sofa': 'Sofa', 'p.table': 'Coffee table',
     'foot.delivery': 'Delivery', 'foot.returns': 'Returns', 'foot.warranty': 'Warranty', 'foot.care': 'Care', 'foot.faq': 'Questions',
     'foot.about': 'About us', 'foot.privacy': 'Privacy',
     'foot.demo': 'A demo store by the Larisel studio: the pieces, prices and orders are illustrative, and no payment is taken.',
@@ -66,7 +66,7 @@ const DICT = {
     'fav.title': 'Kayıtlı tasarımlar', 'fav.empty': 'Henüz kayıtlı tasarım yok. Bir tasarımı burada saklamak için kalbe dokunun.',
     'fav.open': 'Aç', 'fav.toCart': 'Sepete ekle', 'fav.saved': 'Tasarımlarınıza kaydedildi', 'fav.removed': 'Kayıtlı tasarımlardan çıkarıldı',
     'foot.tag': 'Siparişe özel üretilen, sizin tasarladığınız mobilya.', 'foot.shop': 'Mağaza', 'foot.help': 'Yardım', 'foot.atelier': 'Atölye',
-    'p.armchair': 'Koltuk', 'p.sofa': 'Kanepe', 'p.table': 'Sehpa', 'foot.samples': 'Ücretsiz numune',
+    'p.armchair': 'Koltuk', 'p.sofa': 'Kanepe', 'p.table': 'Sehpa',
     'foot.delivery': 'Teslimat', 'foot.returns': 'İade', 'foot.warranty': 'Garanti', 'foot.care': 'Bakım', 'foot.faq': 'Sorular',
     'foot.about': 'Hakkımızda', 'foot.privacy': 'Gizlilik',
     'foot.demo': 'Larisel stüdyosunun demo mağazası: ürünler, fiyatlar ve siparişler örnek amaçlıdır; ödeme alınmaz.',
@@ -88,7 +88,7 @@ const DICT = {
     'fav.title': 'Сохранённые дизайны', 'fav.empty': 'Пока ничего нет. Нажмите на сердце, чтобы сохранить дизайн здесь.',
     'fav.open': 'Открыть', 'fav.toCart': 'В корзину', 'fav.saved': 'Сохранено в ваших дизайнах', 'fav.removed': 'Удалено из сохранённых',
     'foot.tag': 'Мебель на заказ — по вашему дизайну.', 'foot.shop': 'Магазин', 'foot.help': 'Помощь', 'foot.atelier': 'Мастерская',
-    'p.armchair': 'Кресло', 'p.sofa': 'Диван', 'p.table': 'Журнальный столик', 'foot.samples': 'Бесплатные образцы',
+    'p.armchair': 'Кресло', 'p.sofa': 'Диван', 'p.table': 'Журнальный столик',
     'foot.delivery': 'Доставка', 'foot.returns': 'Возврат', 'foot.warranty': 'Гарантия', 'foot.care': 'Уход', 'foot.faq': 'Вопросы',
     'foot.about': 'О нас', 'foot.privacy': 'Конфиденциальность',
     'foot.demo': 'Демо-магазин студии Larisel: товары, цены и заказы — для примера, оплата не взимается.',
@@ -179,10 +179,6 @@ export const orders = {
     return 'LR-' + String(d.getFullYear()).slice(2) + String(d.getMonth() + 1).padStart(2, '0') + '-' + Math.random().toString(36).slice(2, 6).toUpperCase();
   },
 };
-export const samples = {
-  items: () => read('larisel-samples', []),
-  set(list) { write('larisel-samples', list.slice(0, 6)); changed(); },
-};
 
 /* ── icons ─────────────────────────────────────────────────────────────── */
 const svg = (d, extra = '') => `<svg viewBox="0 0 24 24" aria-hidden="true"${extra}><path d="${d}"/></svg>`;
@@ -229,7 +225,7 @@ function footer() {
         <p class="foot-tag" data-s="foot.tag"></p>
         <a class="foot-mail" href="mailto:studio@larisel.com">studio@larisel.com</a>
       </div>
-      ${col('foot.shop', [[link('?p=armchair'), 'p.armchair'], [link('?p=sofa'), 'p.sofa'], [link('?p=table'), 'p.table'], [link('materials/#samples'), 'foot.samples']])}
+      ${col('foot.shop', [[link('?p=armchair'), 'p.armchair'], [link('?p=sofa'), 'p.sofa'], [link('?p=table'), 'p.table'], [link('materials/'), 'nav.materials']])}
       ${col('foot.help', [[link('help/#delivery'), 'foot.delivery'], [link('help/#returns'), 'foot.returns'], [link('help/#warranty'), 'foot.warranty'], [link('help/#care'), 'foot.care'], [link('help/#faq'), 'foot.faq']])}
       ${col('foot.atelier', [[link('about/'), 'foot.about'], [link('contact/'), 'nav.contact'], [link('orders/'), 'nav.orders'], [link('privacy/'), 'foot.privacy']])}
     </div>

@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Materials — Larisel</title>
-<meta name="description" content="Every cloth, stone, wood and metal Larisel furniture is made in — seen up close, with free samples to your door.">
+<meta name="description" content="Every cloth, stone, wood and metal Larisel furniture is made in — seen up close.">
 <meta name="theme-color" content="#fdfbf7">
 <link rel="icon" href="/favicon.ico?v=2" sizes="32x32">
 <link rel="icon" href="/img/favicon.svg?v=2" type="image/svg+xml">
 <link rel="preload" href="../fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../css/base.css?v=1">
-<link rel="stylesheet" href="../css/store.css?v=2">
+<link rel="stylesheet" href="../css/store.css?v=3">
 </head>
 <body class="page">
 
@@ -27,38 +27,11 @@
       <a class="chip" href="#armchair" data-s="m.armchair"></a>
       <a class="chip" href="#table" data-s="m.table"></a>
       <a class="chip" href="#finishes" data-s="m.finishes"></a>
-      <a class="chip chip--ink" href="#samples" data-s="m.samplesChip"></a>
     </nav>
   </section>
 
   <div id="library"></div>
 
-  <section class="section samples" id="samples">
-    <div class="wrap samples__grid">
-      <div>
-        <p class="eyebrow-line" data-s="sm.eyebrow"></p>
-        <h2 class="samples__title" data-s="sm.title"></h2>
-        <p class="samples__lead" data-s="sm.lead"></p>
-        <ul class="box" id="box"></ul>
-        <p class="box__count" id="box-count"></p>
-      </div>
-      <form class="form card card--form" id="sm-form" novalidate>
-        <div class="form__row">
-          <label class="field"><span data-s="f.name"></span><input name="name" autocomplete="name" required><em class="field__err"></em></label>
-          <label class="field"><span data-s="f.email"></span><input name="email" type="email" autocomplete="email" required><em class="field__err"></em></label>
-        </div>
-        <label class="field"><span data-s="sm.address"></span><input name="address" autocomplete="street-address" required><em class="field__err"></em></label>
-        <div class="form__row">
-          <label class="field"><span data-s="sm.city"></span><input name="city" autocomplete="address-level2" required><em class="field__err"></em></label>
-          <label class="field"><span data-s="sm.zip"></span><input name="zip" autocomplete="postal-code" required><em class="field__err"></em></label>
-        </div>
-        <em class="field__err" id="sm-box-err"></em>
-        <button class="btn btn--solid" type="submit" data-s="sm.send"></button>
-        <p class="note" data-s="sm.demo"></p>
-        <div class="ct-sent" id="sm-done" hidden><p class="ct-sent__title" data-s="sm.doneTitle"></p><p data-s="sm.doneLead"></p></div>
-      </form>
-    </div>
-  </section>
 </main>
 
 <!-- one material, near -->
@@ -70,7 +43,7 @@
       <p class="eyebrow-line" id="look-kind"></p>
       <h2 id="look-title"></h2>
       <p id="look-desc"></p>
-      <button class="btn btn--solid" type="button" id="look-add"></button>
+      <a class="btn btn--solid" id="look-go" data-s="m.go"></a>
     </div>
     <button class="icon-btn sheet-lite__close" type="button" data-close data-s-aria="close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
   </div>
@@ -79,63 +52,42 @@
 <footer class="site-foot" data-site-foot></footer>
 
 <script type="module">
-import * as store from '../js/store.js?v=2';
+import * as store from '../js/store.js?v=3';
 import { TYPES, PRODUCTS, FRAMES, frameSwatch } from '../js/catalog.js?v=2';
 
 store.words({
   en: {
     'm.page': 'Materials', 'm.eyebrow': 'Materials', 'm.title': 'What it is made of, seen up close.',
-    'm.lead': 'Every cloth, stone, wood and metal we make with — the same ones the pieces are shown in. Tap one to see it near; add up to six to a free sample box.',
-    'm.sofa': 'Sofa cloths', 'm.armchair': 'Armchair bouclé', 'm.table': 'Table tops', 'm.finishes': 'Wood and metal', 'm.samplesChip': 'Free samples',
+    'm.lead': 'Every cloth, stone, wood and metal we make with — the same ones the pieces are shown in. Tap one to see it near, then design with it.',
+    'm.sofa': 'Sofa cloths', 'm.armchair': 'Armchair bouclé', 'm.table': 'Table tops', 'm.finishes': 'Wood and metal',
     'm.sofaLead': 'Three cloths, eight tones in each. The scatter cushions come in any of them.',
     'm.armLead': 'A dense bouclé in twelve colours, chosen to sit together.',
     'm.tableLead': 'Five marbles, a travertine and two solid woods.',
     'm.finLead': 'Four woods and four metals, for the armchair’s frame, the sofa’s legs and the table’s base — so the pieces make a set.',
-    'm.sections': 'Sections', 'm.near': 'See it near', 'm.add': 'Add to samples', 'm.added': 'In your sample box', 'm.remove': 'Remove from samples',
-    'm.full': 'Your box holds six samples', 'm.addedToast': 'Added to your sample box', 'm.price': '+%s',
+    'm.sections': 'Sections', 'm.near': 'See it near', 'm.go': 'Design with it', 'm.price': '+%s',
     'fin.wood': 'Solid wood, oiled', 'fin.metal': 'Steel with a metal finish', 'fin.desc': 'The frame, the legs or the base: the same finish on every piece, so they make a set.',
-    'sm.eyebrow': 'Free samples', 'sm.title': 'Hold it before you choose.',
-    'sm.lead': 'Up to six samples, posted to you free of charge. Choose them from the library above.',
-    'sm.empty': 'Your box is empty — tap “Add to samples” on any material.', 'sm.count': '%d of 6 chosen',
-    'sm.address': 'Address', 'sm.city': 'City', 'sm.zip': 'Postcode', 'sm.send': 'Request the samples',
-    'sm.need': 'Choose at least one material', 'sm.demo': 'Demo store: no samples are posted. In the real shop they would reach you in three to five days.',
-    'sm.doneTitle': 'Your samples are on their way.', 'sm.doneLead': 'We will write to you when the box leaves the atelier.',
   },
   tr: {
     'm.page': 'Malzemeler', 'm.eyebrow': 'Malzemeler', 'm.title': 'Neyden yapıldığı, yakından.',
-    'm.lead': 'Çalıştığımız her kumaş, taş, ahşap ve metal — ürünlerin gösterildiği malzemelerin ta kendisi. Yakından görmek için birine dokunun; altı tanesini ücretsiz numune kutusuna ekleyin.',
-    'm.sofa': 'Kanepe kumaşları', 'm.armchair': 'Koltuk buklesi', 'm.table': 'Sehpa tablaları', 'm.finishes': 'Ahşap ve metal', 'm.samplesChip': 'Ücretsiz numune',
+    'm.lead': 'Çalıştığımız her kumaş, taş, ahşap ve metal — ürünlerin gösterildiği malzemelerin ta kendisi. Yakından görmek için birine dokunun, sonra onunla tasarlayın.',
+    'm.sofa': 'Kanepe kumaşları', 'm.armchair': 'Koltuk buklesi', 'm.table': 'Sehpa tablaları', 'm.finishes': 'Ahşap ve metal',
     'm.sofaLead': 'Üç kumaş, her birinde sekiz ton. Dekoratif yastıklar bunların herhangi birinden olabilir.',
     'm.armLead': 'Birbirine uyacak şekilde seçilmiş on iki renkte, sık dokulu bir bukle.',
     'm.tableLead': 'Beş mermer, bir traverten ve iki masif ahşap.',
     'm.finLead': 'Koltuğun iskeleti, kanepenin ayakları ve sehpanın kaidesi için dört ahşap, dört metal — böylece parçalar takım olur.',
-    'm.sections': 'Bölümler', 'm.near': 'Yakından bak', 'm.add': 'Numunelere ekle', 'm.added': 'Numune kutunuzda', 'm.remove': 'Numunelerden çıkar',
-    'm.full': 'Kutunuz altı numune alır', 'm.addedToast': 'Numune kutunuza eklendi', 'm.price': '+%s',
+    'm.sections': 'Bölümler', 'm.near': 'Yakından bak', 'm.go': 'Bununla tasarla', 'm.price': '+%s',
     'fin.wood': 'Masif ahşap, yağlı', 'fin.metal': 'Metal kaplamalı çelik', 'fin.desc': 'İskelet, ayaklar ya da kaide: her parçada aynı renk, böylece takım olurlar.',
-    'sm.eyebrow': 'Ücretsiz numune', 'sm.title': 'Seçmeden önce elinize alın.',
-    'sm.lead': 'Altı adede kadar numune, ücretsiz olarak adresinize. Yukarıdaki kütüphaneden seçin.',
-    'sm.empty': 'Kutunuz boş — herhangi bir malzemede “Numunelere ekle”ye dokunun.', 'sm.count': '6 numuneden %d tanesi seçildi',
-    'sm.address': 'Adres', 'sm.city': 'Şehir', 'sm.zip': 'Posta kodu', 'sm.send': 'Numuneleri iste',
-    'sm.need': 'En az bir malzeme seçin', 'sm.demo': 'Demo mağaza: numune gönderilmez. Gerçek mağazada üç ila beş gün içinde elinizde olurdu.',
-    'sm.doneTitle': 'Numuneleriniz yolda.', 'sm.doneLead': 'Kutu atölyeden çıktığında size yazacağız.',
   },
   ru: {
     'm.page': 'Материалы', 'm.eyebrow': 'Материалы', 'm.title': 'Из чего это сделано — крупным планом.',
-    'm.lead': 'Все ткани, камни, дерево и металл, с которыми мы работаем, — те самые, в которых показаны изделия. Нажмите, чтобы рассмотреть; добавьте до шести в бесплатный набор образцов.',
-    'm.sofa': 'Ткани для дивана', 'm.armchair': 'Букле для кресла', 'm.table': 'Столешницы', 'm.finishes': 'Дерево и металл', 'm.samplesChip': 'Бесплатные образцы',
+    'm.lead': 'Все ткани, камни, дерево и металл, с которыми мы работаем, — те самые, в которых показаны изделия. Нажмите, чтобы рассмотреть, — и создайте с ним свой дизайн.',
+    'm.sofa': 'Ткани для дивана', 'm.armchair': 'Букле для кресла', 'm.table': 'Столешницы', 'm.finishes': 'Дерево и металл',
     'm.sofaLead': 'Три ткани, по восемь оттенков. Декоративные подушки — в любой из них.',
     'm.armLead': 'Плотное букле в двенадцати цветах, подобранных друг к другу.',
     'm.tableLead': 'Пять мраморов, травертин и два массива дерева.',
     'm.finLead': 'Четыре породы дерева и четыре металла — для каркаса кресла, ножек дивана и основания столика, чтобы вещи составляли комплект.',
-    'm.sections': 'Разделы', 'm.near': 'Рассмотреть', 'm.add': 'В образцы', 'm.added': 'В вашем наборе', 'm.remove': 'Убрать из образцов',
-    'm.full': 'В набор помещается шесть образцов', 'm.addedToast': 'Добавлено в набор образцов', 'm.price': '+%s',
+    'm.sections': 'Разделы', 'm.near': 'Рассмотреть', 'm.go': 'Создать дизайн с ним', 'm.price': '+%s',
     'fin.wood': 'Массив дерева, масло', 'fin.metal': 'Сталь с металлическим покрытием', 'fin.desc': 'Каркас, ножки или основание: одна отделка на всех вещах, чтобы они составляли комплект.',
-    'sm.eyebrow': 'Бесплатные образцы', 'sm.title': 'Подержите в руках, прежде чем выбрать.',
-    'sm.lead': 'До шести образцов — бесплатно, по почте. Выберите их в библиотеке выше.',
-    'sm.empty': 'Набор пуст — нажмите «В образцы» у любого материала.', 'sm.count': 'Выбрано %d из 6',
-    'sm.address': 'Адрес', 'sm.city': 'Город', 'sm.zip': 'Индекс', 'sm.send': 'Заказать образцы',
-    'sm.need': 'Выберите хотя бы один материал', 'sm.demo': 'Демо-магазин: образцы не отправляются. В настоящем магазине они пришли бы за 3–5 дней.',
-    'sm.doneTitle': 'Образцы уже в пути.', 'sm.doneLead': 'Мы напишем, когда набор покинет мастерскую.',
   },
 });
 store.mount({ base: '../', page: 'materials' });
@@ -149,11 +101,11 @@ const S = PRODUCTS.sofa, A = PRODUCTS.armchair, T = PRODUCTS.table;
 const kindName = (f) => TYPES[f.type] ? TYPES[f.type].name : null;
 const SECTIONS = [
   { id: 'sofa', title: 'm.sofa', lead: 'm.sofaLead', groups: S.types.map((ty) => ({ name: TYPES[ty].name, items: S.fabrics.filter((f) => f.type === ty) })),
-    sw: (f) => R + S.fabricSwatch(f), macro: (f) => R + S.macroSrc(f), desc: (f) => TYPES[f.type].desc, kind: kindName },
+    sw: (f) => R + S.fabricSwatch(f), macro: (f) => R + S.macroSrc(f), desc: (f) => TYPES[f.type].desc, kind: kindName, p: 'sofa' },
   { id: 'armchair', title: 'm.armchair', lead: 'm.armLead', groups: [{ name: null, items: A.fabrics }],
-    sw: (f) => R + A.fabricSwatch(f), macro: (f) => R + A.macroSrc(f), desc: () => TYPES.boucle.desc, kind: () => TYPES.boucle.name },
+    sw: (f) => R + A.fabricSwatch(f), macro: (f) => R + A.macroSrc(f), desc: () => TYPES.boucle.desc, kind: () => TYPES.boucle.name, p: 'armchair' },
   { id: 'table', title: 'm.table', lead: 'm.tableLead', groups: [{ name: null, items: T.fabrics }],
-    sw: (f) => R + T.fabricSwatch(f), macro: (f) => R + T.macroSrc(f), desc: (f) => TYPES[f.type].desc, kind: kindName },
+    sw: (f) => R + T.fabricSwatch(f), macro: (f) => R + T.macroSrc(f), desc: (f) => TYPES[f.type].desc, kind: kindName, p: 'table' },
   { id: 'finishes', title: 'm.finishes', lead: 'm.finLead', groups: [{ name: null, items: FRAMES }],
     sw: (f) => R + frameSwatch(f), macro: null, desc: null, kind: (f) => null },
 ];
@@ -164,47 +116,21 @@ const isMetal = (f) => ['nickel', 'brass', 'bronze', 'black'].includes(f.id);
 
 function renderLibrary() { store.keepFocus($('library'), drawLibrary); }
 function drawLibrary() {
-  const box = new Set(store.samples.items());
   $('library').innerHTML = SECTIONS.map((sec) => `
     <section class="section lib" id="${sec.id}">
       <div class="wrap">
         <div class="section__head"><h2>${esc(store.t(sec.title))}</h2><p>${esc(store.t(sec.lead))}</p></div>
         ${sec.groups.map((g) => `
           ${g.name ? `<h3 class="lib__group">${esc(store.pick(g.name))}</h3>` : ''}
-          <ul class="mats">${g.items.map((f) => {
-            const k = keyOf(sec, f), on = box.has(k);
-            return `<li class="mat${on ? ' is-in' : ''}" data-k="${esc(k)}">
+          <ul class="mats">${g.items.map((f) => `
+            <li class="mat" data-k="${esc(keyOf(sec, f))}">
               <button class="mat__pic" type="button" ${sec.macro ? `data-look aria-label="${esc(store.t('m.near') + ': ' + store.pick(f.name))}"` : 'tabindex="-1" aria-hidden="true"'}><img src="${esc(sec.sw(f))}" alt="" width="96" height="96" loading="lazy" decoding="async"></button>
               <p class="mat__name">${esc(store.pick(f.name))}</p>
               <p class="mat__meta">${esc(sec.id === 'finishes' ? store.t(isMetal(f) ? 'fin.metal' : 'fin.wood') : f.price ? store.t('m.price').replace('%s', store.price(f.price)) : '')}</p>
-              <button class="mat__add" type="button" data-add aria-pressed="${on}">${esc(store.t(on ? 'm.added' : 'm.add'))}</button>
-            </li>`;
-          }).join('')}</ul>`).join('')}
+            </li>`).join('')}</ul>`).join('')}
       </div>
     </section>`).join('');
-  $('library').querySelectorAll('.mat').forEach((li) => {
-    li.querySelector('[data-add]').addEventListener('click', () => toggle(li.dataset.k));
-    const look = li.querySelector('[data-look]');
-    if (look) look.addEventListener('click', () => openLook(li.dataset.k));
-  });
-}
-
-function toggle(k) {
-  const list = store.samples.items();
-  if (list.includes(k)) store.samples.set(list.filter((x) => x !== k));
-  else if (list.length >= 6) { store.toast(store.t('m.full')); return; }
-  else { store.samples.set([...list, k]); store.toast(store.t('m.addedToast'), { label: store.t('sm.eyebrow'), run: () => $('samples').scrollIntoView({ behavior: 'smooth' }) }); }
-}
-
-function renderBox() { store.keepFocus($('box'), drawBox); }
-function drawBox() {
-  const list = store.samples.items().filter((k) => ALL.has(k));
-  $('box').innerHTML = list.length ? list.map((k) => {
-    const { sec, f } = ALL.get(k);
-    return `<li><img src="${esc(sec.sw(f))}" alt="" width="56" height="56"><span>${esc(store.pick(f.name))}<small>${esc(store.t(sec.title))}</small></span><button type="button" data-k="${esc(k)}" aria-label="${esc(store.t('m.remove'))}">×</button></li>`;
-  }).join('') : `<li class="box__empty">${esc(store.t('sm.empty'))}</li>`;
-  $('box-count').textContent = list.length ? store.t('sm.count').replace('%d', list.length) : '';
-  $('box').querySelectorAll('[data-k]').forEach((b) => b.addEventListener('click', () => toggle(b.dataset.k)));
+  $('library').querySelectorAll('.mat [data-look]').forEach((b) => b.addEventListener('click', () => openLook(b.closest('.mat').dataset.k)));
 }
 
 /* one material, near: the close-up rendered on the piece itself */
@@ -222,12 +148,13 @@ function openLook(k) {
 }
 function fillLook() {
   if (!lookKey) return;
-  const { sec, f } = ALL.get(lookKey), on = store.samples.items().includes(lookKey);
+  const { sec, f } = ALL.get(lookKey);
   const kind = sec.kind(f);
   $('look-kind').textContent = kind ? store.pick(kind) : '';
   $('look-title').textContent = store.pick(f.name);
   $('look-desc').textContent = sec.desc ? store.pick(sec.desc(f)) : store.t('fin.desc');
-  $('look-add').textContent = store.t(on ? 'm.remove' : 'm.add');
+  /* the configurator opens on this piece, dressed in this material */
+  $('look-go').href = R + '?' + new URLSearchParams({ p: sec.p, fab: f.id });
 }
 function closeLook() {
   const el = $('look'); el.classList.remove('is-open');
@@ -239,46 +166,11 @@ function closeLook() {
 }
 $('look').addEventListener('click', (e) => { if (e.target.closest('[data-close]')) closeLook(); });
 addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('look').hidden) closeLook(); });
-$('look-add').addEventListener('click', () => { toggle(lookKey); fillLook(); });
-
-/* the sample request */
-const form = $('sm-form');
-const RULES = {
-  name: (v) => v.trim().length >= 2 || 'f.required',
-  email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) || (v.trim() ? 'f.badEmail' : 'f.required'),
-  address: (v) => v.trim().length >= 3 || 'f.required',
-  city: (v) => v.trim().length >= 2 || 'f.required',
-  zip: (v) => v.trim().length >= 3 || 'f.required',
-};
-function check(n) {
-  const el = form.elements[n], r = RULES[n](el.value), field = el.closest('.field');
-  field.classList.toggle('is-bad', r !== true);
-  const err = field.querySelector('.field__err');
-  err.dataset.err = r === true ? '' : r;
-  err.textContent = r === true ? '' : store.t(r);
-  return r === true;
-}
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const bad = Object.keys(RULES).filter((n) => !check(n));
-  const none = !store.samples.items().length;
-  $('sm-box-err').dataset.err = none ? 'sm.need' : '';
-  $('sm-box-err').textContent = none ? store.t('sm.need') : '';
-  $('sm-done').hidden = true;
-  if (bad.length) { form.elements[bad[0]].focus(); return; }
-  if (none) return;
-  $('sm-done').hidden = false;
-  store.samples.set([]);
-  form.querySelectorAll('input').forEach((i) => { i.value = ''; });
-});
-
 function render() {
   document.title = store.t('m.page') + ' — Larisel';
-  renderLibrary(); renderBox(); fillLook();
-  form.querySelectorAll('[data-err]').forEach((e) => { e.textContent = e.dataset.err ? store.t(e.dataset.err) : ''; });
+  renderLibrary(); fillLook();
 }
 store.onLang(render);
-store.onChange(() => { renderLibrary(); renderBox(); fillLook(); if (store.samples.items().length) $('sm-done').hidden = true; });
 render();
 if (location.hash) { const t = document.querySelector(location.hash); if (t) t.scrollIntoView(); }
 </script>
