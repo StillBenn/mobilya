@@ -240,6 +240,11 @@ body.is-ready .stage canvas { opacity: 1; }
   text-transform: uppercase;
   color: rgba(247, 242, 233, 0.72);
 }
+/* the coffee table is seen from higher: the lit floor is behind the mark, so the
+   type turns to ink as that piece dissolves in */
+.mark__name, .mark__sub { transition: color 620ms var(--e-out), text-shadow 620ms var(--e-out); }
+.stage[data-ground="light"] .mark__name { color: var(--ink); text-shadow: 0 1px 10px rgba(253, 251, 247, 0.45); }
+.stage[data-ground="light"] .mark__sub { color: var(--ink-soft); }
 
 .chip {
   display: inline-flex;
@@ -502,9 +507,9 @@ body.is-turned .hint { opacity: 0; }
 .swatch:focus-visible::after { opacity: 1; }
 /* the outer columns' names lean inwards: centred, "Brushed nickel · +$220"
    ran out of the panel's left edge and was cut by it */
-.swatches:not(.swatches--4) .swatch:nth-child(6n + 1)::after,
+.swatches:not(.swatches--4):not(.swatches--8) .swatch:nth-child(6n + 1)::after,
 .swatches--4 .swatch:nth-child(4n + 1)::after { left: 0; transform: none; }
-.swatches:not(.swatches--4) .swatch:nth-child(6n)::after,
+.swatches:not(.swatches--4):not(.swatches--8) .swatch:nth-child(6n)::after,
 .swatches--4 .swatch:nth-child(4n)::after { left: auto; right: 0; transform: none; }
 
 /* --- Pairings --------------------------------------------------------------
@@ -706,6 +711,350 @@ body.is-turned .hint { opacity: 0; }
 }
 .cta:active { transform: translateY(0); }
 
+/* --- Three pieces ----------------------------------------------------------
+   The armchair, the sofa and the coffee table, the first thing in the sheet: a
+   drawing of each over its name. The chosen one is the ink block, the others
+   the paper. */
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin-bottom: 24px;
+}
+.product {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 10px 6px 9px;
+  border: 1px solid var(--line-hair);
+  border-radius: var(--r-md);
+  background: var(--panel-2);
+  color: var(--ink-soft);
+  font-size: var(--t-small);
+  line-height: 1.2;
+  text-align: center;
+  transition: background var(--d-fast) var(--e-out), color var(--d-fast) var(--e-out),
+              border-color var(--d-fast) var(--e-out), box-shadow var(--d-fast) var(--e-out);
+}
+.product svg {
+  flex: none;
+  width: 40px; height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.35;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.product:hover { color: var(--ink); border-color: var(--line); }
+.product.is-active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--panel);
+  box-shadow: var(--shadow-sm);
+}
+
+/* the shapes, each with its plan or its front drawn in a line */
+.pills--icons .pill {
+  display: grid;
+  justify-items: center;
+  gap: 5px;
+  padding: 10px 6px 9px;
+}
+.pills--icons .pill svg {
+  width: 30px; height: 26px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* --- Cloth tabs ------------------------------------------------------------
+   Boucle, velvet, linen: words over the tones of the open one. The chosen
+   cloth's tab keeps a copper dot when another tab is open, so a visitor who
+   browses the velvets still knows which cloth the sofa wears. */
+
+.ftabs {
+  display: flex;
+  gap: 22px;
+  margin: -4px 0 15px;
+  border-bottom: 1px solid var(--line-hair);
+}
+.ftabs[hidden] { display: none; }
+.ftab {
+  position: relative;
+  padding: 6px 0 10px;
+  font-size: var(--t-fine);
+  color: var(--muted);
+  transition: color var(--d-fast) var(--e-out);
+}
+.ftab:hover { color: var(--ink); }
+.ftab.is-active { color: var(--ink); }
+.ftab::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -1px;
+  height: 1.5px;
+  background: var(--ink);
+  transform: scaleX(0);
+  transition: transform var(--d-base) var(--e-out);
+}
+.ftab.is-active::after { transform: scaleX(1); }
+.ftab.has-pick:not(.is-active)::before {
+  content: "";
+  position: absolute;
+  top: 6px; right: -8px;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* eight tones to a row (the sofa's cloths), the tooltips leaning in at the ends */
+.swatches--8 { grid-template-columns: repeat(8, minmax(0, 38px)); gap: 8px; }
+.swatches--8 .swatch::after { left: 50%; right: auto; transform: translateX(-50%); }
+.swatches--8 .swatch:nth-child(8n + 1)::after { left: 0; transform: none; }
+.swatches--8 .swatch:nth-child(8n)::after { left: auto; right: 0; transform: none; }
+
+.group-side { display: inline-flex; align-items: center; gap: 12px; min-width: 0; }
+.group-side .group-value { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* "close-up": a small quiet button beside the fabric's name */
+.look {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px 5px 8px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-pill);
+  font-size: var(--t-label);
+  font-family: var(--f-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  transition: color var(--d-fast) var(--e-out), border-color var(--d-fast) var(--e-out), background var(--d-fast) var(--e-out);
+}
+.look:hover { color: var(--ink); border-color: var(--line); background: var(--panel-2); }
+.look svg {
+  width: 14px; height: 14px;
+  fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round;
+}
+
+/* --- Tools: round, named on hover ------------------------------------------
+   Five of them now (dimensions, compare, share, snapshot, reset): as pills
+   with words they ran into the dimension chip; as drawn icons in a row they
+   read as one instrument, and each says its name when the pointer reaches it. */
+
+.tool {
+  position: relative;
+  width: 42px; height: 42px;
+  padding: 0;
+  justify-content: center;
+  border-radius: 50%;
+}
+.tool span {
+  position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+.tool svg { width: 17px; height: 17px; }
+.tool::after {
+  content: attr(data-name);
+  position: absolute;
+  right: 50%;
+  bottom: calc(100% + 10px);
+  transform: translateX(50%);
+  padding: 4px 9px;
+  border-radius: var(--r-sm);
+  background: var(--ink);
+  color: var(--panel);
+  font-family: var(--f-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--d-fast) var(--e-out);
+}
+.tool:last-child::after { right: 0; transform: none; }
+.tool:hover::after, .tool:focus-visible::after { opacity: 1; }
+.tool.is-on { background: var(--ink); color: var(--panel); border-color: var(--ink); }
+.tool__badge {
+  position: absolute;
+  top: -3px; right: -3px;
+  display: grid;
+  place-items: center;
+  width: 17px; height: 17px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--f-mono);
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 600;
+  box-shadow: 0 0 0 2px var(--panel);
+  transform: scale(0);
+  transition: transform var(--d-base) var(--e-out);
+}
+.tool.has-a .tool__badge { transform: scale(1); }
+
+/* --- Sheets: the close-up and the comparison -------------------------------
+   A card over a dimmed, softened page: Escape, the cross or the backdrop
+   closes it. It rises a few pixels as it fades in. */
+
+.sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(25, 20, 16, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  transition: opacity 360ms var(--e-out);
+}
+.sheet[hidden] { display: none; }
+.sheet.is-open { opacity: 1; }
+.sheet__card {
+  position: relative;
+  width: 100%;
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+  background: var(--panel);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg), 0 40px 90px -40px rgba(25, 20, 16, 0.6);
+  transform: translateY(16px) scale(0.985);
+  transition: transform 520ms var(--e-out);
+}
+.sheet.is-open .sheet__card { transform: none; }
+.sheet__close {
+  position: absolute;
+  top: 14px; right: 14px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: rgba(253, 251, 247, 0.92);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--d-fast) var(--e-out);
+}
+.sheet__close:hover { transform: rotate(90deg); }
+.sheet__close svg { width: 16px; height: 16px; fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-linecap: round; }
+
+.sheet__card--look {
+  max-width: 1060px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+}
+.look-pic {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 14 / 9;
+  background: var(--bg-deep);
+  overflow: hidden;
+}
+.look-pic img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 420ms var(--e-out);
+}
+#closeup-img.is-in { opacity: 1; }
+#closeup-img2.is-on { opacity: 1; }
+.look-text {
+  display: grid;
+  align-content: center;
+  gap: 10px;
+  padding: 40px 34px 34px;
+}
+.look-text h2 {
+  font-family: var(--f-display);
+  font-size: clamp(1.7rem, 2.2vw, 2.2rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.look-desc { font-size: var(--t-small); line-height: 1.65; color: var(--ink-soft); max-width: 34ch; }
+.look-label {
+  margin-top: 16px;
+  font-family: var(--f-mono);
+  font-size: var(--t-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.swatches--tones { display: flex; flex-wrap: wrap; gap: 9px; }
+.swatches--tones .swatch { width: 36px; }
+.swatches--tones .swatch::after { display: none; }
+
+.sheet__card--compare { max-width: 1120px; padding: 30px 32px 28px; }
+.cmp-head { display: grid; gap: 10px; margin-bottom: 22px; padding-right: 48px; }
+.cmp-head h2 {
+  font-family: var(--f-display);
+  font-size: clamp(1.5rem, 2vw, 1.95rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+.cmp-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.cmp { margin: 0; }
+.cmp-pic {
+  position: relative;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: var(--bg-deep);
+  aspect-ratio: 4 / 3;
+}
+.cmp-pic canvas { display: block; width: 100%; height: 100%; object-fit: cover; }
+.cmp-tag {
+  position: absolute;
+  top: 12px; left: 12px;
+  display: grid; place-items: center;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: rgba(253, 251, 247, 0.92);
+  font-family: var(--f-mono);
+  font-size: var(--t-label);
+  box-shadow: var(--shadow-sm);
+}
+.cmp figcaption { display: grid; gap: 4px; margin-top: 14px; }
+.cmp-label {
+  font-family: var(--f-mono);
+  font-size: var(--t-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.cmp-name { font-family: var(--f-display); font-size: 1.3rem; }
+.cmp-spec { font-size: var(--t-fine); color: var(--ink-soft); line-height: 1.5; }
+.cmp-price { font-family: var(--f-display); font-size: 1.55rem; font-weight: 400; font-variant-numeric: tabular-nums; }
+.cmp-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line-soft);
+}
+.cmp-diff { font-size: var(--t-small); color: var(--ink-soft); }
+.cmp-actions { display: flex; gap: 10px; }
+.btn-line, .btn-solid {
+  font-size: var(--t-fine);
+  font-weight: 500;
+  padding: 12px 18px;
+  border-radius: var(--r-md);
+  transition: background var(--d-fast) var(--e-out), color var(--d-fast) var(--e-out), border-color var(--d-fast) var(--e-out);
+}
+.btn-line { border: 1px solid var(--line); color: var(--ink); }
+.btn-line:hover { border-color: var(--ink); }
+.btn-solid { background: var(--ink); color: var(--panel); }
+.btn-solid:hover { background: var(--accent); }
+
 /* --- Narrow --------------------------------------------------------------- */
 
 @media (max-width: 900px) {
@@ -733,12 +1082,22 @@ body.is-turned .hint { opacity: 0; }
   .stage-bottom { position: static; }
   .stage-bottom__left { position: absolute; z-index: 2; top: 62px; right: 16px; justify-items: end; }
   .tools { position: absolute; z-index: 2; right: 14px; bottom: 14px; }
-  .tool { width: 42px; height: 42px; padding: 0; justify-content: center; border-radius: 50%; }
-  .tool span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  .tool svg { width: 17px; height: 17px; }
+  .tools { gap: 6px; }
+  .tool { width: 40px; height: 40px; }
+  .tool::after { display: none; }
+  .products { margin-bottom: 18px; }
+  .sheet { padding: 12px; align-items: end; }
+  .sheet__card { max-height: calc(100vh - 24px); max-height: calc(100dvh - 24px); }
+  .sheet__card--look { grid-template-columns: 1fr; }
+  .look-text { padding: 22px 20px 24px; }
+  .sheet__card--compare { padding: 22px 18px 20px; }
+  .cmp-grid { grid-template-columns: 1fr; gap: 16px; }
+  .cmp-foot { flex-direction: column; align-items: stretch; }
+  .cmp-actions { flex-direction: column-reverse; }
 
   .swatches { gap: 10px; grid-template-columns: repeat(6, minmax(0, 40px)); }
   .swatches--4 { grid-template-columns: repeat(4, minmax(0, 40px)); }
+  .swatches--8 { grid-template-columns: repeat(8, minmax(0, 34px)); gap: 7px; }
   /* A tooltip that needs hover is dead weight on a touch screen, and it
      covers the swatch above it. */
   .swatch::after { display: none; }
@@ -765,3 +1124,36 @@ body.is-turned .hint { opacity: 0; }
     inset: -10px -8px;
   }
 }
+
+/* --- Waiting for the next piece ----------------------------------------------
+   While the stage still shows the last piece (or dress) and the next one's
+   frames are on their way, a thin line moves along the stage's foot. It
+   appears only if the wait outlasts a blink. */
+.stage-load {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: 0;
+  width: min(220px, 40%);
+  height: 2px;
+  transform: translateX(-50%);
+  overflow: hidden;
+  border-radius: 2px;
+  background: rgba(25, 20, 16, 0.08);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 240ms var(--e-out);
+}
+.stage-load::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: var(--ink);
+  opacity: 0.5;
+  animation: stage-load 1.1s ease-in-out infinite;
+  animation-play-state: paused;
+}
+.stage.is-loading .stage-load { opacity: 1; transition-delay: 280ms; }
+.stage.is-loading .stage-load::after { animation-play-state: running; }
+@keyframes stage-load { from { transform: translateX(-100%); } to { transform: translateX(250%); } }

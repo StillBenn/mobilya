@@ -1,41 +1,59 @@
-# Larisel armchair — product configurator
+# Larisel furniture — product configurator
 
-A furniture configurator rendered like a photograph. The customer picks the
-upholstery, the frame, the size and a scatter cushion, turns the chair by hand,
-and the price updates as they go.
+A furniture configurator rendered like a photograph. Three pieces — an
+armchair, a sofa and a coffee table. The customer picks the shape, the
+materials and the finish, turns the piece by hand, looks at the cloth or the
+stone up close, measures it, compares two designs and shares a link — and the
+price updates as they go.
 
-**A portfolio demo.** The product, the brand and the prices are invented.
+**A portfolio demo.** The products, the brand and the prices are invented.
 
 **Live:** https://larisel.com/mobilya/
 · English (default) · Türkçe · Русский — or link a language directly with
 `?lang=tr`, `?lang=ru`.
 
+## The pieces
+
+- **Armchair** — standard or XL; twelve bouclé colours; eight frames (four
+  woods, four metals); an optional scatter cushion in any of the twelve.
+- **Sofa** — two seats, three, or a corner with a chaise; three cloths
+  (bouclé, velvet, linen) in eight tones each; legs in the same eight
+  finishes; an optional pair of scatter cushions in any of the 24.
+- **Coffee table** — round on a fluted drum, oval on a racetrack pedestal, or
+  long on two slab legs; eight tops (five marbles, travertine, solid oak and
+  walnut); the base in the same eight finishes.
+
+The three share their finishes, so they make a set.
+
 ## What is inside
 
-- **Every option is a path-traced render** (Blender, Cycles): real light, a
-  window's shadow sliding over the chair, wood grain, a boucle weave. Nothing
-  is drawn live in WebGL.
-- **A 72-step turntable.** The chair turns under a fixed studio light, the way
+- **Every option is a path-traced render**: real light, a window's shadow
+  sliding over the piece, wood grain, a bouclé's loops, a velvet's sheen,
+  veined marble. Nothing is drawn live in WebGL.
+- **A 72-step turntable.** The piece turns under a fixed studio light, the way
   a product turns on a real turntable. Drag to turn it, throw it, pinch or
   scroll to come closer, double-click to zoom.
-- **Layers, not combinations.** Twelve fabrics × eight frames × two sizes × thirteen
-  cushion choices would be 2,496 renders per angle. Instead each option is its
-  own layer, and the page stacks the chosen ones:
-  - the empty studio, multiplied by the chair's shadow on its floor;
-  - upholstery + frame, added — each was rendered holding the other out, so
-    together they cover exactly the chair;
-  - the cushion over them, rendered with the chair catching its shadow.
+- **Layers, not combinations.** Each option is its own layer, and the page
+  stacks the chosen ones: the empty studio multiplied by the piece's shadow,
+  then the upholstery and the frame (each rendered holding the other out, so
+  together they cover exactly the piece) or, for the table, the base and the
+  top over it; then the cushions with their shadow on the piece.
 - **Two sets of frames**: light ones (800 px, one pack per layer) while the
-  chair moves, the full 1600 px frame once it rests. Frames are cropped to
-  what they cover and decoded on demand within a memory budget, so a phone
-  holds the chair's size, not 72 stage-sized images.
-- **Swatches are the materials.** Each fabric and frame button is a small
-  render of the material itself — the boucle's loops, the oak's rings, the
-  metal's softbox — not a flat colour.
-- **Pairings.** Six chair, cushion and frame combinations chosen to go
-  together, each with a picture of the chair dressed in it; one tap sets all
-  three, and every option stays editable.
-- **Live price**, with an animated counter.
+  piece moves, the full 1600 px frame once it rests. Frames are cropped to
+  what they cover and decoded within a memory budget, so a phone holds the
+  piece's size, not 72 stage-sized images.
+- **Swatches are the materials** — small renders of the cloth, the wood, the
+  metal, a slab of the stone — not flat colours.
+- **Pairings** — combinations chosen to go together, each with a picture of
+  the piece dressed in it; one tap sets them all.
+- **Close-up** — the chosen cloth or stone on the piece itself, near, with its
+  tones beside it.
+- **Dimensions** — drawn on the piece as a draughtsman would, following it as
+  it turns (a round top shows its diameter).
+- **Compare** — save a design as A, change anything (even the piece), and see
+  the two side by side with the difference in price; go back to A in a tap.
+- **Share** — a link that opens exactly this design:
+  `?p=sofa&form=corner&fab=velvet-emerald&leg=brass&cush=velvet-ochre&lang=tr`.
 - **Snapshot** — saves the full render of the angle on screen as a PNG.
 - **Three languages**, English by default; the choice is remembered, and a
   `?lang=` link wins over it.
@@ -46,6 +64,8 @@ and the price updates as they go.
 
 ## Decisions worth knowing
 
+- **A new piece is one catalogue entry and one folder of renders** —
+  `PRODUCTS` in `index.html`; the page around it does not change.
 - **XL changes the proportions, not the overall scale.** In an empty scene a
   uniform enlargement is indistinguishable from the camera moving closer.
 - **One file.** All of the JavaScript lives in `index.html`.
@@ -58,10 +78,13 @@ and the price updates as they go.
 
 - `index.html` — the page and its script
 - `css/style.css` — the page's styles
-- `renders/<size>/` — the layers: `manifest.json`, the empty studio
-  (`bg0-*.webp`), and per layer a light pack (`lite.bin`) and one full frame
-  per angle (`hd/NN.webp`)
-- `renders/swatch/` — the material samples; `renders/pairs/` — the pairings' pictures
+- `renders/<std|xl>/`, `renders/sofa/<two|three|corner>/`,
+  `renders/table/<round|oval|rect>/` — the layers: `manifest.json`, the empty
+  studio (`bg0-*.webp`), per layer a light pack (`lite.bin`) and one full
+  frame per angle (`hd/NN.webp`), and `dims.json` (where the piece's
+  measuring box falls in each frame)
+- `swatch/`, `macro/`, `pairs/` under each piece's folder — the material
+  samples, the close-ups and the pairings' pictures
 
 ## Running it locally
 
