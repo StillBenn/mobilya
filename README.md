@@ -1,12 +1,14 @@
-# Larisel furniture — product configurator
+# Larisel furniture — a made-to-order shop
 
-A furniture configurator rendered like a photograph. Three pieces — an
-armchair, a sofa and a coffee table. The customer picks the shape, the
-materials and the finish, turns the piece by hand, looks at the cloth or the
-stone up close, measures it, compares two designs and shares a link — and the
-price updates as they go.
+A furniture shop built around a configurator rendered like a photograph.
+Three pieces — an armchair, a sofa and a coffee table. The customer picks the
+shape, the materials and the finish, turns the piece by hand, looks at the
+cloth or the stone up close, measures it, compares two designs and shares a
+link — then puts it in the cart, orders it and follows the order.
 
-**A portfolio demo.** The products, the brand and the prices are invented.
+**A portfolio demo.** The products, the brand and the prices are invented;
+orders and sample requests stay in the visitor's browser and no payment is
+taken. Only the contact form is real: it writes to the studio by e-mail.
 
 **Live:** https://larisel.com/mobilya/
 · English (default) · Türkçe · Русский — or link a language directly with
@@ -25,7 +27,27 @@ price updates as they go.
 
 The three share their finishes, so they make a set.
 
-## What is inside
+## The shop
+
+- **Cart and favourites** — each line keeps a picture of the piece as it was
+  configured and a link back to that exact design.
+- **Checkout** (`checkout/`) — contact and address, standard or express
+  delivery, instalments, card or bank transfer; checked field by field, with
+  the expected delivery date worked out from the lead time.
+- **Orders** (`orders/`) — every order with its stages (received, confirmed,
+  in the workshop, finishing, ready, on its way, delivered), dated from the
+  day it was placed; look one up by its number.
+- **Materials** (`materials/`) — every cloth, stone, wood and finish of the
+  three pieces in one library, each up close; a sample box of up to six.
+- **The atelier** (`about/`), **help** (`help/` — delivery, returns,
+  warranty, care, payment, questions), **contact** (`contact/`, attach a saved
+  design to the message) and **privacy** (`privacy/` — what the shop keeps in
+  the browser, and a button that clears it).
+- Under the configurator: the piece's measurements and a **"will it fit
+  through your door?"** check, the shop's promises, how ordering works, and
+  the questions people ask.
+
+## What is inside the configurator
 
 - **Every option is a path-traced render**: real light, a window's shadow
   sliding over the piece, wood grain, a bouclé's loops, a velvet's sheen,
@@ -59,16 +81,23 @@ The three share their finishes, so they make a set.
   `?lang=` link wins over it.
 - **Responsive** — on a phone the stage takes the top of the screen and the
   options and price sit below it, with the price bar pinned.
+- **Between the 72 angles the motion is continuous** — each form ships an
+  optical-flow map between neighbouring angles, and a small WebGL shader warps
+  the two frames toward each other, so a slow drag glides instead of stepping.
 - **Smoothing is tied to time, not to frames** — a transition takes the same
   wall-clock time at 60 Hz, at 144 Hz, and on a laptop dropping frames.
 
 ## Decisions worth knowing
 
 - **A new piece is one catalogue entry and one folder of renders** —
-  `PRODUCTS` in `index.html`; the page around it does not change.
+  `PRODUCTS` in `js/catalog.js`; the configurator and the shop pages around
+  it do not change.
 - **XL changes the proportions, not the overall scale.** In an empty scene a
   uniform enlargement is indistinguishable from the camera moving closer.
-- **One file.** All of the JavaScript lives in `index.html`.
+- **No build step, no server.** Plain ES modules: the shop's core
+  (`js/store.js` — language, cart, favourites, orders, drawers, header and
+  footer) and the catalogue (`js/catalog.js`) are shared by every page; each
+  page carries its own words in three languages.
 - **Names live on the catalogue item, not in a parallel list** — a colour and
   its three names cannot drift apart if they are one object.
 - **Fonts are self-hosted and split by script.** The Cyrillic slice only
@@ -76,13 +105,19 @@ The three share their finishes, so they make a set.
 
 ## Files
 
-- `index.html` — the page and its script
-- `css/style.css` — the page's styles
+- `index.html` — the configurator and its script
+- `checkout/`, `orders/`, `materials/`, `about/`, `help/`, `contact/`,
+  `privacy/` — the shop's pages
+- `js/store.js`, `js/catalog.js` — the shared shop core and the catalogue
+- `css/base.css` (tokens, fonts), `css/style.css` (the configurator),
+  `css/store.css` (the shop)
+- `img/` — the atelier's pictures
 - `renders/<std|xl>/`, `renders/sofa/<two|three|corner>/`,
   `renders/table/<round|oval|rect>/` — the layers: `manifest.json`, the empty
   studio (`bg0-*.webp`), per layer a light pack (`lite.bin`) and one full
-  frame per angle (`hd/NN.webp`), and `dims.json` (where the piece's
-  measuring box falls in each frame)
+  frame per angle (`hd/NN.webp`), `dims.json` (where the piece's measuring
+  box falls in each frame) and `flow.webp` + `flow.json` (the motion between
+  neighbouring angles)
 - `swatch/`, `macro/`, `pairs/` under each piece's folder — the material
   samples, the close-ups and the pairings' pictures
 

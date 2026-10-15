@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>My orders — Larisel</title>
+<meta name="description" content="Follow your Larisel order from the atelier to your door.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#fdfbf7">
+<link rel="icon" href="/favicon.ico?v=2" sizes="32x32">
+<link rel="icon" href="/img/favicon.svg?v=2" type="image/svg+xml">
+<link rel="preload" href="../fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../css/base.css?v=1">
+<link rel="stylesheet" href="../css/store.css?v=2">
+</head>
+<body class="page">
+
+<header class="site-head site-head--line" data-site-head></header>
+
+<main class="wrap">
+  <section class="page-hero page-hero--tight">
+    <p class="eyebrow-line" data-s="or.eyebrow"></p>
+    <h1 data-s="or.title"></h1>
+    <p data-s="or.lead"></p>
+    <form class="lookup" id="lookup" novalidate>
+      <label class="field"><span data-s="or.number"></span><input name="id" placeholder="LR-2610-XXXX" autocomplete="off" spellcheck="false"></label>
+      <button class="btn btn--line" type="submit" data-s="or.find"></button>
+      <em class="field__err" id="lookup-err"></em>
+    </form>
+  </section>
+
+  <section class="orders" id="orders"></section>
+</main>
+
+<footer class="site-foot" data-site-foot></footer>
+
+<script type="module">
+import * as store from '../js/store.js?v=2';
+
+store.words({
+  en: {
+    'or.page': 'My orders', 'or.eyebrow': 'My orders', 'or.title': 'From the atelier to your door.',
+    'or.lead': 'Every order placed in this browser, and where it is now. Looking for another one? Enter its number.',
+    'or.number': 'Order number', 'or.find': 'Find', 'or.notFound': 'No order with that number in this browser.',
+    'or.empty': 'No orders yet.', 'or.emptyLead': 'When you place one, you can follow it here, step by step.',
+    'or.placed': 'Placed %s', 'or.items': '%d pieces', 'or.item': '1 piece', 'or.expected': 'Expected %s', 'or.deliveredOn': 'Delivered %s',
+    'or.to': 'Delivery to', 'or.pay': 'Payment', 'or.details': 'Show details', 'or.hide': 'Hide details',
+    's.received': 'Order received', 's.confirmed': 'Confirmed with you', 's.making': 'Frame in the making', 's.finishing': 'Upholstery and finish',
+    's.ready': 'Quality check, wrapped', 's.delivery': 'On its way', 's.delivered': 'Delivered and assembled',
+    'p.instalments': '12 instalments', 'p.card': 'Card on delivery', 'p.transfer': 'Bank transfer',
+    'or.demo': 'Demo store: these steps move on by themselves, the way a real order would.',
+  },
+  tr: {
+    'or.page': 'Siparişlerim', 'or.eyebrow': 'Siparişlerim', 'or.title': 'Atölyeden kapınıza.',
+    'or.lead': 'Bu tarayıcıda verilen her sipariş ve şu an nerede olduğu. Başka bir siparişi mi arıyorsunuz? Numarasını girin.',
+    'or.number': 'Sipariş numarası', 'or.find': 'Bul', 'or.notFound': 'Bu tarayıcıda bu numarayla bir sipariş yok.',
+    'or.empty': 'Henüz sipariş yok.', 'or.emptyLead': 'Bir sipariş verdiğinizde burada adım adım takip edebilirsiniz.',
+    'or.placed': '%s tarihinde verildi', 'or.items': '%d parça', 'or.item': '1 parça', 'or.expected': 'Tahmini teslim: %s', 'or.deliveredOn': '%s tarihinde teslim edildi',
+    'or.to': 'Teslimat adresi', 'or.pay': 'Ödeme', 'or.details': 'Ayrıntıları göster', 'or.hide': 'Ayrıntıları gizle',
+    's.received': 'Sipariş alındı', 's.confirmed': 'Sizinle teyit edildi', 's.making': 'İskelet yapılıyor', 's.finishing': 'Döşeme ve son kat',
+    's.ready': 'Kalite kontrol, paketleme', 's.delivery': 'Yolda', 's.delivered': 'Teslim edildi ve kuruldu',
+    'p.instalments': '12 taksit', 'p.card': 'Teslimatta kartla', 'p.transfer': 'Havale / EFT',
+    'or.demo': 'Demo mağaza: bu adımlar gerçek bir siparişte olacağı gibi kendiliğinden ilerler.',
+  },
+  ru: {
+    'or.page': 'Мои заказы', 'or.eyebrow': 'Мои заказы', 'or.title': 'Из мастерской — к вашей двери.',
+    'or.lead': 'Все заказы, оформленные в этом браузере, и где они сейчас. Ищете другой? Введите его номер.',
+    'or.number': 'Номер заказа', 'or.find': 'Найти', 'or.notFound': 'В этом браузере нет заказа с таким номером.',
+    'or.empty': 'Заказов пока нет.', 'or.emptyLead': 'Когда вы оформите заказ, здесь можно будет следить за ним шаг за шагом.',
+    'or.placed': 'Оформлен %s', 'or.items': '%d', 'or.item': '1 изделие', 'or.expected': 'Ожидается %s', 'or.deliveredOn': 'Доставлен %s',
+    'or.to': 'Адрес доставки', 'or.pay': 'Оплата', 'or.details': 'Подробнее', 'or.hide': 'Свернуть',
+    's.received': 'Заказ получен', 's.confirmed': 'Подтверждён с вами', 's.making': 'Изготовление каркаса', 's.finishing': 'Обивка и отделка',
+    's.ready': 'Контроль качества, упаковка', 's.delivery': 'В пути', 's.delivered': 'Доставлен и собран',
+    'p.instalments': 'Рассрочка на 12 месяцев', 'p.card': 'Картой при доставке', 'p.transfer': 'Банковский перевод',
+    'or.demo': 'Демо-магазин: этапы сменяются сами, как у настоящего заказа.',
+  },
+});
+store.mount({ base: '../', page: 'orders' });
+
+const $ = (id) => document.getElementById(id);
+const DAY = 864e5;
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+let focusId = new URLSearchParams(location.search).get('id') || '';
+const open = new Set(focusId ? [focusId.toUpperCase()] : []);
+
+/* the way an order goes, in days from the moment it was placed */
+function stages(o) {
+  const L = o.lead || 14;
+  return [['s.received', 0], ['s.confirmed', 1], ['s.making', 2], ['s.finishing', Math.max(3, L - 4)], ['s.ready', L], ['s.delivery', L + 3], ['s.delivered', L + 6]]
+    .map(([k, d]) => ({ k, at: o.created + d * DAY }));
+}
+const countWord = (n) => (n === 1 ? store.t('or.item') : store.getLang() === 'ru'
+  ? n + ' ' + store.ruPlural(n, 'изделие', 'изделия', 'изделий') : store.t('or.items').replace('%d', n));
+
+function card(o) {
+  const st = stages(o), now = Date.now();
+  let cur = 0; st.forEach((s, i) => { if (s.at <= now) cur = i; });
+  const done = cur === st.length - 1;
+  const pieces = o.items.reduce((n, it) => n + (Number(it.qty) || 1), 0);
+  const isOpen = open.has(o.id.toUpperCase());
+  const c = o.customer || {};
+  return `
+  <article class="order${isOpen ? ' is-open' : ''}" data-id="${esc(o.id)}">
+    <header class="order__head">
+      <div>
+        <p class="order__id">${esc(o.id)}</p>
+        <p class="order__meta">${esc(store.t('or.placed').replace('%s', store.date(o.created)))} · ${esc(countWord(pieces))} · ${store.price(o.total)}</p>
+      </div>
+      <span class="stage-pill${done ? ' stage-pill--done' : ''}">${esc(store.t(st[cur].k))}</span>
+    </header>
+    <div class="order__pics">${o.items.map((it) => `<img src="${esc(it.img || '')}" alt="" width="120" height="90">`).join('')}</div>
+    <ol class="track" style="--p:${cur / (st.length - 1)}">
+      ${st.map((s, i) => `<li class="${i < cur ? 'is-past' : i === cur ? 'is-now' : ''}"><b>${esc(store.t(s.k))}</b><span>${esc(store.date(s.at))}</span></li>`).join('')}
+    </ol>
+    <p class="order__when">${esc((done ? store.t('or.deliveredOn') : store.t('or.expected')).replace('%s', store.date(done ? st[st.length - 1].at : o.expected)))}</p>
+    <button class="order__toggle" type="button" data-more aria-expanded="${isOpen}">${esc(store.t(isOpen ? 'or.hide' : 'or.details'))}</button>
+    <div class="order__more" ${isOpen ? '' : 'hidden'}>
+      <ul class="lines">${o.items.map((it) => `
+        <li class="line line--small">
+          <span class="line__pic"><img src="${esc(it.img || '')}" alt="" width="96" height="72"></span>
+          <div class="line__text"><p class="line__title">${esc(store.pick(it.title))}${(Number(it.qty) || 1) > 1 ? ' × ' + Number(it.qty) : ''}</p><p class="line__spec">${esc(store.pick(it.spec))}</p></div>
+          <strong class="line__price">${store.price(it.price * (Number(it.qty) || 1))}</strong>
+        </li>`).join('')}</ul>
+      <dl class="order__facts">
+        <div><dt>${esc(store.t('or.to'))}</dt><dd>${esc([c.name, c.street, [c.zip, c.city].filter(Boolean).join(' '), c.floor].filter(Boolean).join(', '))}</dd></div>
+        <div><dt>${esc(store.t('or.pay'))}</dt><dd>${esc(store.t('p.' + o.payment))}</dd></div>
+      </dl>
+    </div>
+  </article>`;
+}
+
+/* where each order stands now: the minute's look only re-draws when a step was passed */
+const standing = () => store.orders.list().map((o) => { const now = Date.now(); return stages(o).filter((x) => x.at <= now).length; }).join();
+let stood = '';
+function render() { store.keepFocus($('orders'), draw); stood = standing(); }
+function draw() {
+  document.title = store.t('or.page') + ' — Larisel';
+  $('lookup-err').textContent = $('lookup-err').dataset.err ? store.t($('lookup-err').dataset.err) : '';
+  const list = store.orders.list();
+  const box = $('orders');
+  if (!list.length) {
+    box.innerHTML = `<div class="empty"><p class="empty__title">${esc(store.t('or.empty'))}</p><p class="empty__lead">${esc(store.t('or.emptyLead'))}</p><a class="btn btn--solid" href="../">${esc(store.t('cart.start'))}</a></div>`;
+    return;
+  }
+  box.innerHTML = list.map(card).join('') + `<p class="note">${esc(store.t('or.demo'))}</p>`;
+  box.querySelectorAll('.order').forEach((el) => el.querySelector('.order__toggle').addEventListener('click', () => {
+    const id = el.dataset.id.toUpperCase();
+    if (open.has(id)) open.delete(id); else open.add(id);
+    render();
+  }));
+  if (focusId) {
+    const el = box.querySelector(`.order[data-id="${CSS.escape(focusId.toUpperCase())}"]`) || [...box.querySelectorAll('.order')].find((x) => x.dataset.id.toUpperCase() === focusId.toUpperCase());
+    if (el) { el.classList.add('is-found'); el.scrollIntoView({ block: 'center' }); }
+    focusId = '';
+  }
+}
+
+$('lookup').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const v = e.target.elements.id.value.trim();
+  const o = store.orders.get(v);
+  $('lookup-err').dataset.err = o || !v ? '' : 'or.notFound';
+  $('lookup-err').textContent = o || !v ? '' : store.t('or.notFound');
+  if (!o) return;
+  focusId = o.id; open.add(o.id.toUpperCase());
+  history.replaceState(null, '', '?id=' + encodeURIComponent(o.id));
+  render();
+});
+
+store.onLang(render);
+store.onChange(render);
+render();
+/* the steps move on with time: look again every minute while the page is open */
+setInterval(() => { if (standing() !== stood) render(); }, 60000);
+</script>
+</body>
+</html>

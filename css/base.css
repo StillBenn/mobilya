@@ -1,0 +1,158 @@
+/* ==========================================================================
+   Larisel furniture — the ground every page stands on: tokens, fonts, reset.
+   (css/style.css: the configurator; css/store.css: the shop around it.)
+   --------------------------------------------------------------------------
+   Two halves of one room: a lit stage on the left where the product stands,
+   and a paper spec sheet on the right where it is specified. The stage is
+   the only place colour is allowed; every printed surface stays quiet so the
+   upholstery is the brightest thing on screen.
+
+   Two faces: a serif for the things that are *stated* (the product name, the
+   price) and a grotesque for the things that are *operated* (labels, chips,
+   the button). A configurator set in a single UI font looks like a settings
+   dialog; the pairing is what makes it read as a catalogue.
+
+   Single source of truth: nothing below :root may hard-code a raw value.
+   ========================================================================== */
+
+:root {
+  /* --- Ground ----------------------------------------------------------- */
+  --bg:        #ece7de;
+  --bg-warm:   #f6f2ea;
+  --bg-deep:   #ddd6c9;
+  --panel:     #fdfbf7;
+  --panel-2:   #f6f2ea;      /* wells inside the panel */
+
+  /* --- Ink -------------------------------------------------------------
+     Measured on --panel: ink 15.1:1, soft 7.2:1, muted 4.6:1. Nothing below
+     --muted carries text. */
+  --ink:       #191410;
+  --ink-soft:  #574c42;
+  --muted:     #7d7267;
+  --line:      rgba(25, 20, 16, 0.13);
+  --line-soft: rgba(25, 20, 16, 0.07);
+  --line-hair: rgba(25, 20, 16, 0.04);
+
+  /* --- Accent -----------------------------------------------------------
+     Copper. Rules, prices and focus only — never a large fill. */
+  --accent:      #a8551f;
+  --accent-soft: rgba(168, 85, 31, 0.1);
+
+  /* --- Type ------------------------------------------------------------- */
+  --f-display: "Newsreader", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --f-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --f-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --t-h1:    clamp(1.85rem, 2.4vw, 2.5rem);
+  --t-price: clamp(1.9rem, 2.6vw, 2.4rem);
+  --t-body:  0.9375rem;
+  --t-small: 0.875rem;
+  --t-fine:  0.8125rem;
+  --t-label: 0.6875rem;
+  --ls-label: 0.18em;
+
+  /* --- Surface ---------------------------------------------------------- */
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 22px;
+  --r-pill: 999px;
+
+  --shadow-sm:
+    0 1px 1px rgba(25, 20, 16, 0.04),
+    0 2px 6px rgba(25, 20, 16, 0.04);
+  --shadow-lg:
+    0 1px 1px rgba(25, 20, 16, 0.05),
+    0 4px 12px rgba(25, 20, 16, 0.05),
+    0 30px 60px -30px rgba(25, 20, 16, 0.3);
+  --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+
+  --e-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --head-h: 64px;             /* the site header (css/store.css) */
+  --d-fast: 180ms;
+  --d-base: 420ms;
+}
+
+/* --- Fonts ----------------------------------------------------------------
+   Self-hosted and split by script. The Cyrillic slice only downloads when
+   the page is actually switched to Russian, and the Turkish glyphs ride in
+   the latin-ext slice — so the English default pays for neither.
+
+   Newsreader ships no Cyrillic, which is why the display stack falls through
+   to Georgia: an old-style serif with the same colour on the page, rather
+   than whatever the system would otherwise pick. */
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/inter-latin.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+2000-206F,
+                 U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/inter-latin-ext.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+  unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF,
+                 U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/inter-cyrillic.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/inter-cyrillic-ext.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: "Newsreader";
+  src: url("../fonts/newsreader-latin.woff2") format("woff2");
+  font-weight: 200 800;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+2000-206F,
+                 U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215;
+}
+@font-face {
+  font-family: "Newsreader";
+  src: url("../fonts/newsreader-latin-ext.woff2") format("woff2");
+  font-weight: 200 800;
+  font-display: swap;
+  unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF,
+                 U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* --- Reset ---------------------------------------------------------------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; }
+
+body {
+  font-family: var(--f-body);
+  font-size: var(--t-body);
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { margin: 0; }
+img { max-width: 100%; }
+/* hidden means hidden, whatever display a component gives itself */
+[hidden] { display: none !important; }
+p { margin: 0; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+

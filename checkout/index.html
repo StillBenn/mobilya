@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Checkout — Larisel</title>
+<meta name="description" content="Your order: delivery, assembly and payment for your made-to-order Larisel furniture.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#fdfbf7">
+<link rel="icon" href="/favicon.ico?v=2" sizes="32x32">
+<link rel="icon" href="/img/favicon.svg?v=2" type="image/svg+xml">
+<link rel="preload" href="../fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../css/base.css?v=1">
+<link rel="stylesheet" href="../css/store.css?v=2">
+</head>
+<body class="page">
+
+<header class="site-head site-head--line" data-site-head></header>
+
+<main class="wrap checkout">
+
+  <!-- the order being placed -->
+  <section id="co-form-view" hidden>
+    <div class="page-hero page-hero--tight">
+      <p class="eyebrow-line" data-s="co.eyebrow"></p>
+      <h1 data-s="co.title"></h1>
+    </div>
+    <div class="co-grid">
+      <form class="form co-form" id="co-form" novalidate>
+        <fieldset class="co-step">
+          <legend><span class="co-n">1</span><span data-s="co.contact"></span></legend>
+          <label class="field"><span data-s="f.name"></span><input name="name" autocomplete="name" required minlength="2"><em class="field__err"></em></label>
+          <div class="form__row">
+            <label class="field"><span data-s="f.email"></span><input name="email" type="email" autocomplete="email" required><em class="field__err"></em></label>
+            <label class="field"><span data-s="f.phone"></span><input name="phone" type="tel" autocomplete="tel" required><em class="field__err"></em></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="co-step">
+          <legend><span class="co-n">2</span><span data-s="co.address"></span></legend>
+          <label class="field"><span data-s="co.street"></span><input name="street" autocomplete="street-address" required><em class="field__err"></em></label>
+          <div class="form__row">
+            <label class="field"><span data-s="co.city"></span><input name="city" autocomplete="address-level2" required><em class="field__err"></em></label>
+            <label class="field"><span data-s="co.zip"></span><input name="zip" autocomplete="postal-code" required><em class="field__err"></em></label>
+          </div>
+          <label class="field"><span data-s="co.country"></span><select name="country" id="co-country" autocomplete="country"></select></label>
+          <label class="field"><span><span data-s="co.floor"></span> <small data-s="f.optional"></small></span><input name="floor" placeholder=""></label>
+        </fieldset>
+
+        <fieldset class="co-step">
+          <legend><span class="co-n">3</span><span data-s="co.delivery"></span></legend>
+          <div class="choice">
+            <label><input type="radio" name="delivery" value="standard" checked><span><b data-s="co.std"></b><small data-s="co.stdNote"></small></span><em data-s="cart.free"></em></label>
+            <label><input type="radio" name="delivery" value="express"><span><b data-s="co.exp"></b><small data-s="co.expNote"></small></span><em>+$190</em></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="co-step">
+          <legend><span class="co-n">4</span><span data-s="co.payment"></span></legend>
+          <div class="choice">
+            <label><input type="radio" name="payment" value="instalments" checked><span><b data-s="co.inst"></b><small id="co-inst-note"></small></span></label>
+            <label><input type="radio" name="payment" value="card"><span><b data-s="co.card"></b><small data-s="co.cardNote"></small></span></label>
+            <label><input type="radio" name="payment" value="transfer"><span><b data-s="co.bank"></b><small data-s="co.bankNote"></small></span></label>
+          </div>
+          <label class="field"><span><span data-s="co.notes"></span> <small data-s="f.optional"></small></span><textarea name="notes" rows="3"></textarea></label>
+        </fieldset>
+
+        <label class="check-line"><input type="checkbox" name="consent" required><span><span data-s="co.consent"></span> <a href="../privacy/" data-s="foot.privacy"></a></span></label>
+        <em class="field__err" id="co-consent-err"></em>
+        <p class="note" data-s="co.demo"></p>
+        <button class="btn btn--solid btn--wide co-submit" type="submit" data-s="co.place"></button>
+      </form>
+
+      <aside class="co-summary" aria-labelledby="co-sum-title">
+        <h2 id="co-sum-title" data-s="co.summary"></h2>
+        <ul class="lines" id="co-lines"></ul>
+        <dl class="sums">
+          <div><dt data-s="cart.subtotal"></dt><dd id="co-sub"></dd></div>
+          <div><dt data-s="cart.delivery"></dt><dd id="co-del"></dd></div>
+          <div class="sums__total"><dt data-s="cart.total"></dt><dd id="co-total"></dd></div>
+        </dl>
+        <p class="sums__note" id="co-when"></p>
+        <a class="co-edit" href="../" data-s="co.keep"></a>
+      </aside>
+    </div>
+  </section>
+
+  <!-- nothing to order -->
+  <section id="co-empty-view" class="page-hero" hidden>
+    <p class="eyebrow-line" data-s="co.eyebrow"></p>
+    <h1 data-s="cart.empty"></h1>
+    <p data-s="cart.emptyLead"></p>
+    <div class="row-links"><a class="btn btn--solid" href="../" data-s="cart.start"></a></div>
+  </section>
+
+  <!-- placed -->
+  <section id="co-done-view" class="co-done" hidden>
+    <div class="co-done__mark" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="22"/><path d="M14 25l7 7 13-15"/></svg></div>
+    <p class="eyebrow-line" data-s="co.doneEyebrow"></p>
+    <h1 id="co-done-title"></h1>
+    <p class="co-done__lead" id="co-done-lead"></p>
+    <dl class="co-done__facts">
+      <div><dt data-s="co.number"></dt><dd id="co-done-id"></dd></div>
+      <div><dt data-s="cart.total"></dt><dd id="co-done-total"></dd></div>
+      <div><dt data-s="co.expected"></dt><dd id="co-done-when"></dd></div>
+    </dl>
+    <ol class="co-next">
+      <li><b data-s="co.n1"></b><span data-s="co.n1p"></span></li>
+      <li><b data-s="co.n2"></b><span data-s="co.n2p"></span></li>
+      <li><b data-s="co.n3"></b><span data-s="co.n3p"></span></li>
+    </ol>
+    <div class="row-links"><a class="btn btn--solid" id="co-track" href="../orders/" data-s="co.track"></a><a class="btn btn--line" href="../" data-s="co.more"></a></div>
+    <p class="note" data-s="co.demo"></p>
+  </section>
+
+</main>
+
+<footer class="site-foot" data-site-foot></footer>
+
+<script type="module">
+import * as store from '../js/store.js?v=2';
+
+store.words({
+  en: {
+    'co.page': 'Checkout', 'co.eyebrow': 'Checkout', 'co.title': 'Your order',
+    'co.contact': 'Contact', 'co.address': 'Delivery address', 'co.street': 'Street and number', 'co.city': 'City', 'co.zip': 'Postcode',
+    'co.country': 'Country', 'co.floor': 'Floor, lift, anything our crew should know', 'co.other': 'Other',
+    'co.delivery': 'Delivery', 'co.std': 'White-glove delivery and assembly', 'co.stdNote': 'Our crew carries it in, assembles it and takes the packaging away.',
+    'co.exp': 'Priority making', 'co.expNote': 'Your piece goes to the front of the atelier’s queue: five days sooner.',
+    'co.payment': 'Payment', 'co.inst': '12 monthly instalments, interest-free', 'co.instNote': '12 × %s, the first when the order is confirmed',
+    'co.card': 'Card on delivery', 'co.cardNote': 'Pay the crew when it is in your room.',
+    'co.bank': 'Bank transfer', 'co.bankNote': 'We send the details with the confirmation; making starts when it arrives.',
+    'co.notes': 'A note for the atelier', 'co.consent': 'I agree that my details are used to make and deliver this order.',
+    'co.demo': 'This is a demo store: no payment is taken and nothing is made. Your order is kept in this browser so you can follow it on My orders.',
+    'co.place': 'Place the order', 'co.summary': 'Summary', 'co.keep': 'Keep designing',
+    'co.when': 'Made to order and delivered by about %s.', 'co.consentErr': 'Please agree to continue',
+    'co.doneEyebrow': 'Order placed', 'co.doneTitle': 'Thank you, %s.', 'co.doneLead': 'We have your order. A designer will call you within a working day to go through it with you.',
+    'co.number': 'Order number', 'co.expected': 'Expected', 'co.track': 'Follow this order', 'co.more': 'Design another piece',
+    'co.n1': 'Within a day', 'co.n1p': 'A designer confirms the materials, the measurements and the size of your doors.',
+    'co.n2': 'In the atelier', 'co.n2p': 'Frame, upholstery and finish, made by hand for you.',
+    'co.n3': 'At your door', 'co.n3p': 'Our crew delivers it, assembles it and sets it in place.',
+  },
+  tr: {
+    'co.page': 'Sipariş', 'co.eyebrow': 'Sipariş', 'co.title': 'Siparişiniz',
+    'co.contact': 'İletişim', 'co.address': 'Teslimat adresi', 'co.street': 'Sokak ve numara', 'co.city': 'Şehir', 'co.zip': 'Posta kodu',
+    'co.country': 'Ülke', 'co.floor': 'Kat, asansör, ekibimizin bilmesi gerekenler', 'co.other': 'Diğer',
+    'co.delivery': 'Teslimat', 'co.std': 'Eve teslim ve kurulum', 'co.stdNote': 'Ekibimiz içeri taşır, kurar ve ambalajı geri götürür.',
+    'co.exp': 'Öncelikli üretim', 'co.expNote': 'Ürününüz atölye sırasında öne alınır: beş gün daha erken.',
+    'co.payment': 'Ödeme', 'co.inst': 'Faizsiz 12 taksit', 'co.instNote': '12 × %s; ilki sipariş onaylandığında',
+    'co.card': 'Teslimatta kartla', 'co.cardNote': 'Ürün odanıza yerleştiğinde ekibe ödersiniz.',
+    'co.bank': 'Havale / EFT', 'co.bankNote': 'Hesap bilgilerini onayla birlikte göndeririz; ödeme ulaşınca üretim başlar.',
+    'co.notes': 'Atölyeye bir not', 'co.consent': 'Bilgilerimin bu siparişin üretimi ve teslimatı için kullanılmasını kabul ediyorum.',
+    'co.demo': 'Bu bir demo mağazadır: ödeme alınmaz ve üretim yapılmaz. Siparişiniz Siparişlerim sayfasından takip edebilmeniz için bu tarayıcıda saklanır.',
+    'co.place': 'Siparişi ver', 'co.summary': 'Özet', 'co.keep': 'Tasarlamaya devam et',
+    'co.when': 'Siparişe özel üretilir, yaklaşık %s tarihine kadar teslim edilir.', 'co.consentErr': 'Devam etmek için lütfen onaylayın',
+    'co.doneEyebrow': 'Sipariş alındı', 'co.doneTitle': 'Teşekkürler, %s.', 'co.doneLead': 'Siparişiniz bize ulaştı. Bir tasarımcımız bir iş günü içinde sizi arayıp birlikte gözden geçirecek.',
+    'co.number': 'Sipariş numarası', 'co.expected': 'Tahmini teslim', 'co.track': 'Siparişi takip et', 'co.more': 'Başka bir parça tasarla',
+    'co.n1': 'Bir gün içinde', 'co.n1p': 'Tasarımcımız malzemeleri, ölçüleri ve kapı genişliklerinizi teyit eder.',
+    'co.n2': 'Atölyede', 'co.n2p': 'İskelet, döşeme ve son kat sizin için elde yapılır.',
+    'co.n3': 'Kapınızda', 'co.n3p': 'Ekibimiz getirir, kurar ve yerine yerleştirir.',
+  },
+  ru: {
+    'co.page': 'Оформление заказа', 'co.eyebrow': 'Оформление', 'co.title': 'Ваш заказ',
+    'co.contact': 'Контакты', 'co.address': 'Адрес доставки', 'co.street': 'Улица и дом', 'co.city': 'Город', 'co.zip': 'Индекс',
+    'co.country': 'Страна', 'co.floor': 'Этаж, лифт, что нужно знать нашей команде', 'co.other': 'Другая',
+    'co.delivery': 'Доставка', 'co.std': 'Доставка и сборка «под ключ»', 'co.stdNote': 'Наша команда занесёт, соберёт и заберёт упаковку.',
+    'co.exp': 'Приоритетное изготовление', 'co.expNote': 'Ваш заказ встанет в начало очереди мастерской: на пять дней быстрее.',
+    'co.payment': 'Оплата', 'co.inst': 'Рассрочка на 12 месяцев без переплаты', 'co.instNote': '12 × %s, первый платёж — при подтверждении заказа',
+    'co.card': 'Картой при доставке', 'co.cardNote': 'Оплата команде, когда мебель уже у вас.',
+    'co.bank': 'Банковский перевод', 'co.bankNote': 'Реквизиты придут с подтверждением; изготовление начнётся после оплаты.',
+    'co.notes': 'Комментарий для мастерской', 'co.consent': 'Я согласен(на) на использование моих данных для изготовления и доставки заказа.',
+    'co.demo': 'Это демо-магазин: оплата не взимается, мебель не изготавливается. Заказ сохраняется в этом браузере, чтобы его можно было отслеживать в разделе «Мои заказы».',
+    'co.place': 'Оформить заказ', 'co.summary': 'Итог', 'co.keep': 'Продолжить',
+    'co.when': 'Изготовление на заказ, доставка примерно к %s.', 'co.consentErr': 'Подтвердите согласие, чтобы продолжить',
+    'co.doneEyebrow': 'Заказ оформлен', 'co.doneTitle': 'Спасибо, %s.', 'co.doneLead': 'Мы получили ваш заказ. Дизайнер позвонит вам в течение рабочего дня, чтобы всё уточнить.',
+    'co.number': 'Номер заказа', 'co.expected': 'Ожидаемая доставка', 'co.track': 'Отслеживать заказ', 'co.more': 'Создать ещё',
+    'co.n1': 'В течение дня', 'co.n1p': 'Дизайнер подтвердит материалы, размеры и ширину ваших дверей.',
+    'co.n2': 'В мастерской', 'co.n2p': 'Каркас, обивка и отделка — вручную, для вас.',
+    'co.n3': 'У вашей двери', 'co.n3p': 'Наша команда привезёт, соберёт и поставит на место.',
+  },
+});
+store.mount({ base: '../', page: 'checkout' });
+
+const $ = (id) => document.getElementById(id);
+const form = $('co-form');
+const DAY = 864e5;
+const EXPRESS = 190;
+let placed = null;
+
+const COUNTRIES = ['TR', 'RU', 'DE', 'GB', 'US', 'NL', 'FR', 'AE', 'KZ', 'AZ'];
+function fillCountries() {
+  const sel = $('co-country'), keep = sel.value || ({ tr: 'TR', ru: 'RU' }[store.getLang()] || 'GB');
+  let names = null;
+  try { names = new Intl.DisplayNames([store.getLang()], { type: 'region' }); } catch (e) { /* old browser */ }
+  sel.innerHTML = COUNTRIES.map((c) => `<option value="${c}">${names ? names.of(c) : c}</option>`).join('') + `<option value="XX">${store.t('co.other')}</option>`;
+  sel.value = keep;
+}
+
+const delivery = () => form.elements.delivery.value;
+const leadOf = (items) => Math.max(14, ...items.map((it) => it.lead || 14));
+function totals(items) {
+  const sub = items.reduce((n, it) => n + it.price * (Number(it.qty) || 1), 0);
+  const extra = delivery() === 'express' ? EXPRESS : 0;
+  return { sub, extra, total: sub + extra };
+}
+const expectedAt = (items, from = Date.now()) => from + (leadOf(items) - (delivery() === 'express' ? 5 : 0) + 6) * DAY;
+
+function render() {
+  document.title = store.t('co.page') + ' — Larisel';
+  if (placed) return renderDone();
+  const items = store.cart.items();
+  $('co-form-view').hidden = !items.length;
+  $('co-empty-view').hidden = !!items.length;
+  if (!items.length) return;
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  $('co-lines').innerHTML = items.map((it) => { const q = Number(it.qty) || 1; return `
+    <li class="line line--small">
+      <span class="line__pic"><img src="${esc(it.img || '')}" alt="" width="96" height="72"></span>
+      <div class="line__text"><p class="line__title">${esc(store.pick(it.title))}${q > 1 ? ' × ' + q : ''}</p><p class="line__spec">${esc(store.pick(it.spec))}</p></div>
+      <strong class="line__price">${store.price(it.price * q)}</strong>
+    </li>`; }).join('');
+  /* errors are kept as keys: a language change re-writes them */
+  form.querySelectorAll('[data-err]').forEach((e) => { e.textContent = e.dataset.err ? store.t(e.dataset.err) : ''; });
+  const T = totals(items);
+  $('co-sub').textContent = store.price(T.sub);
+  $('co-del').textContent = T.extra ? store.price(T.extra) : store.t('cart.free');
+  $('co-total').textContent = store.price(T.total);
+  $('co-inst-note').textContent = store.t('co.instNote').replace('%s', store.price(T.total / 12));
+  $('co-when').textContent = store.t('co.when').replace('%s', store.date(expectedAt(items)));
+}
+
+function renderDone() {
+  $('co-form-view').hidden = true; $('co-empty-view').hidden = true; $('co-done-view').hidden = false;
+  const first = placed.customer.name.trim().split(/\s+/)[0];
+  $('co-done-title').textContent = store.t('co.doneTitle').replace('%s', first);
+  $('co-done-lead').textContent = store.t('co.doneLead');
+  $('co-done-id').textContent = placed.id;
+  $('co-done-total').textContent = store.price(placed.total);
+  $('co-done-when').textContent = store.date(placed.expected);
+  $('co-track').href = '../orders/?id=' + encodeURIComponent(placed.id);
+}
+
+/* each field says what is wrong with it, under it, as soon as it is left */
+const RULES = {
+  name: (v) => v.trim().length >= 2 || 'f.required',
+  email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) || (v.trim() ? 'f.badEmail' : 'f.required'),
+  phone: (v) => v.replace(/\D/g, '').length >= 7 || (v.trim() ? 'f.badPhone' : 'f.required'),
+  street: (v) => v.trim().length >= 3 || 'f.required',
+  city: (v) => v.trim().length >= 2 || 'f.required',
+  zip: (v) => v.trim().length >= 3 || 'f.required',
+};
+function check(name) {
+  const el = form.elements[name], r = RULES[name](el.value), field = el.closest('.field');
+  field.classList.toggle('is-bad', r !== true);
+  const err = field.querySelector('.field__err');
+  err.dataset.err = r === true ? '' : r;
+  err.textContent = r === true ? '' : store.t(r);
+  return r === true;
+}
+Object.keys(RULES).forEach((n) => form.elements[n].addEventListener('blur', () => { if (form.elements[n].value) check(n); }));
+Object.keys(RULES).forEach((n) => form.elements[n].addEventListener('input', () => { if (form.elements[n].closest('.field').classList.contains('is-bad')) check(n); }));
+form.addEventListener('change', (e) => { if (e.target.name === 'delivery') render(); });
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const bad = Object.keys(RULES).filter((n) => !check(n));
+  const consent = form.elements.consent.checked;
+  $('co-consent-err').dataset.err = consent ? '' : 'co.consentErr';
+  $('co-consent-err').textContent = consent ? '' : store.t('co.consentErr');
+  if (bad.length || !consent) { (form.elements[bad[0]] || form.elements.consent).focus(); return; }
+  const items = store.cart.items(), T = totals(items), now = Date.now();
+  const f = (n) => form.elements[n].value.trim();
+  placed = {
+    id: store.orders.newId(), created: now, items, sub: T.sub, extra: T.extra, total: T.total,
+    delivery: delivery(), payment: form.elements.payment.value, lead: leadOf(items) - (delivery() === 'express' ? 5 : 0),
+    expected: expectedAt(items, now),
+    customer: { name: f('name'), email: f('email'), phone: f('phone'), street: f('street'), city: f('city'), zip: f('zip'), country: f('country'), floor: f('floor') },
+    notes: f('notes'),
+  };
+  store.orders.add(placed);
+  store.cart.clear();
+  render();
+  scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+store.onLang(() => { fillCountries(); render(); });
+store.onChange(render);
+fillCountries();
+render();
+</script>
+</body>
+</html>

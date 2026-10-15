@@ -21,29 +21,20 @@
 
 <link rel="preload" href="fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/style.css?v=10">
+<link rel="stylesheet" href="css/base.css?v=1">
+<link rel="stylesheet" href="css/style.css?v=11">
+<link rel="stylesheet" href="css/store.css?v=2">
 
 </head>
 <body>
+
+<header class="site-head site-head--line" data-site-head></header>
 
 <div class="app">
 
   <main id="stage" class="stage">
     <canvas id="scene"></canvas>
     <div class="stage-load" aria-hidden="true"></div>
-
-    <div class="stage-top">
-      <div class="mark">
-        <span class="mark__name">LARISEL</span>
-        <span class="mark__sub" data-t="badge"></span>
-      </div>
-
-      <div class="lang" role="group" aria-label="Language">
-        <button class="lang__btn" type="button" data-lang="en" aria-pressed="true">EN</button>
-        <button class="lang__btn" type="button" data-lang="tr" aria-pressed="false">TR</button>
-        <button class="lang__btn" type="button" data-lang="ru" aria-pressed="false">RU</button>
-      </div>
-    </div>
 
     <div class="stage-bottom">
       <div class="stage-bottom__left">
@@ -79,7 +70,6 @@
       </div>
     </div>
 
-    <div id="toast" class="toast" role="status" aria-live="polite"></div>
   </main>
 
   <aside class="panel">
@@ -175,12 +165,120 @@
         <strong id="price"></strong>
         <span id="lead" class="price-note"></span>
       </div>
-      <button type="button" id="order" class="cta" data-t="cta"></button>
+      <div class="cta-row">
+        <button type="button" id="order" class="cta" data-t="cta"></button>
+        <button type="button" id="fav" class="fav-btn" aria-pressed="false" data-t-aria="t.fav"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.3 4.3 4.3 0 0 1 19.5 10C19.5 15.4 12 20 12 20z"/></svg></button>
+      </div>
     </footer>
 
   </aside>
 
 </div>
+
+<div class="below" id="details">
+
+  <section class="section">
+    <div class="wrap spec-grid">
+      <div>
+        <p class="eyebrow-line" data-s="d.eyebrow"></p>
+        <h2 class="spec-title" id="d-title"></h2>
+        <p class="spec-lead" id="d-lead"></p>
+        <dl class="specs" id="d-specs"></dl>
+      </div>
+      <form class="fit" id="fit" novalidate>
+        <h3 data-s="fit.title"></h3>
+        <p data-s="fit.lead"></p>
+        <div class="fit__inputs">
+          <label class="field"><span data-s="fit.w"></span><input id="fit-w" type="number" inputmode="numeric" min="40" max="400" value="80"></label>
+          <label class="field"><span data-s="fit.h"></span><input id="fit-h" type="number" inputmode="numeric" min="120" max="400" value="200"></label>
+        </div>
+        <p class="fit__out" id="fit-out" data-v="" aria-live="polite"><i></i><span></span></p>
+      </form>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap grid-4 promises">
+      <article class="promise"><span class="medal"><svg viewBox="0 0 48 48" aria-hidden="true">
+      <path class="a" d="M10.5 6.5h27M10.5 4.3v4.4M37.5 4.3v4.4M13.4 5 10.5 6.5l2.9 1.5M34.6 5l2.9 1.5-2.9 1.5"/>
+      <path d="M15.5 27.5V18c0-4.6 3.8-7.3 8.5-7.3s8.5 2.7 8.5 7.3v9.5"/>
+      <path d="M18.4 27.5v-8.8c0-2.9 2.4-4.6 5.6-4.6s5.6 1.7 5.6 4.6v8.8"/>
+      <path d="M10.8 32.4v-8c0-2 1.4-3.4 3.2-3.4s3.2 1.4 3.2 3.4v5M37.2 32.4v-8c0-2-1.4-3.4-3.2-3.4s-3.2 1.4-3.2 3.4v5"/>
+      <path d="M17.2 29.4c0-1.2.9-2 2-2h9.6c1.1 0 2 .8 2 2v1.6H17.2z"/>
+      <path d="M10.8 31h26.4v2.6c0 1.2-.9 2.1-2.1 2.1H12.9c-1.2 0-2.1-.9-2.1-2.1z"/>
+      <path d="M13.6 35.7l-1.5 6.3M34.4 35.7l1.5 6.3"/>
+    </svg></span><p class="promise__unit" data-s="pr.1u"></p><h3 data-s="pr.1"></h3><p data-s="pr.1p"></p></article>
+      <article class="promise"><span class="medal"><svg viewBox="0 0 48 48" aria-hidden="true">
+      <path d="M4.5 33V15a2 2 0 0 1 2-2H29v20M29 19h7.2a2 2 0 0 1 1.6.8l4.4 5.9a2 2 0 0 1 .3 1V33h-2.6M33 33H17.6M10.4 33H4.5"/>
+      <path d="M31.5 21.5h4.6l3.3 4.5h-7.9z"/>
+      <circle cx="14" cy="34" r="3.4"/><circle cx="36.6" cy="34" r="3.4"/>
+      <path class="a" d="M8.5 27.5v-3.6a1.4 1.4 0 0 1 2.8 0v1.3h11.4v-1.3a1.4 1.4 0 0 1 2.8 0v3.6zM11.3 23.9v-2.2a1.5 1.5 0 0 1 1.5-1.5h8.4a1.5 1.5 0 0 1 1.5 1.5v2.2M10 27.5v1.6M24 27.5v1.6"/>
+    </svg></span><p class="promise__unit" data-s="pr.2u"></p><h3 data-s="pr.2"></h3><p data-s="pr.2p"></p></article>
+      <article class="promise"><span class="medal"><svg viewBox="0 0 48 48" aria-hidden="true">
+      <path d="M17.6 31.5 13.5 43l4.6-1.8 2.9 4 3-9.2M30.4 31.5 34.5 43l-4.6-1.8-2.9 4-3-9.2"/>
+      <circle cx="24" cy="20" r="14"/>
+      <circle cx="24" cy="20" r="10.6" stroke-dasharray="1.2 2.1"/>
+      <text class="a-fill" x="24" y="24.4" text-anchor="middle">10</text>
+    </svg></span><p class="promise__unit" data-s="pr.3u"></p><h3 data-s="pr.3"></h3><p data-s="pr.3p"></p></article>
+      <article class="promise"><span class="medal"><svg viewBox="0 0 48 48" aria-hidden="true">
+      <path d="M30.6 7.4c1.2-.9 2.9.4 2.2 1.8L13.3 38.6l-2.4 1.7.5-2.9z"/>
+      <path d="M30.2 9.6l1-1.5"/>
+      <path class="a" d="M30.9 8.6c5.8 1.9 8.9 9.2 4.6 13.5-3.7 3.7-9.9 1.6-11.4 6-1.5 4.4 3.4 8 8.4 5.9 3.1-1.3 4.5-4.1 3.9-6.8"/>
+    </svg></span><p class="promise__unit" data-s="pr.4u"></p><h3 data-s="pr.4"></h3><p data-s="pr.4p"></p></article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section__head"><p class="eyebrow-line" data-s="how.eyebrow"></p><h2 data-s="how.title"></h2></div>
+      <ol class="grid-4 steps">
+        <li class="step"><span class="step__n">01</span><h3 data-s="st.1"></h3><p data-s="st.1p"></p></li>
+        <li class="step"><span class="step__n">02</span><h3 data-s="st.2"></h3><p data-s="st.2p"></p></li>
+        <li class="step"><span class="step__n">03</span><h3 data-s="st.3"></h3><p data-s="st.3p"></p></li>
+        <li class="step"><span class="step__n">04</span><h3 data-s="st.4"></h3><p data-s="st.4p"></p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section__head"><p class="eyebrow-line" data-s="mat.eyebrow"></p><h2 data-s="mat.title"></h2><p data-s="mat.lead"></p></div>
+      <div class="strip">
+        <a data-s-aria="mat.sofaLink" href="materials/#sofa"><img src="renders/sofa/macro/velvet-emerald.webp" alt="" loading="lazy" decoding="async" width="1400" height="900"></a>
+        <a data-s-aria="mat.sofaLink" href="materials/#sofa"><img src="renders/sofa/macro/boucle-oat.webp" alt="" loading="lazy" decoding="async" width="1400" height="900"></a>
+        <a data-s-aria="mat.tableLink" href="materials/#table"><img src="renders/table/macro/nero.webp" alt="" loading="lazy" decoding="async" width="1400" height="900"></a>
+        <a data-s-aria="mat.tableLink" href="materials/#table"><img src="renders/table/macro/oak.webp" alt="" loading="lazy" decoding="async" width="1400" height="900"></a>
+      </div>
+      <div class="row-links"><a class="btn btn--line" href="materials/" data-s="mat.cta"></a><a class="btn btn--line" href="materials/#samples" data-s="mat.samples"></a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap wrap--narrow">
+      <div class="section__head"><p class="eyebrow-line" data-s="faq.eyebrow"></p><h2 data-s="faq.title"></h2></div>
+      <div class="faq">
+        <details><summary data-s="q.1"></summary><p class="faq__a" data-s="a.1"></p></details>
+        <details><summary data-s="q.2"></summary><p class="faq__a" data-s="a.2"></p></details>
+        <details><summary data-s="q.3"></summary><p class="faq__a" data-s="a.3"></p></details>
+        <details><summary data-s="q.4"></summary><p class="faq__a" data-s="a.4"></p></details>
+        <details><summary data-s="q.5"></summary><p class="faq__a" data-s="a.5"></p></details>
+      </div>
+      <div class="row-links"><a class="btn btn--line" href="help/#faq" data-s="faq.all"></a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="band">
+        <div><h2 data-s="band.title"></h2><p data-s="band.lead"></p></div>
+        <a class="btn btn--solid" href="contact/" data-s="band.cta"></a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="site-foot" data-site-foot></footer>
 
 <!-- the cloth up close: the chosen fabric rendered as a cushion's corner, and its tones -->
 <div class="sheet" id="closeup" hidden>
@@ -243,6 +341,100 @@
 </div>
 
 <script type="module">
+import { TYPES, PRODUCTS, frameSwatch, DETAILS } from './js/catalog.js?v=2';
+import * as store from './js/store.js?v=2';
+
+/* the shop's words on this page (under the configurator); the shop's own are in js/store.js */
+store.words({
+  en: {
+    'd.eyebrow': 'The piece', 'd.dims': 'Dimensions', 'd.seat': 'Seat height · depth', 'd.lead': 'Made to order',
+    'fit.title': 'Will it fit through your door?',
+    'fit.lead': 'Enter your narrowest doorway. We check every part as it arrives — legs off, on its side if it has to be.',
+    'fit.w': 'Door width, cm', 'fit.h': 'Door height, cm', 'fit.ask': 'Enter the width and the height of your door.',
+    'fit.yes': 'It fits, with %d cm to spare.', 'fit.tight': 'It fits, just — %d cm to spare. Our crew carries it on its side.',
+    'fit.no': 'It will not pass this door as it is. Write to us: we can build the frame in sections.',
+    'pr.1u': '14–21 days, by hand', 'pr.2u': 'Free, assembled', 'pr.3u': '10 years on the frame', 'pr.4u': 'For life',
+    'pr.1': 'Made for you', 'pr.1p': 'Every piece is built to order in our atelier, in the shape and the materials you chose.',
+    'pr.2': 'Delivered and assembled', 'pr.2p': 'Our own crew carries it in, puts it together and takes the packaging away — free.',
+    'pr.3': 'Ten-year frame warranty', 'pr.3p': 'Solid wood, joined and glued, made to outlast the cloth that covers it.',
+    'pr.4': 'Re-upholstered, years later', 'pr.4p': 'The frame lasts a lifetime. When the cloth has worn, we re-upholster it in the atelier, as good as new.',
+    'how.eyebrow': 'How it works', 'how.title': 'From your screen to your room, in four steps.',
+    'st.1': 'Design it', 'st.1p': 'Choose the shape, the material and the finish; turn it, measure it, compare two.',
+    'st.2': 'We confirm', 'st.2p': 'Within a day a designer goes through your order with you — and the size of your doors.',
+    'st.3': 'We make it', 'st.3p': 'Frame, upholstery and finish, by hand in the atelier: 14 to 21 days.',
+    'st.4': 'It arrives', 'st.4p': 'Our crew delivers it, assembles it and sets it where you want it.',
+    'mat.eyebrow': 'Materials', 'mat.title': 'Every material, seen up close.',
+    'mat.lead': 'Bouclé, velvet and linen in all their tones, five marbles, travertine, solid oak and walnut — and up to six samples, free, to your door.',
+    'mat.sofaLink': 'Sofa cloths in the library', 'mat.tableLink': 'Table tops in the library', 'mat.cta': 'Explore the library', 'mat.samples': 'Order free samples',
+    'faq.eyebrow': 'Questions', 'faq.title': 'Before you order', 'faq.all': 'All questions',
+    'q.1': 'How long does it take?', 'a.1': 'Every piece is made to order: armchairs in about 14 days, coffee tables in 18, sofas in 21 — then delivered within a week.',
+    'q.2': 'Can I see the fabric before I order?', 'a.2': 'Yes. Order up to six free samples from the material library; they reach you in a few days.',
+    'q.3': 'What if it will not go through my door?', 'a.3': 'Check it above before you order. Sofa legs come off, the corner sofa arrives in two modules, and we can build a frame in sections.',
+    'q.4': 'Can I return a made-to-order piece?', 'a.4': 'You have 14 days from delivery. If anything is not as you ordered it, we collect it and remake it at our cost.',
+    'q.5': 'Can I pay in instalments?', 'a.5': 'Yes: up to 12 months without interest, or pay on delivery.',
+    'band.title': 'Not sure which one? Talk to a designer.', 'band.lead': 'Send us the size of your room, or a photo of it — we will suggest a shape, a cloth and a finish.',
+    'band.cta': 'Write to us',
+  },
+  tr: {
+    'd.eyebrow': 'Ürün', 'd.dims': 'Ölçüler', 'd.seat': 'Oturma yüksekliği · derinliği', 'd.lead': 'Üretim',
+    'fit.title': 'Kapınızdan geçer mi?',
+    'fit.lead': 'En dar kapınızın ölçüsünü girin. Her parçayı geldiği hâliyle kontrol ederiz — ayaklar sökülü, gerekirse yan yatırılmış.',
+    'fit.w': 'Kapı genişliği, cm', 'fit.h': 'Kapı yüksekliği, cm', 'fit.ask': 'Kapınızın genişliğini ve yüksekliğini girin.',
+    'fit.yes': 'Geçer, %d cm payla.', 'fit.tight': 'Geçer ama sıkı — %d cm pay kalıyor. Ekibimiz yan yatırarak taşır.',
+    'fit.no': 'Bu kapıdan bu hâliyle geçmez. Bize yazın: iskeleti parçalı üretebiliriz.',
+    'pr.1u': '14–21 gün, elde', 'pr.2u': 'Ücretsiz, kurulumlu', 'pr.3u': 'İskelete 10 yıl', 'pr.4u': 'Ömür boyu',
+    'pr.1': 'Size özel üretim', 'pr.1p': 'Her parça atölyemizde, seçtiğiniz form ve malzemeyle siparişe özel üretilir.',
+    'pr.2': 'Teslimat ve kurulum', 'pr.2p': 'Kendi ekibimiz eve taşır, kurar ve ambalajı geri götürür — ücretsiz.',
+    'pr.3': 'İskelete 10 yıl garanti', 'pr.3p': 'Geçmeli ve tutkallı masif ahşap; üzerindeki kumaştan daha uzun ömürlü.',
+    'pr.4': 'Yıllar sonra yeniden döşeme', 'pr.4p': 'İskelet bir ömür dayanır. Kumaş yıprandığında atölyemizde yeniden döşer, ilk günkü hâline getiririz.',
+    'how.eyebrow': 'Nasıl çalışır', 'how.title': 'Ekranınızdan odanıza, dört adımda.',
+    'st.1': 'Tasarlayın', 'st.1p': 'Formu, malzemeyi ve rengi seçin; çevirin, ölçün, iki tasarımı karşılaştırın.',
+    'st.2': 'Onaylıyoruz', 'st.2p': 'Bir gün içinde bir tasarımcımız siparişinizi — ve kapılarınızın ölçüsünü — sizinle birlikte gözden geçirir.',
+    'st.3': 'Üretiyoruz', 'st.3p': 'İskelet, döşeme ve son kat atölyede elde yapılır: 14 ila 21 gün.',
+    'st.4': 'Teslim ediyoruz', 'st.4p': 'Ekibimiz getirir, kurar ve istediğiniz yere yerleştirir.',
+    'mat.eyebrow': 'Malzemeler', 'mat.title': 'Her malzeme, yakından.',
+    'mat.lead': 'Bütün tonlarıyla bukle, kadife ve keten; beş mermer, traverten, masif meşe ve ceviz — ve kapınıza kadar ücretsiz altı numune.',
+    'mat.sofaLink': 'Kütüphanede kanepe kumaşları', 'mat.tableLink': 'Kütüphanede sehpa tablaları', 'mat.cta': 'Kütüphaneyi incele', 'mat.samples': 'Ücretsiz numune iste',
+    'faq.eyebrow': 'Sorular', 'faq.title': 'Sipariş vermeden önce', 'faq.all': 'Tüm sorular',
+    'q.1': 'Ne kadar sürede gelir?', 'a.1': 'Her parça siparişe özel üretilir: koltuklar yaklaşık 14, sehpalar 18, kanepeler 21 günde hazırlanır; ardından bir hafta içinde teslim edilir.',
+    'q.2': 'Sipariş vermeden kumaşı görebilir miyim?', 'a.2': 'Evet. Malzeme kütüphanesinden altı adede kadar ücretsiz numune isteyin; birkaç gün içinde elinizde olur.',
+    'q.3': 'Kapımdan geçmezse ne olur?', 'a.3': 'Sipariş vermeden önce yukarıdan kontrol edin. Kanepe ayakları sökülür, köşe kanepe iki modül hâlinde gelir; iskeleti parçalı da üretebiliriz.',
+    'q.4': 'Siparişe özel bir ürünü iade edebilir miyim?', 'a.4': 'Teslimattan sonra 14 gününüz var. Sipariş ettiğiniz gibi olmayan her şeyi geri alır, masrafı bize ait olmak üzere yeniden üretiriz.',
+    'q.5': 'Taksitle ödeyebilir miyim?', 'a.5': 'Evet: 12 aya kadar faizsiz taksit ya da teslimatta ödeme.',
+    'band.title': 'Hangisi olduğundan emin değil misiniz? Bir tasarımcıyla konuşun.', 'band.lead': 'Odanızın ölçüsünü ya da bir fotoğrafını gönderin — size bir form, bir kumaş ve bir renk önerelim.',
+    'band.cta': 'Bize yazın',
+  },
+  ru: {
+    'd.eyebrow': 'Изделие', 'd.dims': 'Размеры', 'd.seat': 'Высота · глубина сиденья', 'd.lead': 'Изготовление',
+    'fit.title': 'Пройдёт ли в вашу дверь?',
+    'fit.lead': 'Укажите самый узкий проём. Мы проверим каждую часть так, как её будут заносить — без ножек, при необходимости на боку.',
+    'fit.w': 'Ширина проёма, см', 'fit.h': 'Высота проёма, см', 'fit.ask': 'Введите ширину и высоту проёма.',
+    'fit.yes': 'Пройдёт, с запасом %d см.', 'fit.tight': 'Пройдёт впритык — запас %d см. Наша команда пронесёт его на боку.',
+    'fit.no': 'В таком виде не пройдёт. Напишите нам: мы можем сделать каркас разборным.',
+    'pr.1u': '14–21 день, вручную', 'pr.2u': 'Бесплатно, со сборкой', 'pr.3u': '10 лет на каркас', 'pr.4u': 'На всю жизнь',
+    'pr.1': 'Сделано для вас', 'pr.1p': 'Каждая вещь изготавливается на заказ в нашей мастерской — в выбранной форме и материалах.',
+    'pr.2': 'Доставка и сборка', 'pr.2p': 'Наша команда занесёт, соберёт и заберёт упаковку — бесплатно.',
+    'pr.3': '10 лет гарантии на каркас', 'pr.3p': 'Массив дерева на шипах и клею — служит дольше обивки.',
+    'pr.4': 'Перетяжка — и через годы', 'pr.4p': 'Каркас служит всю жизнь. Когда ткань износится, мы перетянем мебель в мастерской — как новую.',
+    'how.eyebrow': 'Как это работает', 'how.title': 'С экрана — в вашу комнату, за четыре шага.',
+    'st.1': 'Создайте', 'st.1p': 'Выберите форму, материал и отделку; вращайте, измеряйте, сравнивайте варианты.',
+    'st.2': 'Мы подтверждаем', 'st.2p': 'В течение дня дизайнер сверит с вами заказ — и размеры ваших дверей.',
+    'st.3': 'Мы изготавливаем', 'st.3p': 'Каркас, обивка и отделка — вручную в мастерской: от 14 до 21 дня.',
+    'st.4': 'Доставляем', 'st.4p': 'Наша команда привезёт, соберёт и поставит туда, куда вы скажете.',
+    'mat.eyebrow': 'Материалы', 'mat.title': 'Каждый материал — крупным планом.',
+    'mat.lead': 'Букле, бархат и лён во всех оттенках, пять мраморов, травертин, массив дуба и ореха — и до шести образцов бесплатно, до двери.',
+    'mat.sofaLink': 'Ткани для дивана в библиотеке', 'mat.tableLink': 'Столешницы в библиотеке', 'mat.cta': 'Открыть библиотеку', 'mat.samples': 'Заказать образцы',
+    'faq.eyebrow': 'Вопросы', 'faq.title': 'Перед заказом', 'faq.all': 'Все вопросы',
+    'q.1': 'Сколько ждать?', 'a.1': 'Каждая вещь делается на заказ: кресла — около 14 дней, столики — 18, диваны — 21, затем доставка в течение недели.',
+    'q.2': 'Можно ли увидеть ткань до заказа?', 'a.2': 'Да. Закажите до шести бесплатных образцов в библиотеке материалов — они придут за несколько дней.',
+    'q.3': 'А если не пройдёт в дверь?', 'a.3': 'Проверьте выше до заказа. Ножки дивана снимаются, угловой диван приезжает двумя модулями, а каркас мы можем сделать разборным.',
+    'q.4': 'Можно ли вернуть вещь, сделанную на заказ?', 'a.4': 'У вас 14 дней после доставки. Если что-то не соответствует заказу, мы заберём и переделаем за свой счёт.',
+    'q.5': 'Можно ли в рассрочку?', 'a.5': 'Да: до 12 месяцев без переплаты или оплата при доставке.',
+    'band.title': 'Не знаете, что выбрать? Поговорите с дизайнером.', 'band.lead': 'Пришлите размеры комнаты или её фото — мы предложим форму, ткань и отделку.',
+    'band.cta': 'Написать нам',
+  },
+});
+store.mount({ base: './', page: 'shop' });
 
 /* ══════════════════════════════════════════════════════════════════════════
    LANGUAGE
@@ -256,8 +448,7 @@
    names, dimensions, the price, the toast. There is nothing in the HTML to
    match against until the script has run.                                  */
 
-const LANGS = ['en', 'tr', 'ru'];
-const STORE = 'larisel-lang';
+const LANGS = store.LANGS;
 
 const T = {
   en: {
@@ -276,7 +467,7 @@ const T = {
     'pairs.cushion': 'cushion',
     total: 'Total',
     lead: 'Made to order · %d days',
-    cta: 'Request this build',
+    cta: 'Add to cart', 't.fav': 'Save this design',
     saved: 'Image saved',
     't.dims': 'Dimensions', 't.compare': 'Compare', 't.share': 'Share', 't.closeup': 'Close-up',
     't.tones': 'Tones', 't.close': 'Close',
@@ -303,7 +494,7 @@ const T = {
     'pairs.cushion': 'yastık',
     total: 'Toplam',
     lead: 'Siparişe özel üretim · %d gün',
-    cta: 'Bu yapılandırmayı iste',
+    cta: 'Sepete ekle', 't.fav': 'Bu tasarımı kaydet',
     saved: 'Görüntü kaydedildi',
     't.dims': 'Ölçüler', 't.compare': 'Karşılaştır', 't.share': 'Paylaş', 't.closeup': 'Yakından bak',
     't.tones': 'Tonlar', 't.close': 'Kapat',
@@ -330,7 +521,7 @@ const T = {
     'pairs.cushion': 'подушка',
     total: 'Итого',
     lead: 'Срок изготовления · %d %w',
-    cta: 'Запросить эту сборку',
+    cta: 'В корзину', 't.fav': 'Сохранить дизайн',
     saved: 'Изображение сохранено',
     't.dims': 'Размеры', 't.compare': 'Сравнить', 't.share': 'Поделиться', 't.closeup': 'Крупный план',
     't.tones': 'Оттенки', 't.close': 'Закрыть',
@@ -343,265 +534,14 @@ const T = {
   }
 };
 
-let lang = 'en';
-try {
-  const saved = localStorage.getItem(STORE);
-  if (LANGS.indexOf(saved) !== -1) lang = saved;
-} catch (e) { /* private mode: English it is */ }
-
-/* ?lang=tr wins over the remembered choice, so a link can be sent in the
-   language the recipient reads. */
+let lang = store.getLang();
 const params = new URLSearchParams(location.search);
-const asked = params.get('lang');
-if (LANGS.indexOf(asked) !== -1) lang = asked;
 
 const t = (key) => T[lang][key];
 /* Russian counts its days three ways: 21 день, 22 дня, 18 дней */
 const ruDays = (n) => ({ one: 'день', few: 'дня' })[new Intl.PluralRules('ru').select(n)] || 'дней';
 
-/* ══════════════════════════════════════════════════════════════════════════
-   CATALOGUE AND PRICES — edit here
-   ══════════════════════════════════════════════════════════════════════════
-   Three pieces, one way of making them: each is a set of forms (sizes), main
-   materials (cloth, or a table's top), frame finishes (frame, legs, base) and
-   pairings, rendered in layers under its own folder of renders/. A new piece
-   is one more entry here and one more folder — the page around it does not
-   change.
-
-   Names are per language and live on the item, not in a parallel list: a
-   colour and its three names can never drift apart if they are one object.
-   Prices are in US dollars: the same demo goes to Turkish, Russian and
-   international clients, and one currency across every piece of work reads
-   as one studio. Only the grouping follows the reader's locale.            */
-
-const FRAMES = [
-  /* four woods from light to dark, then four metals: one row each (the sofa's
-     legs and the table's base come in the same eight, so the pieces make a set) */
-  { id: 'bleached', hex: '#d9c4a0', price: 60,  name: { en: 'Bleached oak',   tr: 'Ağartılmış meşe', ru: 'Беленый дуб' } },
-  { id: 'oak',      hex: '#b98b52', price: 0,   name: { en: 'Oak',            tr: 'Meşe',            ru: 'Дуб' } },
-  { id: 'smoked',   hex: '#8a7866', price: 140, name: { en: 'Smoked oak',     tr: 'Füme meşe',       ru: 'Дымчатый дуб' } },
-  { id: 'walnut',   hex: '#5b3a24', price: 110, name: { en: 'Walnut',         tr: 'Ceviz',           ru: 'Орех' } },
-  { id: 'nickel',   hex: '#c4c2bd', price: 220, name: { en: 'Brushed nickel', tr: 'Nikel',           ru: 'Никель' } },
-  { id: 'brass',    hex: '#c8a46a', price: 280, name: { en: 'Brass',          tr: 'Pirinç',          ru: 'Латунь' } },
-  { id: 'bronze',   hex: '#8f7656', price: 260, name: { en: 'Bronze',         tr: 'Bronz',           ru: 'Бронза' } },
-  { id: 'black',    hex: '#2a2c30', price: 160, name: { en: 'Black steel',    tr: 'Siyah metal',     ru: 'Чёрный металл' } },
-];
-
-/* the three upholsteries: each a different cloth, not a tint — what the
-   close-up says about it, in a sentence */
-const TYPES = {
-  boucle: { name: { en: 'Bouclé', tr: 'Bukle', ru: 'Букле' },
-            desc: { en: 'Looped yarn with a soft, nubbly hand: it catches the light in its loops and hides the wear of daily use.',
-                    tr: 'İlmekli iplikten yumuşak, kabarık bir doku: ışığı ilmeklerinde tutar, günlük kullanımın izini saklar.',
-                    ru: 'Петельная пряжа, мягкая и рельефная: ловит свет в петлях и скрывает следы ежедневной носки.' } },
-  velvet: { name: { en: 'Velvet', tr: 'Kadife', ru: 'Бархат' },
-            desc: { en: 'A short, dense pile that deepens the colour and glows wherever the light grazes it.',
-                    tr: 'Kısa ve sık bir hav: rengi derinleştirir, ışığın sıyırdığı her yerde ışıldar.',
-                    ru: 'Короткий густой ворс: углубляет цвет и мерцает там, где его касается свет.' } },
-  linen:  { name: { en: 'Linen', tr: 'Keten', ru: 'Лён' },
-            desc: { en: 'A matte, natural weave with irregular slubs; it softens and creases with use, as linen should.',
-                    tr: 'Mat, doğal bir örgü ve düzensiz iplik kalınlıkları; kullandıkça yumuşar ve kendine has kırışır.',
-                    ru: 'Матовое натуральное плетение с неровной нитью: со временем мягчеет и красиво мнётся.' } },
-  /* the coffee table's tops */
-  marble: { name: { en: 'Marble', tr: 'Mermer', ru: 'Мрамор' },
-            desc: { en: 'Polished natural stone: every slab has veins of its own, and the light runs across it like water.',
-                    tr: 'Cilalı doğal taş: her plakanın damarı kendine özgüdür, ışık üzerinde su gibi akar.',
-                    ru: 'Полированный натуральный камень: у каждой плиты свои прожилки, а свет скользит по ней, как по воде.' } },
-  travertine: { name: { en: 'Travertine', tr: 'Traverten', ru: 'Травертин' },
-            desc: { en: 'A warm, honed stone laid down in layers, with the small open pores it is known for.',
-                    tr: 'Katman katman oluşmuş, sıcak tonlu, honlanmış bir taş — kendine has küçük gözenekleriyle.',
-                    ru: 'Тёплый камень с матовой шлифовкой, сложившийся слоями, с характерными мелкими порами.' } },
-  wood:   { name: { en: 'Solid wood', tr: 'Masif ahşap', ru: 'Массив дерева' },
-            desc: { en: 'Oiled solid planks, each with its own grain and tone; the colour deepens over the years.',
-                    tr: 'Yağlanmış masif tahtalar, her biri kendi damarı ve tonuyla; rengi yıllar içinde derinleşir.',
-                    ru: 'Промасленные доски из массива, у каждой свой рисунок и тон; с годами цвет становится глубже.' } },
-};
-
-const ARMCHAIR_FABRICS = [
-  /* in families, so the two rows read as a palette: light neutrals, greens,
-     warm earth, then the deep ones. Every one also dresses the cushion. */
-  { id: 'cream',      hex: '#e9e2d6', price: 0,  name: { en: 'Cream',      tr: 'Krem',         ru: 'Сливочный' } },
-  { id: 'sand',       hex: '#d8c3a5', price: 0,  name: { en: 'Sand',       tr: 'Kum',          ru: 'Песочный' } },
-  { id: 'stone',      hex: '#b8b0a3', price: 0,  name: { en: 'Stone',      tr: 'Taş',          ru: 'Камень' } },
-  { id: 'sage',       hex: '#9aa38b', price: 70, name: { en: 'Sage',       tr: 'Adaçayı',      ru: 'Шалфей' } },
-  { id: 'olive',      hex: '#5f6b4a', price: 70, name: { en: 'Olive',      tr: 'Zeytin',       ru: 'Олива' } },
-  { id: 'forest',     hex: '#2e4638', price: 95, name: { en: 'Forest',     tr: 'Orman yeşili', ru: 'Хвоя' } },
-  { id: 'ochre',      hex: '#c0913f', price: 95, name: { en: 'Ochre',      tr: 'Hardal',       ru: 'Охра' } },
-  { id: 'terracotta', hex: '#a8553c', price: 95, name: { en: 'Terracotta', tr: 'Terakota',     ru: 'Терракота' } },
-  { id: 'rose',       hex: '#c4968a', price: 95, name: { en: 'Dusty rose', tr: 'Gül kurusu',   ru: 'Пыльная роза' } },
-  { id: 'bordeaux',   hex: '#6a2c34', price: 95, name: { en: 'Bordeaux',   tr: 'Bordo',        ru: 'Бордо' } },
-  { id: 'indigo',     hex: '#2f3f5c', price: 95, name: { en: 'Indigo',     tr: 'İndigo',       ru: 'Индиго' } },
-  { id: 'graphite',   hex: '#3c4045', price: 70, name: { en: 'Graphite',   tr: 'Grafit',       ru: 'Графит' } },
-].map((f) => Object.assign(f, { type: 'boucle' }));
-
-/* the sofa's 24: eight tones in each cloth, one palette across the three
-   (light neutrals, earth, greens and blues, deep) — _film/config/sofa_options.py */
-const tone = (type, id, hex, price, en, tr, ru) => ({ id: type + '-' + id, type, hex, price, name: { en, tr, ru } });
-const SOFA_FABRICS = [
-  tone('boucle', 'ivory',    '#ebe5d9', 0,   'Ivory',      'Fildişi',      'Слоновая кость'),
-  tone('boucle', 'oat',      '#d8cbb3', 0,   'Oat',        'Yulaf',        'Овёс'),
-  tone('boucle', 'sand',     '#c6ad8c', 0,   'Sand',       'Kum',          'Песок'),
-  tone('boucle', 'mushroom', '#a29486', 0,   'Mushroom',   'Mantar',       'Грибной'),
-  tone('boucle', 'clay',     '#b88770', 60,  'Clay',       'Kil',          'Глина'),
-  tone('boucle', 'sage',     '#a2a991', 60,  'Sage',       'Adaçayı',      'Шалфей'),
-  tone('boucle', 'fog',      '#9ea8af', 60,  'Fog blue',   'Sis mavisi',   'Туманный'),
-  tone('boucle', 'charcoal', '#4b4946', 60,  'Charcoal',   'Antrasit',     'Уголь'),
-  tone('velvet', 'champagne','#cbb391', 240, 'Champagne',  'Şampanya',     'Шампань'),
-  tone('velvet', 'rose',     '#b7817a', 240, 'Dusty rose', 'Gül kurusu',   'Пыльная роза'),
-  tone('velvet', 'rust',     '#9c4a31', 240, 'Rust',       'Pas',          'Ржавчина'),
-  tone('velvet', 'ochre',    '#b5842c', 240, 'Ochre',      'Hardal',       'Охра'),
-  tone('velvet', 'moss',     '#5d683c', 240, 'Moss',       'Yosun',        'Мох'),
-  tone('velvet', 'emerald',  '#2d5848', 240, 'Emerald',    'Zümrüt',       'Изумруд'),
-  tone('velvet', 'midnight', '#25314a', 240, 'Midnight',   'Gece mavisi',  'Полночь'),
-  tone('velvet', 'bordeaux', '#682431', 240, 'Bordeaux',   'Bordo',        'Бордо'),
-  tone('linen',  'chalk',    '#e7e2d6', 120, 'Chalk',      'Tebeşir',      'Мел'),
-  tone('linen',  'flax',     '#cdc0a8', 120, 'Flax',       'Ham keten',    'Натуральный лён'),
-  tone('linen',  'stone',    '#a8a39a', 120, 'Stone',      'Taş',          'Камень'),
-  tone('linen',  'sage',     '#8d9981', 120, 'Sage',       'Adaçayı',      'Шалфей'),
-  tone('linen',  'sea',      '#7b91a1', 120, 'Sea blue',   'Deniz mavisi', 'Морской'),
-  tone('linen',  'rust',     '#a46044', 120, 'Brick',      'Kiremit',      'Кирпич'),
-  tone('linen',  'olive',    '#6f6b4b', 120, 'Olive',      'Zeytin',       'Олива'),
-  tone('linen',  'charcoal', '#535250', 120, 'Charcoal',   'Antrasit',     'Графит'),
-];
-
-/* the coffee table's eight tops: five marbles, the travertine, two solid woods —
-   _film/config/table_options.py */
-const top = (id, type, hex, price, en, tr, ru) => ({ id, type, hex, price, name: { en, tr, ru } });
-const TABLE_TOPS = [
-  top('carrara',    'marble',     '#e6e4df', 240, 'Carrara marble',   'Carrara mermer',   'Мрамор каррара'),
-  top('calacatta',  'marble',     '#eeeae2', 420, 'Calacatta marble', 'Calacatta mermer', 'Мрамор калакатта'),
-  top('rosa',       'marble',     '#dcbcab', 300, 'Rosa marble',      'Pembe mermer',     'Розовый мрамор'),
-  top('travertine', 'travertine', '#d9ccb4', 160, 'Travertine',       'Traverten',        'Травертин'),
-  top('verde',      'marble',     '#1d3a2f', 360, 'Verde marble',     'Yeşil mermer',     'Зелёный мрамор'),
-  top('nero',       'marble',     '#19191b', 340, 'Nero marble',      'Siyah mermer',     'Чёрный мрамор'),
-  top('oak',        'wood',       '#b98b52', 0,   'Solid oak',        'Masif meşe',       'Массив дуба'),
-  top('walnut',     'wood',       '#5b3a24', 120, 'Solid walnut',     'Masif ceviz',      'Массив ореха'),
-];
-/* a dark top throws less light back under the table: its floor shadow is its own render */
-const DARK_TOPS = new Set(['nero', 'verde', 'walnut']);
-
-const UPHOLSTERY = { en: 'Upholstery', tr: 'Kumaş', ru: 'Ткань' };
-const TONES = { en: 'Tones', tr: 'Tonlar', ru: 'Оттенки' };
-
-const PRODUCTS = {
-  armchair: {
-    id: 'armchair', root: './renders/', steps: 72, base: 1290, lead: 14,
-    h1: { en: 'Larisel armchair', tr: 'Larisel koltuk', ru: 'Кресло Larisel' },
-    lede: { en: 'Build the chair for your own room — the model and the price change as you go.',
-            tr: 'Koltuğu kendi odanıza göre kurun — model ve fiyat anında değişir.',
-            ru: 'Соберите кресло под свой интерьер — модель и цена меняются сразу.' },
-    formLabel: { en: 'Size', tr: 'Ölçü', ru: 'Размер' },
-    frameLabel: { en: 'Frame', tr: 'Gövde', ru: 'Каркас' },
-    fabricLabel: UPHOLSTERY, rowLabel: TONES,
-    pillowLabel: { en: 'Scatter cushion', tr: 'Dekoratif yastık', ru: 'Декоративная подушка' },
-    pairsNote: { en: 'chair · cushion · frame', tr: 'koltuk · yastık · gövde', ru: 'кресло · подушка · каркас' },
-    pillowPrice: 90,
-    /* XL changes the PROPORTIONS, not the overall scale: the chair gets visibly
-       wider. In an empty scene a uniform enlargement is indistinguishable from
-       the camera moving closer. Measured on the rendered chair (dims.json). */
-    forms: [
-      { id: 'std', price: 0,   cm: [87, 77, 78],  name: { en: 'Standard', tr: 'Standart', ru: 'Стандарт' } },
-      { id: 'xl',  price: 230, cm: [102, 83, 82], name: { en: 'XL',       tr: 'XL',       ru: 'XL' } },
-    ],
-    fabrics: ARMCHAIR_FABRICS, types: null, frames: FRAMES,
-    /* a chair, a cushion and a frame chosen together — one tap sets all three */
-    pairs: [
-      { fabric: 'sand',     frame: 'walnut',   pillow: 'terracotta', name: { en: 'Earth',    tr: 'Toprak', ru: 'Земля' } },
-      { fabric: 'forest',   frame: 'brass',    pillow: 'ochre',      name: { en: 'Club',     tr: 'Kulüp',  ru: 'Клуб' } },
-      { fabric: 'sage',     frame: 'bleached', pillow: 'rose',       name: { en: 'Garden',   tr: 'Bahçe',  ru: 'Сад' } },
-      { fabric: 'cream',    frame: 'black',    pillow: 'indigo',     name: { en: 'Gallery',  tr: 'Galeri', ru: 'Галерея' } },
-      { fabric: 'bordeaux', frame: 'bronze',   pillow: 'sand',       name: { en: 'Opera',    tr: 'Opera',  ru: 'Опера' } },
-      { fabric: 'indigo',   frame: 'nickel',   pillow: 'stone',      name: { en: 'Midnight', tr: 'Gece',   ru: 'Полночь' } },
-    ],
-    fabricSwatch: (f) => 'renders/swatch/fab-' + f.id + '.webp',
-    pairSrc: (pr) => 'renders/pairs/' + pr.fabric + '-' + pr.frame + '-' + pr.pillow + '.webp',
-    macroSrc: (f) => 'renders/macro/' + f.id + '.webp',
-    shadowWithPillow: null,              /* the chair's one cushion throws no shadow of its own on the floor */
-    cx: 0.5, cy: 0.56,
-    initial: { form: 'std', fabric: 'sand', frame: 'oak', pillow: false, pillowFabric: 'terracotta' },
-  },
-  sofa: {
-    id: 'sofa', root: './renders/sofa/', steps: 72, lead: 21,
-    h1: { en: 'Larisel sofa', tr: 'Larisel kanepe', ru: 'Диван Larisel' },
-    lede: { en: 'Two seats, three, or a corner with a chaise — in bouclé, velvet or linen, on the legs you choose.',
-            tr: 'İkili, üçlü ya da şezlonglu köşe — bukle, kadife ya da keten, seçtiğiniz ayaklarla.',
-            ru: 'Двухместный, трёхместный или угловой с оттоманкой — в букле, бархате или льне, на выбранных ножках.' },
-    formLabel: { en: 'Shape', tr: 'Form', ru: 'Форма' },
-    frameLabel: { en: 'Legs', tr: 'Ayaklar', ru: 'Ножки' },
-    fabricLabel: UPHOLSTERY, rowLabel: TONES,
-    pillowLabel: { en: 'Scatter cushions, a pair', tr: 'Dekoratif yastık, çift', ru: 'Декоративные подушки, пара' },
-    pairsNote: { en: 'sofa · cushions · legs', tr: 'kanepe · yastık · ayak', ru: 'диван · подушки · ножки' },
-    pillowPrice: 140,
-    forms: [
-      { id: 'two',    price: 1890, cm: [176, 95, 89],  name: { en: 'Two-seater',   tr: 'İkili', ru: 'Двухместный' },  icon: 'M5 19v-2.5M27 19v-2.5M3 16.5h26M3.5 16.5v-6a2 2 0 0 1 4 0V13h17v-2.5a2 2 0 0 1 4 0v6M7 10V6.5A2 2 0 0 1 9 4.5h14a2 2 0 0 1 2 2V10M16 4.5V13' },
-      { id: 'three',  price: 2390, cm: [236, 95, 89],  name: { en: 'Three-seater', tr: 'Üçlü',  ru: 'Трёхместный' }, icon: 'M5 19v-2.5M27 19v-2.5M2 16.5h28M2.5 16.5v-6a2 2 0 0 1 4 0V13h19v-2.5a2 2 0 0 1 4 0v6M6 10V6.5A2 2 0 0 1 8 4.5h16a2 2 0 0 1 2 2V10M12.7 4.5V13M19.3 4.5V13' },
-      { id: 'corner', price: 3290, cm: [276, 163, 89], name: { en: 'Corner',       tr: 'Köşe',  ru: 'Угловой' },     icon: 'M3 4h26v24h-8V12H3zM3 4v8M21 12v16M11 4v8' },
-    ],
-    fabrics: SOFA_FABRICS, types: ['boucle', 'velvet', 'linen'], frames: FRAMES,
-    pairs: [
-      { fabric: 'boucle-ivory',    frame: 'walnut',   pillow: 'velvet-rust',     name: { en: 'Studio',   tr: 'Atölye', ru: 'Мастерская' } },
-      { fabric: 'velvet-emerald',  frame: 'brass',    pillow: 'velvet-ochre',    name: { en: 'Club',     tr: 'Kulüp',  ru: 'Клуб' } },
-      { fabric: 'linen-sea',       frame: 'bleached', pillow: 'linen-chalk',     name: { en: 'Coast',    tr: 'Kıyı',   ru: 'Побережье' } },
-      { fabric: 'boucle-charcoal', frame: 'black',    pillow: 'boucle-oat',      name: { en: 'Gallery',  tr: 'Galeri', ru: 'Галерея' } },
-      { fabric: 'velvet-bordeaux', frame: 'bronze',   pillow: 'velvet-rose',     name: { en: 'Opera',    tr: 'Opera',  ru: 'Опера' } },
-      { fabric: 'linen-sage',      frame: 'oak',      pillow: 'boucle-sand',     name: { en: 'Garden',   tr: 'Bahçe',  ru: 'Сад' } },
-      { fabric: 'velvet-midnight', frame: 'nickel',   pillow: 'linen-stone',     name: { en: 'Midnight', tr: 'Gece',   ru: 'Полночь' } },
-      { fabric: 'linen-rust',      frame: 'smoked',   pillow: 'boucle-oat',      name: { en: 'Earth',    tr: 'Toprak', ru: 'Земля' } },
-    ],
-    fabricSwatch: (f) => 'renders/sofa/swatch/fab-' + f.id + '.webp',
-    pairSrc: (pr) => 'renders/sofa/pairs/' + pr.fabric + '-' + pr.frame + '-' + pr.pillow + '.webp',
-    macroSrc: (f) => 'renders/sofa/macro/' + f.id + '.webp',
-    /* two cushions up on the back throw their own shadow on the floor: with them
-       chosen, the ground comes from a render with them there */
-    shadowWithPillow: 'shadowp',
-    cx: 0.5, cy: 0.55,
-    initial: { form: 'three', fabric: 'boucle-oat', frame: 'oak', pillow: false, pillowFabric: 'velvet-rust' },
-  },
-  table: {
-    id: 'table', root: './renders/table/', steps: 72, lead: 18,
-    h1: { en: 'Larisel coffee table', tr: 'Larisel sehpa', ru: 'Журнальный столик Larisel' },
-    lede: { en: 'Round, oval or long — in marble, travertine or solid wood, on the base you choose.',
-            tr: 'Yuvarlak, oval ya da uzun — mermer, traverten ya da masif ahşap, seçtiğiniz kaideyle.',
-            ru: 'Круглый, овальный или длинный — из мрамора, травертина или массива, на выбранном основании.' },
-    formLabel: { en: 'Shape', tr: 'Form', ru: 'Форма' },
-    frameLabel: { en: 'Base', tr: 'Kaide', ru: 'Основание' },
-    fabricLabel: { en: 'Top', tr: 'Tabla', ru: 'Столешница' },
-    rowLabel: { en: 'Tops', tr: 'Tablalar', ru: 'Столешницы' },
-    pairsNote: { en: 'top · base', tr: 'tabla · kaide', ru: 'столешница · основание' },
-    pillowPrice: 0, pillowLabel: null,                 /* no cushions: the extras are not offered */
-    forms: [
-      { id: 'round', price: 890,  cm: [90, 90, 38],  round: true, name: { en: 'Round', tr: 'Yuvarlak', ru: 'Круглый' },
-        icon: 'M4 16a12 12 0 1 0 24 0a12 12 0 1 0-24 0M16 11.5v9M11.5 16h9' },
-      { id: 'oval',  price: 1290, cm: [130, 70, 36], name: { en: 'Oval', tr: 'Oval', ru: 'Овальный' },
-        icon: 'M10 9h12a7 7 0 0 1 0 14H10a7 7 0 0 1 0-14zM12.5 16h7' },
-      { id: 'rect',  price: 1090, cm: [120, 62, 40], name: { en: 'Long', tr: 'Uzun', ru: 'Длинный' },
-        icon: 'M4.5 10h23a1.5 1.5 0 0 1 1.5 1.5v9a1.5 1.5 0 0 1-1.5 1.5h-23A1.5 1.5 0 0 1 3 20.5v-9A1.5 1.5 0 0 1 4.5 10zM7 12.5v7M25 12.5v7' },
-    ],
-    fabrics: TABLE_TOPS, types: null, frames: FRAMES,
-    /* a top and a base chosen together */
-    pairs: [
-      { fabric: 'carrara',    frame: 'nickel',   name: { en: 'Gallery',  tr: 'Galeri',    ru: 'Галерея' } },
-      { fabric: 'calacatta',  frame: 'brass',    name: { en: 'Salon',    tr: 'Salon',     ru: 'Салон' } },
-      { fabric: 'nero',       frame: 'brass',    name: { en: 'Noir',     tr: 'Noir',      ru: 'Нуар' } },
-      { fabric: 'verde',      frame: 'bronze',   name: { en: 'Club',     tr: 'Kulüp',     ru: 'Клуб' } },
-      { fabric: 'rosa',       frame: 'bleached', name: { en: 'Riviera',  tr: 'Riviera',   ru: 'Ривьера' } },
-      { fabric: 'travertine', frame: 'walnut',   name: { en: 'Roma',     tr: 'Roma',      ru: 'Рим' } },
-      { fabric: 'oak',        frame: 'black',    name: { en: 'Atelier',  tr: 'Atölye',    ru: 'Мастерская' } },
-      { fabric: 'walnut',     frame: 'brass',    name: { en: 'Library',  tr: 'Kütüphane', ru: 'Библиотека' } },
-    ],
-    fabricSwatch: (f) => 'renders/table/swatch/fab-' + f.id + '.webp',
-    pairSrc: (pr) => 'renders/table/pairs/' + pr.fabric + '-' + pr.frame + '.webp',
-    macroSrc: (f) => 'renders/table/macro/' + f.id + '.webp',
-    shadowOf: (sel) => (DARK_TOPS.has(sel.fabric) ? 'shadowd' : 'shadow'),
-    /* the top always lies above the base as the camera sees it: each was rendered whole,
-       the other unseen, and the base is laid first, the top over it (render_table.py) */
-    stack: 'over',
-    ground: 'light',                                   /* seen from higher: lit floor behind the mark, so ink type */
-    cx: 0.5, cy: 0.55,
-    initial: { form: 'round', fabric: 'carrara', frame: 'brass', pillow: false, pillowFabric: 'carrara' },
-  },
-};
-const frameSwatch = (f) => 'renders/swatch/frm-' + f.id + '.webp';
+/* the catalogue: js/catalog.js */
 const byId = (items, id) => items.find(it => it.id === id);
 const nameOf = (item) => item.name[lang];
 
@@ -826,7 +766,7 @@ const els = {
   pillowFabrics: $('pillow-fabrics'), pillowTypes: $('pillow-types'), pillowOptions: $('pillow-options'),
   vFabric: $('v-fabric'), vFrame: $('v-frame'), vForm: $('v-form'), vPillow: $('v-pillow'),
   hForm: $('h-form'), hFrame: $('h-frame'), hFabric: $('h-fabric'), extras: $('g-extras'), h1: $('h1'), lede: $('lede'), pairsNote: $('pairs-note'),
-  price: $('price'), dims: $('dims'), lead: $('lead'), toast: $('toast'), pairs: $('pairs'),
+  price: $('price'), dims: $('dims'), lead: $('lead'), pairs: $('pairs'),
   measure: $('measure'), compare: $('compare'),
 };
 let targetPrice = priceOf(product, state);
@@ -1043,7 +983,46 @@ function refresh() {
   });
   els.compare.classList.toggle('has-a', !!slotA);
   if (closeupOpen) fillCloseup();
+  if (els.fav) els.fav.setAttribute('aria-pressed', String(store.favs.has(keyOf(selOf()))));
+  renderDetails();
 }
+
+/* ── under the configurator: what the piece is, and will it go through the door ── */
+function renderDetails() {
+  const P = product, D = DETAILS[P.id], L = lang;
+  $('d-title').textContent = P.h1[L];
+  $('d-lead').textContent = P.lede[L];
+  const rows = [[store.t('d.dims'), dimsText(state.form)]];
+  if (D.seat) rows.push([store.t('d.seat'), D.seat[0] + ' · ' + D.seat[1] + (L === 'ru' ? ' см' : ' cm')]);
+  rows.push([P.fabricLabel[L], fabricName(P, state.fabric)], [P.frameLabel[L], nameOf(state.frame)]);
+  if (state.pillow && P.pillowLabel) rows.push([P.pillowLabel[L], fabricName(P, state.pillowFabric)]);
+  for (const [k, v] of D.rows) rows.push([k[L], v[L]]);
+  rows.push([store.t('d.lead'), store.t('cart.made').replace('%d', store.days(P.lead))]);
+  const dl = $('d-specs'); dl.innerHTML = '';
+  for (const [k, v] of rows) {
+    const div = document.createElement('div'), dt = document.createElement('dt'), dd = document.createElement('dd');
+    dt.textContent = k; dd.textContent = v; div.append(dt, dd); dl.appendChild(div);
+  }
+  fitCheck();
+}
+/* each part as it comes off the van must pass the door on its narrowest
+   side, and stand up through the opening on its next (2 cm of clearance) */
+function fitCheck() {
+  const w = parseFloat($('fit-w').value), h = parseFloat($('fit-h').value);
+  const out = $('fit-out'), say = (v, text) => { out.dataset.v = v; out.querySelector('span').textContent = text; };
+  if (!(w > 0 && h > 0)) return say('', store.t('fit.ask'));
+  let spare = Infinity;
+  for (const part of DETAILS[product.id].parts[state.form.id]) {
+    const [a, b] = [...part].sort((x, y) => x - y);
+    spare = Math.min(spare, (w - 2) - a, (h - 2) - b);
+  }
+  const n = Math.floor(spare);
+  if (spare < 0) say('no', store.t('fit.no'));
+  else if (spare < 6) say('tight', store.t('fit.tight').replace('%d', n));
+  else say('yes', store.t('fit.yes').replace('%d', n));
+}
+['fit-w', 'fit-h'].forEach((id) => $(id).addEventListener('input', fitCheck));
+$('fit').addEventListener('submit', (e) => e.preventDefault());
 
 function applyLang(next) {
   lang = next;
@@ -1056,9 +1035,6 @@ function applyLang(next) {
   document.querySelectorAll('[data-tip]').forEach((el) => {
     el.dataset.name = t(el.dataset.tip); el.setAttribute('aria-label', t(el.dataset.tip));
   });
-  document.querySelectorAll('[data-lang]').forEach((b) => {
-    b.setAttribute('aria-pressed', String(b.dataset.lang === next));
-  });
   refresh();
   /* The price is written by the animation loop, which only repaints when the
      number is actually moving — a language change alters the formatting, not
@@ -1066,12 +1042,8 @@ function applyLang(next) {
   els.price.textContent = formatPrice(shownPrice);
   if (compareOpen) fillCompare();
   wake();                                            // the dimension labels are drawn in the language too
-  try { localStorage.setItem(STORE, next); } catch (e) { /* private mode */ }
 }
-
-document.querySelectorAll('[data-lang]').forEach((b) => {
-  b.addEventListener('click', () => applyLang(b.dataset.lang));
-});
+store.onLang(applyLang);
 
 /* the other piece: the panel is rebuilt for it, the stage dissolves over */
 document.querySelectorAll('.product').forEach((b) => {
@@ -1243,7 +1215,7 @@ function openSheet(id) {
   if (id === 'closeup') { closeupOpen = true; fillCloseup(); }
   if (id === 'comparer') { compareOpen = true; fillCompare(); }
   el.hidden = false;
-  document.querySelector('.app').inert = true;
+  store.lock(el);                       // the whole page behind it: header, configurator, sections, footer
   requestAnimationFrame(() => el.classList.add('is-open'));
   const first = el.querySelector('[data-close]');
   if (first) first.focus({ preventScroll: true });
@@ -1253,7 +1225,7 @@ function closeSheet(el) {
   if (el.id === 'closeup') closeupOpen = false;
   if (el.id === 'comparer') compareOpen = false;
   setTimeout(() => { if (!el.classList.contains('is-open')) el.hidden = true; }, 360);
-  if (!document.querySelector('.sheet.is-open')) document.querySelector('.app').inert = false;
+  store.unlock(el);
   if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
 }
 document.querySelectorAll('.sheet').forEach((el) => {
@@ -1264,18 +1236,50 @@ addEventListener('keydown', (e) => {
   document.querySelectorAll('.sheet.is-open').forEach(closeSheet);
 });
 
-$('order').addEventListener('click', () => {
-  toast([nameOf(state.form), fabricName(product, state.fabric), nameOf(state.frame)].join(' · ')
-        + ' — ' + formatPrice(priceOf(product, state)));
-});
-
-let toastTimer;
-function toast(text) {
-  els.toast.textContent = text;
-  els.toast.classList.add('is-on');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => els.toast.classList.remove('is-on'), 3000);
+/* ── the cart and the saved designs ──────────────────────────────────────
+   An item is written whole — its names in the three languages, its price, a
+   small picture of it at the angle on screen and the link that opens it — so
+   the cart, the checkout and the orders can show it on any page. */
+function fabricIn(P, f, L) { return (P.types ? TYPES[f.type].name[L] + ' · ' : '') + f.name[L]; }
+function specIn(P, s, L) {
+  return [s.form.name[L], fabricIn(P, s.fabric, L), s.frame.name[L]]
+    .concat(s.pillow && P.pillowLabel ? [P.pillowLabel[L] + ': ' + fabricIn(P, s.pillowFabric, L)] : []).join(' · ');
 }
+function query() {
+  const q = new URLSearchParams({ p: product.id, form: state.form.id, fab: state.fabric.id, leg: state.frame.id });
+  if (state.pillow && product.pillowPrice) q.set('cush', state.pillowFabric.id);
+  return '?' + q.toString();
+}
+function thumb() {
+  const sel = selOf(), i = idx(view.angle);
+  const tier = canCompose('hd', sel, i) ? 'hd' : canCompose('lite', sel, i) ? 'lite' : null;
+  if (!tier) return '';
+  const src = compose(tier, sel, i, document.createElement('canvas'));
+  const out = document.createElement('canvas'); out.width = 360; out.height = 270;
+  const z = 1.25, w = src.width / z, h = src.height / z;
+  const x = Math.max(0, Math.min(src.width - w, product.cx * src.width - w / 2));
+  const y = Math.max(0, Math.min(src.height - h, product.cy * src.height - h / 2));
+  const g = out.getContext('2d'); g.imageSmoothingQuality = 'high';
+  g.drawImage(src, x, y, w, h, 0, 0, out.width, out.height);
+  return out.toDataURL('image/jpeg', 0.82);
+}
+function itemOf() {
+  const title = {}, spec = {};
+  for (const L of LANGS) { title[L] = product.h1[L]; spec[L] = specIn(product, state, L); }
+  return { key: keyOf(selOf()), p: product.id, title, spec, price: priceOf(product, state), lead: product.lead, img: thumb(), link: query() };
+}
+$('order').addEventListener('click', () => {
+  store.cart.add(itemOf());
+  store.openDrawer('cart');
+});
+els.fav = $('fav');
+els.fav.addEventListener('click', () => {
+  const on = store.favs.toggle(itemOf());
+  toast(store.t(on ? 'fav.saved' : 'fav.removed'), on ? { label: store.t('nav.favs'), run: () => store.openDrawer('favs') } : null);
+});
+store.onChange(() => refresh());
+
+const toast = (text, action) => store.toast(text, action);
 
 const canvas = $('scene');
 const stage = $('stage');
@@ -1361,6 +1365,7 @@ const release = (e) => {
 canvas.addEventListener('pointerup', release);
 canvas.addEventListener('pointercancel', release);
 canvas.addEventListener('wheel', (e) => {
+  if (!e.ctrlKey && !e.metaKey) return;              // a trackpad pinch arrives as ctrl + wheel
   e.preventDefault();
   view.zoomTo = Math.min(1.8, Math.max(1, view.zoomTo * Math.exp(-e.deltaY * 0.0015)));
   wake();
@@ -1459,6 +1464,120 @@ function startFade(dur) {
   fade = { t0: performance.now(), dur };
 }
 
+/* ── in-between angles: the motion, not a dissolve ─────────────────────────
+   The piece turns in 5-degree steps. A dissolve from one step to the next
+   drew every edge twice and pulsed at each step: a stutter while turning
+   slowly, a flicker at speed. renders/<form>/flow.webp holds the motion
+   between every two neighbouring angles, both ways (_film/config/
+   flow_config.py, from the renders themselves). At a point t of the way from
+   angle k to k+1 a pixel is taken from k a fraction t back along the forward
+   motion, and from k+1 the rest of the way back along the backward one; only
+   then are the two mixed — the piece turns, it does not dissolve. WebGL;
+   without it (or until a form's motion has arrived) the stepped dissolve
+   stays. */
+const warp = (() => {
+  const cv = document.createElement('canvas');
+  let gl = null;
+  try { gl = cv.getContext('webgl', { premultipliedAlpha: false, preserveDrawingBuffer: true, antialias: false, alpha: false }); } catch (e) { /* none */ }
+  if (!gl) return null;
+  /* a lost context (a phone sending the tab to the background, a GPU reset) takes the
+     program and the textures with it: from then on the page keeps the dissolve */
+  let dead = false;
+  cv.addEventListener('webglcontextlost', () => { dead = true; });
+  const sh = (type, src) => { const o = gl.createShader(type); gl.shaderSource(o, src); gl.compileShader(o); return o; };
+  const prog = gl.createProgram();
+  gl.attachShader(prog, sh(gl.VERTEX_SHADER, 'attribute vec2 p; varying vec2 v; void main() { v = vec2(p.x * 0.5 + 0.5, 0.5 - p.y * 0.5); gl_Position = vec4(p, 0.0, 1.0); }'));
+  gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, `precision highp float;
+    varying vec2 v;
+    uniform sampler2D uA, uB, uF;
+    uniform vec4 uFwd, uBwd;      // a tile of the motion atlas: origin xy, size zw
+    uniform vec2 uHalf, uPx;      // half a texel of a tile; one frame pixel in uv
+    uniform float uT, uScale;
+    vec2 motion(vec4 tl) {
+      vec2 q = tl.xy + clamp(v, uHalf, 1.0 - uHalf) * tl.zw;
+      return (texture2D(uF, q).rg * 255.0 - 128.0) / uScale * uPx;
+    }
+    void main() {
+      vec3 a = texture2D(uA, v - uT * motion(uFwd)).rgb;
+      vec3 b = texture2D(uB, v - (1.0 - uT) * motion(uBwd)).rgb;
+      gl_FragColor = vec4(mix(a, b, uT), 1.0);
+    }`));
+  gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return null;
+  gl.useProgram(prog);
+  const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(prog, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  const U = (n) => gl.getUniformLocation(prog, n);
+  const tex = () => {
+    const t = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, t);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    return t;
+  };
+  let tA = tex(), tB = tex();
+  const tF = tex();
+  gl.uniform1i(U('uA'), 0); gl.uniform1i(U('uB'), 1); gl.uniform1i(U('uF'), 2);
+  gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+  gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, gl.NONE);
+
+  /* each form's motion, fetched the first time that form turns; a form whose
+     motion cannot be had keeps the dissolve (and is not asked for again) */
+  const flows = {}, ready = {};
+  let inTexture = '';
+  function load(dir) {
+    if (flows[dir]) return;
+    flows[dir] = fetch(dir + '/flow.json')
+      .then((r) => { if (!r.ok) throw new Error('flow'); return r.json(); })
+      .then((m) => fetch(dir + '/' + m.file + '?r=' + m.rev)
+        .then((r) => { if (!r.ok) throw new Error('flow'); return r.blob(); })
+        .then((b) => createImageBitmap(b, { premultiplyAlpha: 'none', colorSpaceConversion: 'none' }))
+        .then((bmp) => { ready[dir] = { m, bmp }; wake(); }))
+      .catch(() => {});
+  }
+  /* the two angles either side, composed once each and kept while the piece
+     stays between them; turning on, the one ahead becomes the one behind */
+  let cA = document.createElement('canvas'), cB = document.createElement('canvas');
+  const held = { a: '', b: '' };
+  const upload = (t, c) => { gl.bindTexture(gl.TEXTURE_2D, t); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, c); };
+  function draw(sel, sk, k0, k1, t) {
+    if (dead || gl.isContextLost()) { dead = true; return null; }
+    const f = ready[sel.dir];
+    if (!f) { load(sel.dir); return null; }
+    const m = f.m;
+    if (inTexture !== sel.dir) {
+      gl.activeTexture(gl.TEXTURE2); gl.bindTexture(gl.TEXTURE_2D, tF);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, f.bmp);
+      gl.uniform2f(U('uHalf'), 0.5 / m.tile[0], 0.5 / m.tile[1]);
+      gl.uniform2f(U('uPx'), 1 / m.frame[0], 1 / m.frame[1]);
+      gl.uniform1f(U('uScale'), m.scale);
+      inTexture = sel.dir;
+    }
+    const a = sk + '#' + k0, b = sk + '#' + k1;
+    if (held.a !== a && (held.b === a || held.a === b)) {           // one step on, or one back: swap, keep the other
+      [cA, cB] = [cB, cA]; [tA, tB] = [tB, tA]; [held.a, held.b] = [held.b, held.a];
+    }
+    gl.activeTexture(gl.TEXTURE0);
+    if (held.a !== a) { if (!compose('lite', sel, k0, cA)) return null; upload(tA, cA); held.a = a; }
+    gl.bindTexture(gl.TEXTURE_2D, tA);
+    gl.activeTexture(gl.TEXTURE1);
+    if (held.b !== b) { if (!compose('lite', sel, k1, cB)) return null; upload(tB, cB); held.b = b; }
+    gl.bindTexture(gl.TEXTURE_2D, tB);
+    if (cv.width !== cA.width || cv.height !== cA.height) { cv.width = cA.width; cv.height = cA.height; }
+    gl.viewport(0, 0, cv.width, cv.height);
+    const AW = m.cols * m.tile[0], AH = m.rows * 2 * m.tile[1];
+    const col = k0 % m.cols, row = Math.floor(k0 / m.cols), tw = m.tile[0] / AW, th = m.tile[1] / AH;
+    gl.uniform4f(U('uFwd'), col * tw, row * th, tw, th);
+    gl.uniform4f(U('uBwd'), col * tw, (row + m.rows) * th, tw, th);
+    gl.uniform1f(U('uT'), t);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    return cv;
+  }
+  return { draw, load, ready: (dir) => !dead && !!ready[dir] };
+})();
+/* the measuring box between two angles: its corners part of the way along */
+const lerpPts = (A, B, t) => A.map((p, k) => p.map((v, j) => v + (B[k][j] - v) * t));
+
 let running = false, lastFrameT = 0, started = false;
 function wake() {
   if (running) return;
@@ -1523,6 +1642,12 @@ function frameStep(now) {
   /* the frame: sharp once the piece has rested for a moment, light while it moves */
   const sel = selOf(), sk = keyOf(sel), i = idx(view.angle);
   const rest = !moving && now - view.quietSince > 120;
+  /* between two angles while it turns: the two either side, slid together */
+  const base = Math.floor(view.angle), tFrac = view.angle - base;      // S: this piece's steps (above)
+  const k0 = ((base % S) + S) % S, k1 = (k0 + 1) % S;
+  if (warp && started) warp.load(sel.dir);
+  const between = moving && warp && !reducedMotion && tFrac > 0.002 && tFrac < 0.998 && warp.ready(sel.dir);
+  if (between) for (const j of [k0, k1]) if (!canCompose('lite', sel, j)) want('lite', sel, j).then(wake, () => {});
   /* ask only for what is missing: a resolved request wakes the loop, so asking
      for what is already here would keep an idle page drawing forever */
   if (!canCompose('lite', sel, i)) want('lite', sel, i).then(wake, () => {});
@@ -1537,22 +1662,24 @@ function frameStep(now) {
   }
 
   let tier = rest && canCompose('hd', sel, i) ? 'hd' : canCompose('lite', sel, i) ? 'lite' : (canCompose('hd', sel, i) ? 'hd' : null);
+  const slide = between && canCompose('lite', sel, k0) && canCompose('lite', sel, k1) ? view.angle.toFixed(4) : null;
+  if (slide !== null) tier = 'lite';
   if (tier) {
-    const key = sk + '#' + i + '#' + tier;
+    const key = sk + '#' + (slide !== null ? '~' + slide : i) + '#' + tier;
     const zoomed = Math.abs(view.zoom - (shown.zoom || 1)) > 0.0005;
     const dimsMoved = Math.abs(dimsAlpha - (shown.dims || 0)) > 0.001;
     if (key !== shown.key || fade || zoomed || dimsMoved || shown.w !== canvas.width || shown.lang !== lang) {
       if (switching) { startFade(reducedMotion ? 0 : 620); switching = false; }        // the other piece dissolves in
       else if (shown.sel && shown.sel !== sk) startFade(reducedMotion ? 0 : 380);     // a new choice dissolves in
       else if (shown.sel === sk && shown.tier === 'lite' && tier === 'hd' && shown.i === i) startFade(220);   // sharpening, no pop
-      else if (shown.sel === sk && shown.i !== i && !reducedMotion) {
+      else if (shown.sel === sk && shown.i !== i && !reducedMotion && slide === null && !shown.slid) {
         /* a step of the turn: as slow steps come (the end of a throw, the
            opening easing out) each 5-degree step ticked; a dissolve as long as
            the step itself smooths it, and at speed it is too short to see */
         const d = Math.min(110, (now - (shown.stepT || now)) * 0.9);
         if (d >= 16) startFade(d);                    // under a frame: nothing to dissolve (and 0 ms divided by zero)
       }
-      const frame = compose(tier, sel, i);
+      const frame = (slide !== null && warp.draw(sel, sk, k0, k1, tFrac)) || compose(tier, sel, i);
       ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
       paint(frame);
       if (fade) {
@@ -1561,9 +1688,14 @@ function frameStep(now) {
         if (p >= 1) fade = null; else busy = true;
       }
       const D = dimsSync[sel.dir];
-      if (dimsAlpha > 0.005 && D) drawDims(D.corners[i], state.form, ease(Math.min(1, dimsAlpha)), D.rim && D.rim[i]);
+      if (dimsAlpha > 0.005 && D) {
+        /* the lines follow the piece between angles too */
+        const c = slide !== null ? lerpPts(D.corners[k0], D.corners[k1], tFrac) : D.corners[i];
+        const r = D.rim && (slide !== null ? lerpPts(D.rim[k0], D.rim[k1], tFrac) : D.rim[i]);
+        drawDims(c, state.form, ease(Math.min(1, dimsAlpha)), r);
+      }
       if (shown.i !== i) shown.stepT = now;
-      Object.assign(shown, { key, sel: sk, tier, i, zoom: view.zoom, w: canvas.width, dims: dimsAlpha, lang });
+      Object.assign(shown, { key, sel: sk, tier, i, zoom: view.zoom, w: canvas.width, dims: dimsAlpha, lang, slid: slide !== null });
       if (!started) {
         started = true;
         document.body.classList.add('is-ready');

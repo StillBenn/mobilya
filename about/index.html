@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The atelier — Larisel</title>
+<meta name="description" content="Larisel makes armchairs, sofas and coffee tables to order, one at a time, in solid wood, honest cloth and natural stone.">
+<meta name="theme-color" content="#fdfbf7">
+<link rel="icon" href="/favicon.ico?v=2" sizes="32x32">
+<link rel="icon" href="/img/favicon.svg?v=2" type="image/svg+xml">
+<link rel="preload" href="../fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../css/base.css?v=1">
+<link rel="stylesheet" href="../css/store.css?v=2">
+</head>
+<body class="page">
+
+<header class="site-head site-head--line" data-site-head></header>
+
+<main>
+  <section class="wrap page-hero">
+    <p class="eyebrow-line" data-s="ab.eyebrow"></p>
+    <h1 data-s="ab.title"></h1>
+    <p data-s="ab.lead"></p>
+  </section>
+
+  <section class="wrap">
+    <figure class="figure figure--wide"><img src="../img/atelier-sofa.webp" alt="" width="1600" height="800" decoding="async"></figure>
+  </section>
+
+  <section class="section">
+    <div class="wrap grid-2 story">
+      <div class="section__head"><p class="eyebrow-line" data-s="ab.s1e"></p><h2 data-s="ab.s1"></h2></div>
+      <div class="prose"><p data-s="ab.s1p1"></p><p data-s="ab.s1p2"></p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap grid-3 values">
+      <article><p class="values__n">I</p><h3 data-s="ab.v1"></h3><p data-s="ab.v1p"></p></article>
+      <article><p class="values__n">II</p><h3 data-s="ab.v2"></h3><p data-s="ab.v2p"></p></article>
+      <article><p class="values__n">III</p><h3 data-s="ab.v3"></h3><p data-s="ab.v3p"></p></article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section__head"><p class="eyebrow-line" data-s="ab.m.e"></p><h2 data-s="ab.m.t"></h2></div>
+      <ol class="making">
+        <li><figure class="figure"><img src="../renders/macro/sand.webp" alt="" width="1400" height="900" loading="lazy" decoding="async"></figure><span class="step__n">01</span><h3 data-s="ab.m1"></h3><p data-s="ab.m1p"></p></li>
+        <li><figure class="figure"><img src="../renders/sofa/macro/linen-flax.webp" alt="" width="1400" height="900" loading="lazy" decoding="async"></figure><span class="step__n">02</span><h3 data-s="ab.m2"></h3><p data-s="ab.m2p"></p></li>
+        <li><figure class="figure"><img src="../renders/sofa/macro/velvet-bordeaux.webp" alt="" width="1400" height="900" loading="lazy" decoding="async"></figure><span class="step__n">03</span><h3 data-s="ab.m3"></h3><p data-s="ab.m3p"></p></li>
+        <li><figure class="figure"><img src="../renders/table/macro/calacatta.webp" alt="" width="1400" height="900" loading="lazy" decoding="async"></figure><span class="step__n">04</span><h3 data-s="ab.m4"></h3><p data-s="ab.m4p"></p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap grid-2 pair">
+      <figure class="figure"><img src="../img/atelier-chair.webp" alt="" width="1200" height="1000" loading="lazy" decoding="async"></figure>
+      <figure class="figure"><img src="../img/atelier-table.webp" alt="" width="1300" height="900" loading="lazy" decoding="async"></figure>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="band">
+        <div><h2 data-s="ab.cta"></h2><p data-s="ab.ctaP"></p></div>
+        <a class="btn btn--solid" href="../" data-s="cart.start"></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot" data-site-foot></footer>
+
+<script type="module">
+import * as store from '../js/store.js?v=2';
+
+store.words({
+  en: {
+    'ab.page': 'The atelier', 'ab.eyebrow': 'The atelier', 'ab.title': 'Furniture made slowly, one room at a time.',
+    'ab.lead': 'Larisel makes three pieces — an armchair, a sofa and a coffee table — and makes each one only once someone has asked for it, in the shape and the materials they chose.',
+    'ab.s1e': 'Why to order', 'ab.s1': 'Nothing waits in a warehouse.',
+    'ab.s1p1': 'A piece made for stock is made for nobody: a guess at a colour, a size, a room. We start the frame when your order is confirmed, cut your cloth for it, and send it straight from the bench to your door.',
+    'ab.s1p2': 'It takes a little longer — two to three weeks — and in return there is no compromise in it: the width that fits your wall, the cloth that goes with your floor, the legs that match the rest of the room.',
+    'ab.v1': 'Solid, joined, glued', 'ab.v1p': 'Frames of kiln-dried beech, mortise and tenon, glued and blocked at the corners — built to outlast the cloth on them.',
+    'ab.v2': 'Materials you can touch', 'ab.v2p': 'Bouclé, velvet, linen, marble, travertine, oak and walnut: real materials, shown as they are, with samples sent before you decide.',
+    'ab.v3': 'Made to be kept', 'ab.v3p': 'Covers that zip off, legs that unscrew, frames we re-upholster years later. A piece you keep is the most sustainable one.',
+    'ab.m.e': 'How it is made', 'ab.m.t': 'Four hands, four stages, one piece.',
+    'ab.m1': 'The frame', 'ab.m1p': 'Cut, jointed and glued in solid wood; the corners blocked, the joints dry-fitted before they are glued.',
+    'ab.m2': 'The seat', 'ab.m2p': 'Pocket springs, then high-resilience foam, then a wrap of feather — firm where you sit, soft where you lean.',
+    'ab.m3': 'The cloth', 'ab.m3p': 'Cut for your order, piped by hand, and pulled over the frame so the seams sit straight.',
+    'ab.m4': 'The finish', 'ab.m4p': 'Stone honed or polished and sealed, wood oiled, metal checked — then every piece is inspected before it is wrapped.',
+    'ab.cta': 'Design the one for your room.', 'ab.ctaP': 'Turn it, measure it, compare it — and see the price as you go.',
+  },
+  tr: {
+    'ab.page': 'Atölye', 'ab.eyebrow': 'Atölye', 'ab.title': 'Acele etmeden, her seferinde tek bir oda için yapılan mobilya.',
+    'ab.lead': 'Larisel üç parça yapar — bir koltuk, bir kanepe ve bir sehpa — ve her birini ancak biri istediğinde, onun seçtiği form ve malzemeyle üretir.',
+    'ab.s1e': 'Neden siparişe özel', 'ab.s1': 'Hiçbir şey depoda beklemez.',
+    'ab.s1p1': 'Stok için yapılan bir parça kimse için yapılmamıştır: bir renk, bir ölçü, bir oda tahmini. Biz iskeleti siparişiniz onaylandığında başlatır, kumaşınızı ona göre keser ve tezgâhtan doğrudan kapınıza göndeririz.',
+    'ab.s1p2': 'Biraz daha uzun sürer — iki ila üç hafta — karşılığında içinde hiçbir ödün yoktur: duvarınıza uyan genişlik, zemininize yakışan kumaş, odanın geri kalanıyla uyumlu ayaklar.',
+    'ab.v1': 'Masif, geçmeli, tutkallı', 'ab.v1p': 'Fırınlanmış kayından, zıvanalı, tutkallı ve köşeleri takviyeli iskeletler — üzerindeki kumaştan daha uzun ömürlü.',
+    'ab.v2': 'Dokunabileceğiniz malzemeler', 'ab.v2p': 'Bukle, kadife, keten, mermer, traverten, meşe ve ceviz: olduğu gibi gösterilen gerçek malzemeler.',
+    'ab.v3': 'Saklamak için yapılır', 'ab.v3p': 'Fermuarla çıkan kılıflar, sökülen ayaklar, yıllar sonra yeniden döşediğimiz iskeletler. Uzun süre sakladığınız parça, en sürdürülebilir olandır.',
+    'ab.m.e': 'Nasıl yapılır', 'ab.m.t': 'Dört el, dört aşama, tek bir parça.',
+    'ab.m1': 'İskelet', 'ab.m1p': 'Masif ahşaptan kesilir, birleştirilir ve tutkallanır; köşeler takviyelenir, birleşimler tutkaldan önce kuru olarak denenir.',
+    'ab.m2': 'Oturak', 'ab.m2p': 'Cep yaylar, üstüne yüksek esneklikli sünger, en üste kuş tüyü sargı — oturduğunuz yerde sıkı, yaslandığınız yerde yumuşak.',
+    'ab.m3': 'Kumaş', 'ab.m3p': 'Siparişiniz için kesilir, biyeleri elde geçirilir ve dikişler düz otursun diye iskeletin üzerine gerilir.',
+    'ab.m4': 'Son kat', 'ab.m4p': 'Taş honlanır ya da cilalanır ve korunur, ahşap yağlanır, metal kontrol edilir — her parça paketlenmeden önce incelenir.',
+    'ab.cta': 'Odanız için olanı tasarlayın.', 'ab.ctaP': 'Çevirin, ölçün, karşılaştırın — fiyatı da seçtikçe görün.',
+  },
+  ru: {
+    'ab.page': 'Мастерская', 'ab.eyebrow': 'Мастерская', 'ab.title': 'Мебель, которую делают не спеша — для одной комнаты за раз.',
+    'ab.lead': 'Larisel делает три вещи — кресло, диван и журнальный столик — и делает каждую, только когда её заказали, в выбранной форме и материалах.',
+    'ab.s1e': 'Почему на заказ', 'ab.s1': 'Ничего не ждёт на складе.',
+    'ab.s1p1': 'Вещь, сделанная «на склад», сделана ни для кого: догадка о цвете, размере, комнате. Мы начинаем каркас, когда заказ подтверждён, кроим вашу ткань и отправляем мебель прямо с верстака к вашей двери.',
+    'ab.s1p2': 'Это чуть дольше — две-три недели, — зато без компромиссов: ширина под вашу стену, ткань к вашему полу, ножки в тон остальной комнате.',
+    'ab.v1': 'Массив, шипы, клей', 'ab.v1p': 'Каркасы из сушёного бука на шипах и клею, с угловыми блоками — служат дольше обивки.',
+    'ab.v2': 'Материалы, которые можно потрогать', 'ab.v2p': 'Букле, бархат, лён, мрамор, травертин, дуб и орех: настоящие материалы, показанные как есть.',
+    'ab.v3': 'Сделано, чтобы оставаться', 'ab.v3p': 'Съёмные чехлы, откручивающиеся ножки, каркасы, которые мы перетягиваем через годы. Вещь, которую хранят, — самая экологичная.',
+    'ab.m.e': 'Как это делается', 'ab.m.t': 'Четыре руки, четыре этапа, одна вещь.',
+    'ab.m1': 'Каркас', 'ab.m1p': 'Выпилен из массива, соединён и склеен; углы усилены, соединения сначала собираются насухо.',
+    'ab.m2': 'Сиденье', 'ab.m2p': 'Пружинный блок, высокоэластичная пена, пуховая обёртка — упруго там, где сидите, мягко там, где откидываетесь.',
+    'ab.m3': 'Ткань', 'ab.m3p': 'Кроится под ваш заказ, кант прокладывается вручную, ткань натягивается так, чтобы швы легли ровно.',
+    'ab.m4': 'Отделка', 'ab.m4p': 'Камень шлифуется или полируется и защищается, дерево промасливается, металл проверяется — каждую вещь осматривают перед упаковкой.',
+    'ab.cta': 'Создайте свою — для вашей комнаты.', 'ab.ctaP': 'Вращайте, измеряйте, сравнивайте — и сразу видьте цену.',
+  },
+});
+store.mount({ base: '../', page: 'about' });
+const title = () => { document.title = store.t('ab.page') + ' — Larisel'; };
+store.onLang(title); title();
+</script>
+</body>
+</html>

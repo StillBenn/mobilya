@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Privacy — Larisel</title>
+<meta name="description" content="What this shop keeps about you, where, and how to clear it.">
+<meta name="theme-color" content="#fdfbf7">
+<link rel="icon" href="/favicon.ico?v=2" sizes="32x32">
+<link rel="icon" href="/img/favicon.svg?v=2" type="image/svg+xml">
+<link rel="preload" href="../fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../css/base.css?v=1">
+<link rel="stylesheet" href="../css/store.css?v=2">
+</head>
+<body class="page">
+
+<header class="site-head site-head--line" data-site-head></header>
+
+<main class="wrap wrap--narrow">
+  <section class="page-hero">
+    <p class="eyebrow-line" data-s="pv.eyebrow"></p>
+    <h1 data-s="pv.title"></h1>
+    <p data-s="pv.lead"></p>
+  </section>
+  <div class="prose prose--page">
+    <h3 data-s="pv.h1"></h3><p data-s="pv.p1"></p>
+    <ul><li data-s="pv.l1"></li><li data-s="pv.l2"></li><li data-s="pv.l3"></li><li data-s="pv.l4"></li><li data-s="pv.l5"></li></ul>
+    <h3 data-s="pv.h2"></h3><p data-s="pv.p2"></p>
+    <h3 data-s="pv.h3"></h3><p data-s="pv.p3"></p>
+    <h3 data-s="pv.h4"></h3><p data-s="pv.p4"></p>
+    <div class="row-links"><button class="btn btn--line" type="button" id="pv-clear" data-s="pv.clear"></button></div>
+  </div>
+</main>
+
+<footer class="site-foot" data-site-foot></footer>
+
+<script type="module">
+import * as store from '../js/store.js?v=2';
+
+store.words({
+  en: {
+    'pv.page': 'Privacy', 'pv.eyebrow': 'Privacy', 'pv.title': 'What we keep, and where.',
+    'pv.lead': 'This shop has no account and no server behind it. What it remembers about you stays in this browser, on this device.',
+    'pv.h1': 'In your browser', 'pv.p1': 'So that the shop works the next time you open it, your browser keeps:',
+    'pv.l1': 'the language you chose;', 'pv.l2': 'your cart and your saved designs, with a small picture of each;',
+    'pv.l3': 'the orders you placed here, with the delivery details you typed in, so you can follow them;',
+    'pv.l4': 'the materials in your sample box;', 'pv.l5': 'nothing else — no cookies for advertising, no tracking.',
+    'pv.h2': 'When you write to us', 'pv.p2': 'The contact form opens your own e-mail app; what you send reaches studio@larisel.com and is used only to answer you.',
+    'pv.h3': 'Demo store', 'pv.p3': 'Larisel furniture is a demo by the Larisel studio: orders placed here are not sent anywhere, and no payment is taken.',
+    'pv.h4': 'Clearing it', 'pv.p4': 'You can clear everything the shop keeps in this browser at once:',
+    'pv.clear': 'Clear what this shop keeps', 'pv.cleared': 'Cleared',
+  },
+  tr: {
+    'pv.page': 'Gizlilik', 'pv.eyebrow': 'Gizlilik', 'pv.title': 'Neyi, nerede saklıyoruz.',
+    'pv.lead': 'Bu mağazanın arkasında bir hesap ya da sunucu yoktur. Sizinle ilgili hatırladıkları bu tarayıcıda, bu cihazda kalır.',
+    'pv.h1': 'Tarayıcınızda', 'pv.p1': 'Mağaza bir sonraki açışınızda da çalışsın diye tarayıcınız şunları saklar:',
+    'pv.l1': 'seçtiğiniz dil;', 'pv.l2': 'sepetiniz ve kayıtlı tasarımlarınız, her birinin küçük bir resmiyle;',
+    'pv.l3': 'burada verdiğiniz siparişler ve yazdığınız teslimat bilgileri — takip edebilmeniz için;',
+    'pv.l4': 'numune kutunuzdaki malzemeler;', 'pv.l5': 'başka hiçbir şey — reklam çerezi yok, takip yok.',
+    'pv.h2': 'Bize yazdığınızda', 'pv.p2': 'İletişim formu kendi e-posta uygulamanızı açar; gönderdiğiniz mesaj studio@larisel.com adresine ulaşır ve yalnızca size yanıt vermek için kullanılır.',
+    'pv.h3': 'Demo mağaza', 'pv.p3': 'Larisel mobilya, Larisel stüdyosunun bir demosudur: burada verilen siparişler hiçbir yere gönderilmez ve ödeme alınmaz.',
+    'pv.h4': 'Silmek', 'pv.p4': 'Mağazanın bu tarayıcıda sakladığı her şeyi tek seferde silebilirsiniz:',
+    'pv.clear': 'Bu mağazanın sakladıklarını sil', 'pv.cleared': 'Silindi',
+  },
+  ru: {
+    'pv.page': 'Конфиденциальность', 'pv.eyebrow': 'Конфиденциальность', 'pv.title': 'Что мы храним и где.',
+    'pv.lead': 'У этого магазина нет аккаунтов и сервера. Всё, что он о вас помнит, остаётся в этом браузере, на этом устройстве.',
+    'pv.h1': 'В вашем браузере', 'pv.p1': 'Чтобы магазин работал и в следующий раз, браузер хранит:',
+    'pv.l1': 'выбранный язык;', 'pv.l2': 'корзину и сохранённые дизайны с небольшой картинкой каждого;',
+    'pv.l3': 'оформленные здесь заказы и введённые данные доставки — чтобы их можно было отслеживать;',
+    'pv.l4': 'материалы в наборе образцов;', 'pv.l5': 'больше ничего — без рекламных cookie и отслеживания.',
+    'pv.h2': 'Когда вы пишете нам', 'pv.p2': 'Форма открывает ваше почтовое приложение; письмо приходит на studio@larisel.com и используется только для ответа.',
+    'pv.h3': 'Демо-магазин', 'pv.p3': 'Мебель Larisel — демо студии Larisel: заказы никуда не отправляются, оплата не взимается.',
+    'pv.h4': 'Как удалить', 'pv.p4': 'Всё, что магазин хранит в этом браузере, можно удалить разом:',
+    'pv.clear': 'Удалить данные магазина', 'pv.cleared': 'Удалено',
+  },
+});
+store.mount({ base: '../', page: 'privacy' });
+document.getElementById('pv-clear').addEventListener('click', () => {
+  ['larisel-cart', 'larisel-favs', 'larisel-orders', 'larisel-samples'].forEach((k) => { try { localStorage.removeItem(k); } catch (e) { /* private mode */ } });
+  store.cart.clear();
+  store.toast(store.t('pv.cleared'));
+});
+const title = () => { document.title = store.t('pv.page') + ' — Larisel'; };
+store.onLang(title); title();
+</script>
+</body>
+</html>

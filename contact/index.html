@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Contact — Larisel</title>
+<meta name="description" content="Write to the Larisel atelier: a question about a piece, a custom size or fabric, an order, or a project for architects and designers.">
+<meta name="theme-color" content="#fdfbf7">
+<link rel="icon" href="/favicon.ico?v=2" sizes="32x32">
+<link rel="icon" href="/img/favicon.svg?v=2" type="image/svg+xml">
+<link rel="preload" href="../fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../css/base.css?v=1">
+<link rel="stylesheet" href="../css/store.css?v=2">
+</head>
+<body class="page">
+
+<header class="site-head site-head--line" data-site-head></header>
+
+<main class="wrap">
+  <section class="page-hero">
+    <p class="eyebrow-line" data-s="ct.eyebrow"></p>
+    <h1 data-s="ct.title"></h1>
+    <p data-s="ct.lead"></p>
+  </section>
+
+  <section class="contact-grid">
+    <form class="form card card--form" id="ct-form" novalidate>
+      <div class="form__row">
+        <label class="field"><span data-s="f.name"></span><input name="name" autocomplete="name" required><em class="field__err"></em></label>
+        <label class="field"><span data-s="f.email"></span><input name="email" type="email" autocomplete="email" required><em class="field__err"></em></label>
+      </div>
+      <div class="form__row">
+        <label class="field"><span><span data-s="f.phone"></span> <small data-s="f.optional"></small></span><input name="phone" type="tel" autocomplete="tel"></label>
+        <label class="field"><span data-s="ct.topic"></span>
+          <select name="topic">
+            <option value="piece" data-s="ct.t1"></option>
+            <option value="custom" data-s="ct.t2"></option>
+            <option value="order" data-s="ct.t3"></option>
+            <option value="samples" data-s="ct.t4"></option>
+            <option value="trade" data-s="ct.t5"></option>
+            <option value="other" data-s="ct.t6"></option>
+          </select>
+        </label>
+      </div>
+      <label class="field" id="ct-design-field" hidden><span><span data-s="ct.design"></span> <small data-s="f.optional"></small></span><select name="design" id="ct-design"></select></label>
+      <label class="field"><span data-s="ct.message"></span><textarea name="message" rows="6" required></textarea><em class="field__err"></em></label>
+      <button class="btn btn--solid" type="submit" data-s="ct.send"></button>
+      <p class="ct-how" data-s="ct.how"></p>
+      <div class="ct-sent" id="ct-sent" hidden>
+        <p class="ct-sent__title" id="ct-sent-title" data-s="ct.sentTitle"></p>
+        <p id="ct-sent-lead" data-s="ct.sentLead"></p>
+        <div class="row-links"><a class="btn btn--line" id="ct-again" href="#" data-s="ct.again"></a><button class="btn btn--line" id="ct-copy" type="button" data-s="ct.copy"></button></div>
+      </div>
+    </form>
+
+    <aside class="contact-side">
+      <div class="info">
+        <p class="info__k" data-s="ct.mail"></p>
+        <a class="info__v" href="mailto:studio@larisel.com">studio@larisel.com</a>
+        <p class="info__n" data-s="ct.mailNote"></p>
+      </div>
+      <div class="info">
+        <p class="info__k" data-s="ct.hours"></p>
+        <p class="info__v" data-s="ct.hoursV"></p>
+        <p class="info__n" data-s="ct.hoursNote"></p>
+      </div>
+      <div class="info">
+        <p class="info__k" data-s="ct.call"></p>
+        <p class="info__v" data-s="ct.callV"></p>
+        <p class="info__n" data-s="ct.callNote"></p>
+      </div>
+      <div class="info">
+        <p class="info__k" data-s="ct.trade"></p>
+        <p class="info__n" data-s="ct.tradeNote"></p>
+      </div>
+    </aside>
+  </section>
+</main>
+
+<footer class="site-foot" data-site-foot></footer>
+
+<script type="module">
+import * as store from '../js/store.js?v=2';
+
+store.words({
+  en: {
+    'ct.page': 'Contact', 'ct.eyebrow': 'Contact', 'ct.title': 'Write to the atelier.',
+    'ct.lead': 'A question about a piece, a size or a cloth we do not show, an order on its way, or a project for a whole room — a designer answers within a working day.',
+    'ct.topic': 'About', 'ct.t1': 'A piece', 'ct.t2': 'A custom size or fabric', 'ct.t3': 'An order', 'ct.t4': 'Samples',
+    'ct.t5': 'Architects and designers', 'ct.t6': 'Something else', 'ct.design': 'Attach a saved design', 'ct.none': 'None',
+    'ct.message': 'Your message', 'ct.send': 'Send the message',
+    'ct.how': 'Sending opens your own e-mail app with the message written in, addressed to the atelier.',
+    'ct.sentTitle': 'Your e-mail app has the message.', 'ct.sentLead': 'Send it from there and we will answer within a working day. Nothing opened? Copy the message and send it to studio@larisel.com.',
+    'ct.longTitle': 'Your message is too long for an e-mail link.', 'ct.longLead': 'Copy it with the button below and send it to studio@larisel.com — we answer within a working day.', 'ct.again': 'Write another', 'ct.copy': 'Copy the message', 'ct.copied': 'Message copied',
+    'ct.mail': 'E-mail', 'ct.mailNote': 'Everything reaches a designer, not a call centre.',
+    'ct.hours': 'Atelier hours', 'ct.hoursV': 'Monday to Friday, 9:00–18:00', 'ct.hoursNote': 'Istanbul time (GMT+3).',
+    'ct.call': 'A video call', 'ct.callV': 'Twenty minutes with a designer', 'ct.callNote': 'Ask for one in your message: we look at your room with you and choose together.',
+    'ct.trade': 'Architects and designers', 'ct.tradeNote': 'Trade prices, custom sizes and samples for your projects — tell us about the project.',
+    'ct.subject': 'Larisel — %s', 'ct.designLine': 'Design: %s', 'ct.from': 'From',
+  },
+  tr: {
+    'ct.page': 'İletişim', 'ct.eyebrow': 'İletişim', 'ct.title': 'Atölyeye yazın.',
+    'ct.lead': 'Bir ürünle ilgili soru, burada görmediğiniz bir ölçü ya da kumaş, yoldaki bir sipariş ya da bütün bir oda için bir proje — bir tasarımcımız bir iş günü içinde yanıtlar.',
+    'ct.topic': 'Konu', 'ct.t1': 'Bir ürün', 'ct.t2': 'Özel ölçü ya da kumaş', 'ct.t3': 'Bir sipariş', 'ct.t4': 'Numuneler',
+    'ct.t5': 'Mimarlar ve iç mimarlar', 'ct.t6': 'Başka bir konu', 'ct.design': 'Kayıtlı bir tasarım ekle', 'ct.none': 'Yok',
+    'ct.message': 'Mesajınız', 'ct.send': 'Mesajı gönder',
+    'ct.how': 'Gönder dediğinizde kendi e-posta uygulamanız, mesaj yazılmış ve atölyeye adreslenmiş olarak açılır.',
+    'ct.sentTitle': 'Mesaj e-posta uygulamanızda.', 'ct.sentLead': 'Oradan gönderin, bir iş günü içinde yanıtlayalım. Bir şey açılmadı mı? Mesajı kopyalayıp studio@larisel.com adresine gönderin.',
+    'ct.longTitle': 'Mesajınız bir e-posta bağlantısına sığmayacak kadar uzun.', 'ct.longLead': 'Aşağıdaki düğmeyle kopyalayıp studio@larisel.com adresine gönderin — bir iş günü içinde yanıtlarız.', 'ct.again': 'Yeni mesaj yaz', 'ct.copy': 'Mesajı kopyala', 'ct.copied': 'Mesaj kopyalandı',
+    'ct.mail': 'E-posta', 'ct.mailNote': 'Her mesaj bir çağrı merkezine değil, bir tasarımcıya ulaşır.',
+    'ct.hours': 'Atölye saatleri', 'ct.hoursV': 'Pazartesi–Cuma, 09:00–18:00', 'ct.hoursNote': 'İstanbul saati (GMT+3).',
+    'ct.call': 'Görüntülü görüşme', 'ct.callV': 'Bir tasarımcıyla yirmi dakika', 'ct.callNote': 'Mesajınızda isteyin: odanıza sizinle birlikte bakar, birlikte seçeriz.',
+    'ct.trade': 'Mimarlar ve iç mimarlar', 'ct.tradeNote': 'Projeleriniz için profesyonel fiyatlar, özel ölçüler ve numuneler — bize projenizden bahsedin.',
+    'ct.subject': 'Larisel — %s', 'ct.designLine': 'Tasarım: %s', 'ct.from': 'Gönderen',
+  },
+  ru: {
+    'ct.page': 'Контакты', 'ct.eyebrow': 'Контакты', 'ct.title': 'Напишите в мастерскую.',
+    'ct.lead': 'Вопрос об изделии, размер или ткань, которых нет на сайте, заказ в пути или проект целой комнаты — дизайнер ответит в течение рабочего дня.',
+    'ct.topic': 'Тема', 'ct.t1': 'Изделие', 'ct.t2': 'Нестандартный размер или ткань', 'ct.t3': 'Заказ', 'ct.t4': 'Образцы',
+    'ct.t5': 'Архитекторам и дизайнерам', 'ct.t6': 'Другое', 'ct.design': 'Приложить сохранённый дизайн', 'ct.none': 'Нет',
+    'ct.message': 'Сообщение', 'ct.send': 'Отправить',
+    'ct.how': 'При отправке откроется ваше почтовое приложение с готовым письмом в мастерскую.',
+    'ct.sentTitle': 'Письмо уже в вашей почте.', 'ct.sentLead': 'Отправьте его оттуда — мы ответим в течение рабочего дня. Ничего не открылось? Скопируйте сообщение и отправьте на studio@larisel.com.',
+    'ct.longTitle': 'Сообщение слишком длинное для почтовой ссылки.', 'ct.longLead': 'Скопируйте его кнопкой ниже и отправьте на studio@larisel.com — ответим в течение рабочего дня.', 'ct.again': 'Написать ещё', 'ct.copy': 'Скопировать сообщение', 'ct.copied': 'Сообщение скопировано',
+    'ct.mail': 'Почта', 'ct.mailNote': 'Каждое письмо читает дизайнер, а не колл-центр.',
+    'ct.hours': 'Часы работы', 'ct.hoursV': 'Понедельник–пятница, 9:00–18:00', 'ct.hoursNote': 'По стамбульскому времени (GMT+3).',
+    'ct.call': 'Видеозвонок', 'ct.callV': 'Двадцать минут с дизайнером', 'ct.callNote': 'Попросите о нём в письме: посмотрим на вашу комнату вместе и выберем.',
+    'ct.trade': 'Архитекторам и дизайнерам', 'ct.tradeNote': 'Профессиональные цены, нестандартные размеры и образцы для ваших проектов — расскажите о проекте.',
+    'ct.subject': 'Larisel — %s', 'ct.designLine': 'Дизайн: %s', 'ct.from': 'От',
+  },
+});
+store.mount({ base: '../', page: 'contact' });
+
+const $ = (id) => document.getElementById(id);
+const form = $('ct-form');
+let lastBody = '';
+
+/* a saved design can go with the message: its name, its spec, its link */
+function fillDesigns() {
+  const items = store.favs.items(), sel = $('ct-design'), keep = sel.value;
+  $('ct-design-field').hidden = !items.length;
+  const esc = (x) => String(x).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  sel.innerHTML = `<option value="">${esc(store.t('ct.none'))}</option>` + items.map((it) => `<option value="${esc(it.id)}">${esc(store.pick(it.title))} — ${esc(store.pick(it.spec))}</option>`).join('');
+  if (![...sel.options].some((o) => o.value === keep)) sel.value = '';
+  else sel.value = keep;
+}
+function preset() {
+  const q = new URLSearchParams(location.search);
+  const v = q.get('topic'), sel = form.elements.topic;
+  if (v && [...sel.options].some((o) => o.value === v)) sel.value = v;
+}
+
+const RULES = {
+  name: (v) => v.trim().length >= 2 || 'f.required',
+  email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) || (v.trim() ? 'f.badEmail' : 'f.required'),
+  message: (v) => v.trim().length >= 5 || 'f.required',
+};
+function check(n) {
+  const el = form.elements[n], r = RULES[n](el.value), field = el.closest('.field');
+  field.classList.toggle('is-bad', r !== true);
+  const err = field.querySelector('.field__err');
+  err.dataset.err = r === true ? '' : r;
+  err.textContent = r === true ? '' : store.t(r);
+  return r === true;
+}
+Object.keys(RULES).forEach((n) => form.elements[n].addEventListener('input', () => { if (form.elements[n].closest('.field').classList.contains('is-bad')) check(n); }));
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const bad = Object.keys(RULES).filter((n) => !check(n));
+  if (bad.length) { form.elements[bad[0]].focus(); return; }
+  const f = (n) => form.elements[n].value.trim();
+  const topic = (form.elements.topic.selectedOptions[0] || {}).textContent || '';
+  const fav = store.favs.items().find((it) => it.id === f('design'));
+  const origin = location.origin + location.pathname.replace(/contact\/?$/, '');
+  lastBody = [f('message'), '',
+    fav ? store.t('ct.designLine').replace('%s', store.pick(fav.title) + ' — ' + store.pick(fav.spec) + ' — ' + store.price(fav.price) + '\n' + origin + fav.link) : '',
+    '—', store.t('ct.from') + ': ' + f('name'), f('email'), f('phone')].filter((x, i) => x || i === 1).join('\n');
+  const url = 'mailto:studio@larisel.com?subject=' + encodeURIComponent(store.t('ct.subject').replace('%s', topic)) + '&body=' + encodeURIComponent(lastBody);
+  /* past ~2000 characters mail apps (Outlook among them) cut a mailto link or ignore it:
+     a long message (Cyrillic takes six characters a letter) is copied instead */
+  const long = url.length > 1900;
+  if (!long) location.href = url;
+  $('ct-sent-title').dataset.s = long ? 'ct.longTitle' : 'ct.sentTitle';
+  $('ct-sent-lead').dataset.s = long ? 'ct.longLead' : 'ct.sentLead';
+  store.translate($('ct-sent'));
+  $('ct-sent').hidden = false;
+  $('ct-sent').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+});
+$('ct-copy').addEventListener('click', () => {
+  if (navigator.clipboard) navigator.clipboard.writeText(lastBody).then(() => store.toast(store.t('ct.copied')), () => {});
+});
+$('ct-again').addEventListener('click', (e) => { e.preventDefault(); form.reset(); $('ct-sent').hidden = true; preset(); });
+
+const title = () => { document.title = store.t('ct.page') + ' — Larisel'; };
+store.onLang(() => { title(); fillDesigns(); form.querySelectorAll('[data-err]').forEach((x) => { x.textContent = x.dataset.err ? store.t(x.dataset.err) : ''; }); });
+store.onChange(fillDesigns);
+title(); fillDesigns(); preset();
+</script>
+</body>
+</html>
